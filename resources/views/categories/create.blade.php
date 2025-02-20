@@ -5,6 +5,7 @@
 @section('content')
 <div class="container">
     <h1>Create New Category</h1>
+    <a href="{{route('categories.index')}}" class="btn btn-info mb-3">Back</a>
     <form action="{{ route('categories.store') }}" method="POST">
         @csrf
         <div class="form-group">
