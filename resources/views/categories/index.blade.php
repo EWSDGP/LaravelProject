@@ -5,6 +5,11 @@
 @section('content')
 <div class="container">
     <h1>Categories</h1>
+    @session('success')
+    <div class="alert alert-success">
+                                    {{$value}}
+                        </div>
+                        @endsession
     <a href="{{ route('categories.create') }}" class="btn btn-success">Create New Category</a>
     <table class="table table-bordered mt-4">
         <thead>

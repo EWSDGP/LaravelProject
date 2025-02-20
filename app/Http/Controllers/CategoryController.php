@@ -7,20 +7,20 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    // Show all categories
+    
     public function index()
     {
-        $categories = Category::all();  // Fetch all categories
+        $categories = Category::all(); 
         return view('categories.index', compact('categories'));
     }
 
-    // Show form to create a new category
+    
     public function create()
     {
         return view('categories.create');
     }
 
-    // Store a new category
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -34,26 +34,31 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Category created successfully!');
     }
 
-    // Show form to edit a category
+   
     public function edit($category_id)
     {
-        $category = Category::findOrFail($category_id);  // or use $category_id as it is
+        $category = Category::findOrFail($category_id); 
         return view('categories.edit', compact('category'));
     }
 
-    // Update an existing category
+    
     public function update(Request $request, $category_id)
-{
+{   
+    $request->validate([
+        "category_name" => "required|string|max:255"
+    ]);
+    
     $category = Category::findOrFail($category_id);
-    $category->update($request->all());
-    return redirect()->route('categories.index');
+    $category->category_name=$request->category_name;
+    $category->save();
+    return redirect()->route('categories.index')->with ("success","Categoried Updated");
 }
 
 public function destroy($category_id)
 {
     $category = Category::findOrFail($category_id);
     $category->delete();
-    return redirect()->route('categories.index');
+    return redirect()->route('categories.index')->with("success","Categories Deleted");
 }
 }
 
