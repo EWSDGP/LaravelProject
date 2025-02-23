@@ -10,7 +10,9 @@
                                     {{$value}}
                         </div>
                         @endsession
+                        @can ('category-create')
     <a href="{{ route('categories.create') }}" class="btn btn-success">Create New Category</a>
+    @endcan
     <table class="table table-bordered mt-4">
         <thead>
             <tr>
@@ -23,11 +25,15 @@
             <tr>
                 <td>{{ $category->category_name }}</td>
                 <td>
+                @can ('category-edit')
                     <a href="{{ route('categories.edit', $category->category_id) }}" class="btn btn-warning">Edit</a>
+                @endcan
                     <form action="{{ route('categories.destroy', $category->category_id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
+                        @can ('category-delete')
                         <button type="submit" class="btn btn-danger">Delete</button>
+                        @endcan
                     </form>
                 </td>
             </tr>
