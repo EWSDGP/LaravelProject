@@ -52,6 +52,24 @@
                                 </li>
                             @endif
                         @else
+                        <li class="nav-item">
+                        @canany(['category-create', 'category-list', 'category-edit', 'category-delete'])
+                         <li class="nav-item">
+                          <a class="nav-link" href="{{ route('categories.index') }}">Manage Categories</a>
+                         </li>
+                        @endcanany
+
+                        @role('Admin') 
+                        <li class="nav-item">
+                         <a class="nav-link" href="{{ route('roles.index') }}">Manage Roles</a>
+                         </li>
+                        @endrole
+                        @canany(['user-list', 'user-create', 'user-edit', 'user-delete'])
+                        <li class="nav-item">
+                         <a class="nav-link" href="{{ route('users.index') }}">Manage Users</a>
+                        </li>
+                        @endcanany
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
