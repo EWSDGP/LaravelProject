@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClosureDateController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
@@ -26,3 +27,4 @@ Route::resource('categories', CategoryController::class);
 Route::resource('roles', RoleController::class);
 Route::resource("users",UserController::class);
 Route::resource('departments', DepartmentController::class);
+Route::resource('closure_dates', ClosureDateController::class);
