@@ -45,6 +45,16 @@
                             </select>
                         </div>
                         <div class="mt-2">
+                             <label for="department">Department (Optional):</label>
+                             <select class="form-select" name="department_id">
+                           <option value="">-- No Department --</option>
+                              @foreach($departments as $department)
+                             <option value="{{ $department->id }}">{{ $department->name }}</option>
+                             @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mt-2">
                             <button class="btn btn-primary">Submit</button>
                         </div>
                     </form>
