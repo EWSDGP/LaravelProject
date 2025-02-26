@@ -30,6 +30,10 @@ class PermissionSeeder extends Seeder
             "department-create",
             "department-edit",
             "department-delete",
+            "closure_date-list",
+            "closure_date-create",
+            "closure_date-edit",
+            "closure_date-delete",
         ];
 
         foreach ($permissions as $permission) {
