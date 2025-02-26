@@ -58,7 +58,11 @@
                           <a class="nav-link" href="{{ route('categories.index') }}">Manage Categories</a>
                          </li>
                         @endcanany
-
+                        @canany(['department-create', 'department-list', 'department-edit', 'department-delete'])
+                        <li class="nav-item">
+                         <a class="nav-link" href="{{ route('departments.index') }}">Manage Departments</a>
+                         </li>
+                         @endcanany
                         @role('Admin') 
                         <li class="nav-item">
                          <a class="nav-link" href="{{ route('roles.index') }}">Manage Roles</a>
