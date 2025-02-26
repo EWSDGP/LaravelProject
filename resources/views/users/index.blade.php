@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -229,7 +229,7 @@
                                     <h5 class="m-0">QA Manager</h5>
                                 </div>
                                 <div class="postion-absolute">
-                                    <!-- <p class="text-success">🟢 A C T I V E </p> -->
+                                    <p class="text-success">🟢 A C T I V E </p>
                                 </div>
                             </div>
                         </div>
@@ -336,7 +336,7 @@
 
     </script>
 </body>
-</html>
+</html> -->
 
 
 
