@@ -42,14 +42,20 @@
                                     {{ $role }}
                                 @endforeach
                             </td>
-                            <td>School Management</td>
+                            <td>{{ $user->department ? $user->department->name : 'No Department Assigned' }}</td>
                             <td>
                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     @can('user-list')
-                                        <button type="button" class="btn btn-sm btn-info w-18"
-                                            onclick="showUserDetails({{ json_encode($user) }}, '{{ $user->getRoleNames()->implode(', ') }}')">Details</button>
+                                    <button type="button" class="btn btn-sm btn-info w-18 user-details-btn"
+    data-user='@json($user)'
+    data-roles="{{ $user->getRoleNames()->implode(', ') }}">
+    Details
+</button>
+
+
+
                                     @endcan
                                     @can('user-edit')
                                         <a href="{{ route('users.edit', $user->id) }}"
@@ -69,6 +75,14 @@
 </div>
 
 <script>
+    document.querySelectorAll('.user-details-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        let user = JSON.parse(this.getAttribute('data-user'));
+        let roles = this.getAttribute('data-roles');
+        showUserDetails(user, roles);
+    });
+});
+
     function showUserDetails(user, roles) {
         const userDetailsDiv = document.getElementById('user-details');
         let previoususerid = showUserDetails.previoususerid || 0;
