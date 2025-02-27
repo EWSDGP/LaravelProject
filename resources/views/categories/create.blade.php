@@ -3,16 +3,30 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
-    <h1>Create New Category</h1>
-    <a href="{{route('categories.index')}}" class="btn btn-info mb-3">Back</a>
-    <form action="{{ route('categories.store') }}" method="POST">
-        @csrf
-        <div class="form-group">
-            <label for="category_name">Category Name</label>
-            <input type="text" class="form-control" id="category_name" name="category_name" required>
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-success text-white">{{ __('Create Category') }}</div>
+
+                <div class="card-body">
+                    
+                    <form action="{{ route('categories.store') }}" method="POST">
+                        @csrf                 
+                        <div class="form-group d-flex align-items-center">
+                            <label for="category_name" class="me-2" style="min-width: 80px;">Name:</label>
+                            <input type="text" id="category_name" name="category_name" class="form-control" required>
+                        </div>
+
+                        <div class="mt-2 d-flex justify-content-between">
+                            <a href="{{route('categories.index')}}" class="btn btn-outline-dark">Back</a>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>                   
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Save</button>
-    </form>
+    </div>
 </div>
 @endsection
