@@ -34,14 +34,15 @@
                     @enderror
                 </div>
                 <div class="mt-4">
-                    <label class="mb-1">Role:</label>
-                    <select class="form-select" name="department_id">
-                        <option value="" disabled selected>-- Select Role --</option>
-                        @foreach ($roles as $role)
-                            <option value="{{ $role->name }}">{{ $role->name }}</option>
-                        @endforeach
+                     <label class="mb-1">Role:</label>
+                     <select class="form-select" name="roles[]">
+                     <option value="" disabled selected>-- Select Role --</option>
+                     @foreach ($roles as $role)
+                     <option value="{{ $role->name }}">{{ $role->name }}</option>
+                     @endforeach
                     </select>
                 </div>
+
                 <div class="mt-4">
                     <label class="mb-1">Department (Optional):</label>
                     <select class="form-select" name="department_id">
