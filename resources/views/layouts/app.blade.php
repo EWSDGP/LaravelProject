@@ -1,114 +1,167 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-   
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-   
+
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ asset('components/style.css') }}">
 
-  
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
+
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+    <div class="d-flex w-100" style="height: 100vh" id="app">
+        <div class="navigation bg-nav text-white position-fixed" style="width: 17% ; height: 100vh">
+            <div class="bg-nav-title d-flex justify-content-center align-items-center" style="height: 90px">
+                <h2 class="m-0">
+                    Greenwich
+                </h2>
+            </div>
+            <!-- Right Side Of Navbar -->
+            <div class="navbar d-flex flex-column justify-content-start align-items-center fs-5 nav-height">
+                <!-- Authentication Links -->
+                @guest
 
-                    </ul>
+                @if (Route::has('login'))
+                    <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                        style="height: 95px">
+                        <i class="fa-solid fa-arrow-right-to-bracket pe-4"></i>
+                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    </li>
+                @endif
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                        <li class="nav-item">
-                        @canany(['category-create', 'category-list', 'category-edit', 'category-delete'])
-                         <li class="nav-item">
-                          <a class="nav-link" href="{{ route('categories.index') }}">Manage Categories</a>
-                         </li>
-                        @endcanany
-                        @canany(['department-create', 'department-list', 'department-edit', 'department-delete'])
-                        <li class="nav-item">
-                         <a class="nav-link" href="{{ route('departments.index') }}">Manage Departments</a>
-                         </li>
-                         @endcanany
-                         @canany(['closure_date-create', 'closure_date-list', 'closure_date-edit', 'closure_date-delete'])
-                        <li class="nav-item">
-                         <a class="nav-link" href="{{ route('closure_dates.index') }}">Manage Closure_Dates</a>
-                         </li>
-                         @endcanany
-                        @role('Admin') 
-                        <li class="nav-item">
-                         <a class="nav-link" href="{{ route('roles.index') }}">Manage Roles</a>
-                         </li>
-                        @endrole
-                        @canany(['user-list', 'user-create', 'user-edit', 'user-delete'])
-                        <li class="nav-item">
-                         <a class="nav-link" href="{{ route('users.index') }}">Manage Users</a>
+                @if (Route::has('register'))
+                    <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                        style="height: 95px">
+                        <i class="fa-solid fa-arrow-right-to-bracket pe-4"></i>
+                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                    </li>
+                @endif
+                @else
+                    <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                        style="height: 95px">
+                        <i class="fa-solid fa-home pe-4"></i>
+                        <a class="text-decoration-none" href="{{ route('dashboard') }}">Dashboard</a>
+                    </li>
+                    @canany(['category-create', 'category-list', 'category-edit', 'category-delete'])
+                        <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                            style="height: 95px">
+                            <i class="fa-solid fa-calendar-days pe-4"></i>
+                            <a class="text-decoration-none" href="{{ route('categories.index') }}">Categories</a>
                         </li>
-                        @endcanany
+                    @endcanany
+                    @canany(['department-create', 'department-list', 'department-edit', 'department-delete'])
+                        <li class="hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                            style="height: 95px">
+                            <i class="fa-solid fa-user-tie pe-4"></i>
+                            <a class="text-decoration-none" href="{{ route('departments.index') }}">Departments</a>
+                        </li>
+                    @endcanany
+                    @canany(['closure_date-create', 'closure_date-list', 'closure_date-edit', 'closure_date-delete'])
+                        <li class="hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                            style="height: 95px">
+                            <i class="fa-solid fa-user-tie pe-4"></i>
+                            <a class="text-decoration-none" href="{{ route('closure_dates.index') }}">Manage Closure_Dates</a>
+                        </li>
+                    @endcanany
+                    @role('Admin')
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                            style="height: 95px">
+                            <i class="fa-solid fa-calendar-days pe-4"></i>
+                            <a class="text-decoration-none" href="roles.index">Roles Management</a>
+                        </li>
+                    @endrole
+                    @canany(['user-list', 'user-create', 'user-edit', 'user-delete'])
+                        <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                            style="height: 95px">
+                            <i class="fa-solid fa-user-tie pe-4"></i>
+                            <a class="text-decoration-none" href="{{ route('users.index') }}">Account Management</a>
+                        </li>
+                    @endcanany
 
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                    <div class="d-flex flex-column mt-auto w-100">
+                        <div class="hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                            style="height: 95px;">
+                            <i class="fa-solid fa-gear pe-4"></i>
+                            <a class="text-decoration-none" href="#">Setting</a>
+                        </div>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                            class="hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                            style="height: 95px;">
+                            @csrf
+                            <i class="fa-solid fa-arrow-right-from-bracket pe-4"></i>
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                {{ __('Logout') }}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </form>
+                    </div>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+                @endguest
+            </div>
+        </div>
+        <div class="navi-back" style="width: 17%;">
+
+        </div>
+
+        <div class="full-content" style="width: 83%">
+
+            <div class="d-flex justify-content-between align-items-center" style="height: 90px">
+
+                <div class="d-flex justify-content-center align-items-center fs-5 w-6">
+                    <i class="fa-solid fa-bars menu-bars"></i>
+                </div>
+
+                <div class="d-flex justify-content-start align-items-center px-1 fs-5 gap-4 w-44">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRalke-Kf6_TB5yrnMuUYP158MBQd4bezQIxw&s"
+                        style="width: 80px; height: 80px;">
+                    <h1>Admin Dashboard</h1>
+                </div>
+
+                <div class="search d-flex justify-content-evenly align-items-center px-5 w-50">
+                    <div class="position-relative d-flex align-items-center fs-5 w-25">
+                        <i class="search-logo fa-solid fa-search position-absolute "></i>
+                        <input class="ps-5 py-1 br-10" type="text" class="form-control"
+                            placeholder="Search Here" />
+                    </div>
+
+                    <div class="d-flex justify-content-end align-items-center fs-2 gap-6 w-75 pe-3">
+                        <i class="fa-solid fa-bell"></i>
+                        <img src="https://media.istockphoto.com/id/639454418/photo/close-up-of-beagle-against-gray-background.jpg?s=612x612&w=0&k=20&c=dlac4lCaSPRkVwD2wLB7J1y1DCb9rKcjY6eBSxYyOEM="
+                            class="border rounded-circle" style="width: 50px; height: 50px;">
+                    </div>
                 </div>
             </div>
-        </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+            <div style="background-color: #e9f1fa; height: 100vh">
+                @yield('content')
+            </div>
+
+        </div>
+
     </div>
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="{{ asset('components/script.js') }}"></script>
+
 </body>
+
 </html>
