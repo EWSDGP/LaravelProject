@@ -6,8 +6,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
-
-
 class PermissionSeeder extends Seeder
 {
     /**
@@ -15,7 +13,7 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $permission = [
+        $permissions = [
             "user-list",
             "user-create",
             "user-edit",
@@ -28,10 +26,18 @@ class PermissionSeeder extends Seeder
             "category-create",
             "category-edit",
             "category-delete",
+            "department-list",
+            "department-create",
+            "department-edit",
+            "department-delete",
+            "closure_date-list",
+            "closure_date-create",
+            "closure_date-edit",
+            "closure_date-delete",
         ];
-        foreach($permission as $key =>$permission){
-                Permission::create(['name'=>$permission]);
-        }
 
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission,'guard_name' => 'web']);
+        }
     }
 }

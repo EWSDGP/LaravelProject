@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class ClosureDate extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'Idea_ClosureDate', 
+        'Comment_ClosureDate', 
+        'Academic_Year'
     ];
 }
