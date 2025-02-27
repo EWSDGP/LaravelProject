@@ -37,11 +37,11 @@
                 </div>
                 <div class="mt-4">
                     <label class="mb-1">Role:</label>
-                    <select class="form-select" name="department_id">
+                    <select class="form-select" name="roles[]">
                         <option value="" disabled selected>-- Select Role --</option>
-                        @foreach ($roles as $role)
-                            <option value="{{ $role->name }}">{{ $role->name }}</option>
-                        @endforeach
+                        @foreach($roles as $role)
+                                <option value="{{$role->name}}"{{$user->hasRole($role->name)?"selected":""}}>{{$role->name}}</option>
+                                @endforeach
                     </select>
                 </div>
                 <div class="mt-4">
