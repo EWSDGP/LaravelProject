@@ -34,6 +34,10 @@ class PermissionSeeder extends Seeder
             "closure_date-create",
             "closure_date-edit",
             "closure_date-delete",
+            "idea-list",
+            "idea-submit",
+            "idea-edit",
+            "idea-delete",
         ];
 
         foreach ($permissions as $permission) {

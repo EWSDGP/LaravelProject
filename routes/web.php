@@ -7,6 +7,8 @@ use App\Http\Controllers\ClosureDateController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\IdeaSubmissionController;
+
 
 
 Route::get('/', function () {
@@ -29,3 +31,4 @@ Route::resource('roles', RoleController::class);
 Route::resource("users",UserController::class);
 Route::resource('departments', DepartmentController::class);
 Route::resource('closure_dates', ClosureDateController::class);
+Route::resource('ideas', IdeaSubmissionController::class);
