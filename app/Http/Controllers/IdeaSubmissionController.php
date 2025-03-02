@@ -66,7 +66,19 @@ class IdeaSubmissionController extends Controller
                 $idea->documents()->create(['file_path' => $path]);
             }
         }
+        $name =  $request->input('user_name'); 
+        $department_id =  $request->input(' user_department'); 
+       
+        // thu department yae coordiantor 
+    // chatgpt sql 
     
+    // staff yae name   user->role->qa coordinator->email 
+        // idea->user_id where  = users->id
+        //users->name  
+        //staff position nat Oakkar name email  email 
+        //
+        //nat qa coordinator nat poh ya mal 
+     // email notification -> qa coordinator role qa coordinator nat name ta khu khu 
         
         return redirect()->route('ideas.index')->with('success', 'Idea submitted successfully!');
     }
