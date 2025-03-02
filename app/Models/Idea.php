@@ -36,5 +36,10 @@ public function documents()
 {
     return $this->hasMany(Document::class, 'idea_id', 'idea_id'); 
 }
+public function votes()
+{
+    return $this->hasMany(Vote::class, 'idea_id', 'idea_id');
+}
+
 
 }
