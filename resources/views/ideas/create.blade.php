@@ -30,6 +30,9 @@
                             <input type="text" name="title" id="title" class="form-control form-control-lg" 
                                 placeholder="What's your idea?" required>
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                           
+                            <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
+                            <input type="hidden" name="user_department" value="{{ Auth::user()->department_id }}">
                         </div>
 
                         
