@@ -8,6 +8,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\IdeaSubmissionController;
+use App\Http\Controllers\VoteController;
+
 
 
 
@@ -32,3 +34,5 @@ Route::resource("users",UserController::class);
 Route::resource('departments', DepartmentController::class);
 Route::resource('closure_dates', ClosureDateController::class);
 Route::resource('ideas', IdeaSubmissionController::class);
+Route::post('/ideas/{idea}/vote', [VoteController::class, 'vote'])->name('ideas.vote');
+Route::get('/ideas/{idea_id}/check-vote', [IdeaSubmissionController::class, 'checkVote']);

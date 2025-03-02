@@ -7,6 +7,9 @@ use App\Models\Document;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\ClosureDate;
+use App\Models\Vote;
+
+
 class IdeaSubmissionController extends Controller
 {
     public function __construct()
@@ -67,7 +70,7 @@ class IdeaSubmissionController extends Controller
             }
         }
         $name =  $request->input('user_name'); 
-        $department_id =  $request->input(' user_department'); 
+        $department_id =  $request->input('department_name'); 
        
         // thu department yae coordiantor 
     // chatgpt sql 
@@ -138,4 +141,17 @@ class IdeaSubmissionController extends Controller
        
         return redirect()->route('ideas.index')->with('success', 'Idea deleted successfully!');
     }
+    public function checkVote(Request $request,$idea_id)
+{
+    $user_id = $request->user()->id;
+
+   
+    $vote = Vote::where('idea_id', $idea_id)->where('user_id', $user_id)->first();
+
+    
+    return response()->json([
+        'userHasVoted' => $vote ? true : false,
+        'voteType' => $vote ? $vote->vote_type : null
+    ]);
+}
 }
