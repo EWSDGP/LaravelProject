@@ -38,6 +38,10 @@ class PermissionSeeder extends Seeder
             "idea-submit",
             "idea-edit",
             "idea-delete",
+            "comment-list",
+            "comment-submit",
+            "comment-edit",
+            "comment-delete",
         ];
 
         foreach ($permissions as $permission) {

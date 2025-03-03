@@ -62,16 +62,45 @@
                                         <i class="bi bi-hand-thumbs-down-fill"></i> Dislike 
                                         <span class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
                                     </button>
-                                
+                                    </div>
 
-                                <button class="btn btn-outline-secondary btn-sm me-2">
-                                    <i class="bi bi-chat-left-text"></i> Comment
-                                </button>
-                                </div>
+                              
+                                
                                 @can('idea-list')
                                     <a href="{{ route('ideas.show', $idea->idea_id) }}" class="btn btn-info btn-sm">View</a>
                                 @endcan
                             </div>
+                            <div class="mt-3">
+                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
+                                <i class="bi bi-chat-left-text"></i> Comments ({{ $idea->comments->count() }})
+                            </button>
+                            @can('comment-list')
+                            <div class="collapse mt-2" id="comments-{{ $idea->idea_id }}">
+                                @foreach($idea->comments as $comment)
+                                    <div class="border rounded p-2 mb-2 bg-light">
+                                        <strong>{{ $comment->is_anonymous ? 'Anonymous' : $comment->user->name }}</strong>
+                                        <p class="mb-1">{{ $comment->comment_text }}</p>
+                                        <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                    </div>
+                                @endforeach
+                                @can('comment-submit')
+                                @auth
+                                    <form action="{{ route('comments.store', $idea->idea_id) }}" method="POST" class="mt-2">
+                                        @csrf
+                                        <textarea class="form-control mb-2" name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <input type="checkbox" name="is_anonymous" id="anonymous-{{ $idea->idea_id }}">
+                                                <label for="anonymous-{{ $idea->idea_id }}">Post as Anonymous</label>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-sm">Comment</button>
+                                        </div>
+                                    </form>
+                                @endauth
+                                @endcan
+                            </div>
+                            @endcan
+                        </div>
                         </div>
                     </div>
                 @endforeach

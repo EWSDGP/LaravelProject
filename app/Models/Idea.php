@@ -40,6 +40,10 @@ public function votes()
 {
     return $this->hasMany(Vote::class, 'idea_id', 'idea_id');
 }
+public function comments()
+{
+    return $this->hasMany(Comment::class, 'idea_id');
+}
 
 
 }
