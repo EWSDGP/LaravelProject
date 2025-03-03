@@ -12,14 +12,14 @@ return new class extends Migration {
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->id('vote_id');
-            $table->foreignId('idea_id')->constrained('ideas')->onDelete('cascade'); 
+            $table->foreignId('idea_id')->constrained('ideas', 'idea_id')->onDelete('cascade'); 
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); 
             $table->enum('vote_type', ['like', 'dislike']); 
             $table->timestamps();
-
-           
+        
             $table->unique(['idea_id', 'user_id']);
         });
+        
     }
 
     /**
