@@ -1,14 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-4">
-        <h1>Create Closure Date</h1>
-
-       
-        <form action="{{ route('closure_dates.store') }}" method="POST">
-            @csrf
-
-            <div class="mb-3">
+   
+    <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-success text-white">{{ __('Create Closure Date') }}</div>
+                <div class="card-body">   
+                <form action="{{ route('closure_dates.store') }}" method="POST">
+        @csrf
+        <div class="mb-3">
                 <label for="Idea_ClosureDate" class="form-label">Idea Closure Date:</label>
                 <input type="date" name="Idea_ClosureDate" class="form-control" required>
             </div>
@@ -23,7 +25,11 @@
                 <input type="text" name="Academic_Year" class="form-control" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Create</button>
-        </form>
-    </div>
+        <div class="mt-2 d-flex justify-content-between">
+           <a href="{{route('closure_dates.index')}}" class="btn btn-outline-dark">Back</a>
+           <button type="submit" class="btn btn-success">Create</button>
+        </div>
+        
+    </form>
+</div>
 @endsection

@@ -4,16 +4,23 @@
 
 @section('content')
 <div class="container">
-    <h1>Edit Category</h1>
-    <a href="{{route('departments.index')}}" class="btn btn-info mb-3">Back</a>
-    <form action="{{ route('departments.update', $department->id) }}" method="POST">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-warning text-black">{{ __('Edit Category') }}</div>
+                <div class="card-body">
+                <form action="{{ route('departments.store') }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
-            <label for="name">Department Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ $department->name }}" required>
+           <label for="name">Deparment Name</label>
+           <input type="text" class="form-control" id="name" name="name" value="{{ $department->name }}" required>
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Update</button>
+        <div class="mt-2 d-flex justify-content-between">
+           <a href="{{route('departments.index')}}" class="btn btn-outline-warning text-dark">Back</a>
+           <button type="submit" class="btn btn-warning">Update</button>
+        </div>
+        
     </form>
 </div>
 @endsection

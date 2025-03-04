@@ -4,15 +4,24 @@
 
 @section('content')
 <div class="container">
-    <h1>Create New Department</h1>
-    <a href="{{route('departments.index')}}" class="btn btn-info mb-3">Back</a>
-    <form action="{{ route('departments.store') }}" method="POST">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-success text-white">{{ __('Create New Department') }}</div>
+
+                <div class="card-body">
+                    
+                <form action="{{ route('departments.store') }}" method="POST">
         @csrf
-        <div class="form-group">
-            <label for="name">Deparment Name</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+        <div class="mt-2 d-flex align-items-center">
+           <label for="name">Deparment Name</label>
+           <input type="text" class="form-control" id="name" name="name" required>
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Save</button>
+        <div class="mt-2 d-flex justify-content-between">
+           <a href="{{route('departments.index')}}" class="btn btn-outline-dark">Back</a>
+           <button type="submit" class="btn btn-success">Save</button>
+        </div>
+        
     </form>
 </div>
 @endsection

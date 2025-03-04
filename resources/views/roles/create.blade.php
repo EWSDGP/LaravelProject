@@ -5,10 +5,8 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header bg-success text-white">{{ __('Create Role') }}</div>
-
+                <div class="card-header bg-success text-black">{{ __('Create Role') }}</div>
                 <div class="card-body">
-                    
                     <form action="{{route('roles.store')}}" method="POST">
                         @csrf                 
                         <div class="mt-2 d-flex align-items-center">
