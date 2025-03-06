@@ -33,7 +33,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('categories', CategoryController::class);
 Route::resource('roles', RoleController::class);
 Route::resource("users",UserController::class);
+
 Route::resource('departments', DepartmentController::class);
+
 Route::resource('closure_dates', ClosureDateController::class);
 Route::resource('ideas', IdeaSubmissionController::class);
 Route::post('/ideas/{idea}/vote', [VoteController::class, 'vote'])->name('ideas.vote');
