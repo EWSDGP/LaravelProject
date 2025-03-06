@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClosureDate;
+
 use Illuminate\Http\Request;
 
 class ClosureDateController extends Controller
@@ -60,10 +61,13 @@ class ClosureDateController extends Controller
         return redirect()->route('closure_dates.index')->with('success', 'Closure Date updated successfully!');
     }
 
-    // Delete a closure date
-    public function destroy(ClosureDate $closureDate)
-    {
+    
+    public function destroy($ClosureDate_id)
+    {    
+        $closureDate = ClosureDate::findOrFail($ClosureDate_id); 
         $closureDate->delete();
         return redirect()->route('closure_dates.index')->with('success', 'Closure Date deleted successfully!');
     }
+    
+    
 }
