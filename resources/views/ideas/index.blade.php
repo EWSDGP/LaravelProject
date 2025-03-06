@@ -2,9 +2,23 @@
 
 @section('content')
     <div class="container mt-4">
+       
+
+        <div class="d-flex justify-content-end mb-3">
         @can('idea-submit')
-            <a href="{{ route('ideas.create') }}" class="btn btn-success">Submit Ideas</a>
+            <a href="{{ route('ideas.create') }}" class="btn btn-outline-success btn-sm me-2">Submit Ideas</a>
         @endcan
+        @can('download-ideas')
+    <a href="{{ route('ideas.export.csv') }}" class="btn btn-outline-primary btn-sm me-2">
+        
+        <i class="bi bi-file-earmark-spreadsheet"></i> Download CSV
+    </a>
+   
+    <a href="{{ route('ideas.export.zip') }}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-file-earmark-zip"></i> Download Documents (ZIP)
+    </a>
+    @endcan
+</div>
 
         <h2 class="mb-4">Submitted Ideas</h2>
         <div class="row justify-content-center">
@@ -66,9 +80,9 @@
 
                               
                                 
-                                @can('idea-list')
+                                <!-- @can('idea-list')
                                     <a href="{{ route('ideas.show', $idea->idea_id) }}" class="btn btn-info btn-sm">View</a>
-                                @endcan
+                                @endcan -->
                             </div>
                             <div class="mt-3">
                             <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
