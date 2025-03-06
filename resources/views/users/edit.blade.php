@@ -10,7 +10,7 @@
     </div>
     <div class="bg-white">
         <div>
-            <form class="px-5 py-1" action="{{ route('users.update',$user->id)}}" method="POST">
+            <form class="px-5 py-1" action="{{ route('users.update',$user->id)}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method ('PUT')
 
@@ -32,6 +32,13 @@
                     <label class="mb-1">Password:</label>
                     <input type="password" name="password" class="form-control">
                     @error('password')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mt-4">
+                    <label class="mb-1">Photo:</label>
+                    <input type="file" name="photo" class="form-control">
+                    @error('photo')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
