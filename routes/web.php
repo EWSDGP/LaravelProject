@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\IdeaExportController;
 use App\Http\Controllers\IdeaSubmissionController;
 use App\Http\Controllers\VoteController;
 
@@ -38,3 +39,5 @@ Route::resource('ideas', IdeaSubmissionController::class);
 Route::post('/ideas/{idea}/vote', [VoteController::class, 'vote'])->name('ideas.vote');
 Route::get('/ideas/{idea_id}/check-vote', [IdeaSubmissionController::class, 'checkVote']);
 Route::post('/comments/{idea}', [CommentController::class, 'store'])->name('comments.store');
+Route::get('/ideas/export/csv', [IdeaExportController::class, 'exportCSV'])->name('ideas.export.csv');
+Route::get('/ideas/export/zip', [IdeaExportController::class, 'exportZIP'])->name('ideas.export.zip');
