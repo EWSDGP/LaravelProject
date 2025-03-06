@@ -62,7 +62,7 @@
                             <a href="{{ route('closure_dates.edit', $closureDate->ClosureDate_id) }}" class="btn btn-warning">Edit</a>
                             @endcan
                            
-                            <form action="{{ route('closure_dates.destroy', $closureDate->ClosureDate_id) }}" method="POST" style="display:inline;"  onsubmit="return confirm('Are you sure you want to delete this category?');">
+                            <form action="{{ route('closure_dates.destroy', $closureDate->ClosureDate_id) }}" method="POST" style="display:inline;"  onsubmit="return confirm('Are you sure you want to delete this Closure Date?');">
                                 @csrf
                                 @method('DELETE')
                                 @can ('closure_date-delete')

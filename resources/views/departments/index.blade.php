@@ -42,68 +42,65 @@
 @can ('department-create')         
     <a href="{{ route('departments.create') }}" class="btn btn-success">Create New Department</a>
 @endcan  
-    <table class="table table-bordered mt-4">
-        <thead>
-            <tr>
-                <th>Department Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="DepartmentTable">
-            @foreach ($departments as $department)
-            <tr>
-                <td>{{ $department->name }}</td>
-                <td>
+<table class="table table-bordered mt-4">
+    <thead>
+        <tr>
+            <th>Department Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="DepartmentTable">
+        @foreach ($departments as $department)
+        <tr>
+            <td>{{ $department->name }}</td>
+            <td>
                 @can ('department-edit')
                     <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-warning">Edit</a>
-              @endcan
-              @can ('department-delete')
-                    <form action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this category?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn btn-danger delete-btn" 
-                                data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                data-url="{{ route('departments.destroy', $department->id) }}">
-                                Delete                 
-                        </button>
-@endcan
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                @endcan
+                @can ('department-delete')
+                    <button type="button" class="btn btn-danger delete-btn"
+                            data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            data-url="{{ route('departments.destroy', $department->id) }}">
+                        Delete                 
+                    </button>
+                @endcan
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.getElementById("searchInput");
-    const resetButton = document.getElementById("resetSearch");
-    const tableRows = document.querySelectorAll("#DepartmentTable tr");
-    const deleteButtons = document.querySelectorAll(".delete-btn");
-    const deleteForm = document.getElementById("deleteForm");
-    
+   document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("searchInput");
+        const resetButton = document.getElementById("resetSearch");
+        const tableRows = document.querySelectorAll("#DepartmentTable tr");
+        const deleteButtons = document.querySelectorAll(".delete-btn");
+        const deleteForm = document.getElementById("deleteForm");
 
-    searchInput.addEventListener("keyup", function () {
-        let query = searchInput.value.toLowerCase();
+        // Search Filter
+        searchInput.addEventListener("keyup", function () {
+            let query = searchInput.value.toLowerCase();
 
-        tableRows.forEach(row => {
-            const departmentName = row.querySelector("td").textContent.toLowerCase();
-            row.style.display = departmentName.includes(query) ? "" : "none";
+            tableRows.forEach(row => {
+                const departmentName = row.querySelector("td").textContent.toLowerCase();
+                row.style.display = departmentName.includes(query) ? "" : "none";
+            });
         });
-    });
 
-    resetButton.addEventListener("click", function () {
-        searchInput.value = "";
-        tableRows.forEach(row => row.style.display = "");
-    });
-});
+        resetButton.addEventListener("click", function () {
+            searchInput.value = "";
+            tableRows.forEach(row => row.style.display = "");
+        });
 
-deleteButtons.forEach(button => {
-        button.addEventListener("click", function() {
-            let deleteUrl = this.getAttribute("data-url");
-            deleteForm.setAttribute("action", deleteUrl);
+        // Set delete form action dynamically
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                let deleteUrl = this.getAttribute("data-url");
+                deleteForm.setAttribute("action", deleteUrl);
+            });
         });
     });
 
