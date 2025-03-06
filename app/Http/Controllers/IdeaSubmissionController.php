@@ -8,6 +8,11 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\ClosureDate;
 use App\Models\Vote;
+use App\Mail\IdeaSubmitted;
+use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+
 
 
 class IdeaSubmissionController extends Controller
@@ -38,53 +43,50 @@ class IdeaSubmissionController extends Controller
 
 
     public function store(Request $request)
-    {
-        
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:categories,category_id',
-            'documents.*' => 'nullable|mimes:pdf,docx,txt,jpg,png|max:2048', 
-            'user_id' => 'required|exists:users,id' 
-        ]);
-    
-        
-        $closureDate = ClosureDate::latest()->first(); 
-    
-   
-        $idea = new Idea();
-        $idea->title = $request->input('title');
-        $idea->description = $request->input('description');
-        $idea->category_id = $request->input('category_id');
-        $idea->is_anonymous = $request->input('is_anonymous', false);
-        $idea->user_id = $request->input('user_id'); 
-        $idea->closure_date_id = $closureDate->ClosureDate_id; 
-        $idea->save();
-    
-        
-        if ($request->hasFile('documents')) {
-            foreach ($request->file('documents') as $document) {
-                $path = $document->store('documents'); 
-              
-                $idea->documents()->create(['file_path' => $path]);
-            }
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'category_id' => 'required|exists:categories,category_id',
+        'documents.*' => 'nullable|mimes:pdf,docx,txt,jpg,png|max:2048',
+        'user_id' => 'required|exists:users,id',
+    ]);
+
+    $closureDate = ClosureDate::latest()->first();
+
+    $idea = new Idea();
+    $idea->title = $request->input('title');
+    $idea->description = $request->input('description');
+    $idea->category_id = $request->input('category_id');
+    $idea->is_anonymous = $request->input('is_anonymous', false);
+    $idea->user_id = $request->input('user_id');
+    $idea->closure_date_id = $closureDate->ClosureDate_id;
+    $idea->save();
+
+    if ($request->hasFile('documents')) {
+        foreach ($request->file('documents') as $document) {
+            $path = $document->store('documents');
+            $idea->documents()->create(['file_path' => $path]);
         }
-        $name =  $request->input('user_name'); 
-        $department_id =  $request->input('department_name'); 
-       
-        // thu department yae coordiantor 
-    // chatgpt sql 
-    
-    // staff yae name   user->role->qa coordinator->email 
-        // idea->user_id where  = users->id
-        //users->name  
-        //staff position nat Oakkar name email  email 
-        //
-        //nat qa coordinator nat poh ya mal 
-     // email notification -> qa coordinator role qa coordinator nat name ta khu khu 
-        
-        return redirect()->route('ideas.index')->with('success', 'Idea submitted successfully!');
     }
+
+    // Find the Manager in the same department
+    $managerRole = Role::where('name', 'QA_Coordinator')->first();
+    $user = User::find($request->user_id);
+
+    if ($managerRole && $user) {
+        $manager = User::whereHas('roles', function ($query) use ($managerRole) {
+            $query->where('role_id', $managerRole->id);
+        })->where('department_id', $user->department_id)->first();
+
+        if ($manager) {
+            Mail::to($manager->email)->send(new IdeaSubmitted($idea));
+        }
+    }
+
+    return redirect()->route('ideas.index')->with('success', 'Idea submitted successfully!');
+}
+
     
     
     
