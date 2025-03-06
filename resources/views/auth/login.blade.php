@@ -152,8 +152,9 @@ body {
         </div>
         <div class="login-form">
             <form method="POST" action="{{ route('login') }}" onsubmit="return validateForm()">
+                @csrf
                 <div class="input">
-                    <label for="username">Email Address</label>
+                    <label for="email">Email Address</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
                         name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 

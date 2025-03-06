@@ -34,6 +34,13 @@
                     @enderror
                 </div>
                 <div class="mt-4">
+                    <label class="mb-1">Photo:</label>
+                    <input type="file" name="photo" class="form-control">
+                    @error('photo')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mt-4">
                      <label class="mb-1">Role:</label>
                      <select class="form-select" name="roles[]">
                      <option value="" disabled selected>-- Select Role --</option>

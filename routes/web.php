@@ -19,8 +19,8 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('/login',function(){
-    return view('Components/login');
+Route::get('/login', function () {
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -32,7 +32,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('categories', CategoryController::class);
 Route::resource('roles', RoleController::class);
-Route::resource("users",UserController::class);
+Route::resource("users", UserController::class);
 Route::resource('departments', DepartmentController::class);
 Route::resource('closure_dates', ClosureDateController::class);
 Route::resource('ideas', IdeaSubmissionController::class);
