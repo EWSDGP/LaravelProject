@@ -56,19 +56,23 @@
             <td>
                 @can ('department-edit')
                     <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-warning">Edit</a>
-                @endcan
-                @can ('department-delete')
-                    <button type="button" class="btn btn-danger delete-btn"
-                            data-bs-toggle="modal" data-bs-target="#deleteModal"
-                            data-url="{{ route('departments.destroy', $department->id) }}">
-                        Delete                 
-                    </button>
-                @endcan
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+              @endcan
+              @can ('department-delete')
+                    <form action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this category?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-danger delete-btn" 
+                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                data-url="{{ route('departments.destroy', $department->id) }}">
+                                Delete                 
+                        </button>
+@endcan
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
 </div>
 

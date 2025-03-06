@@ -7,9 +7,9 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header bg-warning text-black">{{ __('Edit Category') }}</div>
+                <div class="card-header bg-warning text-black">{{ __('Edit Departments') }}</div>
                 <div class="card-body">
-                <form action="{{ route('departments.store') }}" method="POST">
+                <form action="{{ route('departments.update',$department->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">

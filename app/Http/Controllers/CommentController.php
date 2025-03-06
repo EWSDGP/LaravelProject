@@ -29,7 +29,7 @@ class CommentController extends Controller
             'comment_text' => $request->comment_text,
             'is_anonymous' => $request->has('is_anonymous'),
         ]);
-
+        // email notification //
         // return response()->json([
         //     'status' => 'success',
         //     'comment' => [

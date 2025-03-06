@@ -71,6 +71,7 @@
                                                     data-url="{{ route('closure_dates.destroy', $closureDate->ClosureDate_id) }}">
                                                 Delete
                                             </button>
+                                            
                                 @endcan
                             </form>
                         </td>
