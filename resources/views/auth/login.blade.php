@@ -189,9 +189,6 @@ body {
                     
                 </div>
                 <div class="input">
-                    <button type="back">Back</button>
-                </div>
-                <div class="input">
                     <p id="error-message" class="error-message"></p>
                 </div>
             </form>
