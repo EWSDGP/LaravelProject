@@ -84,7 +84,7 @@
         const deleteButtons = document.querySelectorAll(".delete-btn");
         const deleteForm = document.getElementById("deleteForm");
 
-        // Search Filter
+        
         searchInput.addEventListener("keyup", function () {
             let query = searchInput.value.toLowerCase();
 
@@ -99,7 +99,6 @@
             tableRows.forEach(row => row.style.display = "");
         });
 
-        // Set delete form action dynamically
         deleteButtons.forEach(button => {
             button.addEventListener("click", function() {
                 let deleteUrl = this.getAttribute("data-url");
