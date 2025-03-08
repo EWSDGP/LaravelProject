@@ -16,21 +16,23 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="{{ asset('components/style.css') }}">
-   
 
 </head>
 
 <body>
 
-    <div class="d-flex  w-100" style="height: 100vh" id="app">
-        <div class="navigation bg-nav text-white position-fixed" style="width: 17% ; height: 100vh">
+    <div class="d-flex w-100" style="height: 100vh" id="app">
+
+        @include('layouts.mobileapp')
+
+        <div class="navigation bg-nav text-white position-fixed" style="width: 17%; height: 100vh">
             <div class="bg-nav-title d-flex justify-content-center align-items-center" style="height: 90px">
-                <h2 class="m-0">
+                <h3 class="m-0">
                     Greenwich
                 </h2>
             </div>
             <!-- Right Side Of Navbar -->
-            <div class="navbar d-flex flex-column justify-content-start align-items-center fs-5 nav-height ">
+            <div class="navbar d-flex flex-column justify-content-start align-items-center fs-5 nav-height">
                 <!-- Authentication Links -->
                 @guest
 
@@ -77,11 +79,11 @@
                         </li>
                     @endcanany
                     @role('Admin')
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-2"
-                            style="height: 60px">
-                            <i class="fa-solid fa-calendar-days pe-2"></i>
-                            <a class="text-decoration-none" href="{{ route('roles.index') }}">Roles Management</a>
-                        </li> 
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                            style="height: 95px">
+                            <i class="fa-solid fa-calendar-days pe-4"></i>
+                            <a class="text-decoration-none" href="roles.index">Roles Management</a>
+                        </li>
                     @endrole
                     @canany(['user-list', 'user-create', 'user-edit', 'user-delete'])
                         <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-2"
@@ -116,32 +118,28 @@
                 @endguest
             </div>
         </div>
-        <div class="navi-back" style="width: 17%;">
+        <div class="navi-back" style="width: 17%; height: 100vh">
 
         </div>
 
-        <div class="full-content" style="width: 83%">
+        <div class="full-content w-83">
 
-            <div class="d-flex justify-content-between align-items-center" style="height: 90px">
+            <div class="d-flex justify-content-between align-items-center w-100" style="height: 90px">
 
-                <div class="d-flex justify-content-center align-items-center fs-5 w-6">
-                    <i class="fa-solid fa-bars menu-bars"></i>
-                </div>
+                <div class="d-flex justify-content-start align-items-center px-4 w-50">
+                    <i class="fa-solid fa-bars menu-bars fs-5"></i>
 
-                <div class="d-flex justify-content-start align-items-center px-1 fs-5 gap-4 w-44">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRalke-Kf6_TB5yrnMuUYP158MBQd4bezQIxw&s"
-                        style="width: 80px; height: 80px;">
-                    <h1>Admin Dashboard</h1>
-                </div>
-
-                <div class="search d-flex justify-content-evenly align-items-center px-5 w-50">
-                    <div class="position-relative d-flex align-items-center fs-5 w-25">
-                        <i class="search-logo fa-solid fa-search position-absolute "></i>
-                        <input class="ps-5 py-1 br-10" type="text" class="form-control"
-                            placeholder="Search Here" />
+                    <div class="d-flex justify-content-start align-items-center gap-4 m-auto">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRalke-Kf6_TB5yrnMuUYP158MBQd4bezQIxw&s"
+                            style="width: 80px; height: 80px;">
+                        <h3>Admin Dashboard</h3>
                     </div>
 
-                    <div class="d-flex justify-content-end align-items-center fs-2 gap-6 w-75 pe-3">
+                </div>
+
+                <div class="search d-flex justify-content-end align-items-center w-50 pe-4">
+
+                    <div class="d-flex justify-content-end align-items-center fs-2 gap-5">
                         <i class="fa-solid fa-bell"></i>
                         <img src="https://media.istockphoto.com/id/639454418/photo/close-up-of-beagle-against-gray-background.jpg?s=612x612&w=0&k=20&c=dlac4lCaSPRkVwD2wLB7J1y1DCb9rKcjY6eBSxYyOEM="
                             class="border rounded-circle" style="width: 50px; height: 50px;">

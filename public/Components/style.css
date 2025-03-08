@@ -45,14 +45,8 @@
 .w-18 {
     width: 18%;
 }
-.w-44 {
-    width: 44%;
-}
-.w-60 {
-    width: 60%;
-}
-.w-34 {
-    width: 34%;
+.w-83 {
+    width: 83%;
 }
 
 .nav-height {
@@ -103,15 +97,28 @@ table td {
 table .btn {
     padding: 0.5rem;
 }
+.mobile-navigation {
+    display: none;
+}
 
 @media (max-width: 768px) {
     .navigation {
         display: none;
+        width: 0%;
+    }
+    .navi-back {
+        display: none;
+        width: 0%;
     }
 
     .full-content {
         width: 100%;
-        background-color: #f59a23;
+    }
+
+    .full-content h3 {
+        width: 300px;
+        display: inline;
+        font-size: 1.5rem;
     }
 
     .search {
