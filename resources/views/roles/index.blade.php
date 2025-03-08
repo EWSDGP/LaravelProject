@@ -59,7 +59,7 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    <form action="{{route('roles.destroy',$role->id)}}" method="POST">
+                                    <form action="{{route('roles.destroy',$role->id)}}" method="POST" class="d-flex flex-wrap gap-2 justify-content-center">
                                         @csrf
                                         @method ('DELETE')
                                         @can ('role-list')

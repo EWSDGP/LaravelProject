@@ -88,7 +88,7 @@
                     @canany(['user-list', 'user-create', 'user-edit', 'user-delete'])
                         <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
                             style="height: 95px">
-                            <i class="fa-solid fa-user-tie pe-2"></i>
+                            <i class="fa-solid fa-user-tie pe-4"></i>
                             <a class="text-decoration-none" href="{{ route('users.index') }}">Account Management</a>
                         </li>
                     @endcanany
