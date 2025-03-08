@@ -126,6 +126,7 @@
         </div>
 
         <script>
+
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".vote-btn").forEach(button => {
         let ideaId = button.getAttribute("data-idea");
