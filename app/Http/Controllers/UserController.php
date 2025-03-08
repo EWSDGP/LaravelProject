@@ -6,11 +6,7 @@ use App\Models\Department;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-
-
-
-
-
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 use Illuminate\Http\Request;
 
@@ -48,13 +44,22 @@ class UserController extends Controller
             "name"=>"required",
             "email"=>"required|email",
             "password"=>"required",
-            "department_id" => "nullable|exists:departments,id"
+            "department_id" => "nullable|exists:departments,id",
+            "profile_photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"
         ]);
+
+        $profilePhotoUrl = null;
+        if ($request->hasFile('profile_photo')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('profile_photo')->getRealPath())->getSecurePath();
+            $profilePhotoUrl = $uploadedFileUrl;
+        }
+
        $user= User::create([
             "name"=>$request->name,
             "email"=>$request->email,
             "password"=>Hash::make($request->password),
-            "department_id" => $request->department_id ?? null
+            "department_id" => $request->department_id ?? null,
+            "profile_photo" => $profilePhotoUrl
         ]);
         $user->syncRoles($request->roles);
         return redirect()->route("users.index")->with("success","Users created");
@@ -83,10 +88,17 @@ class UserController extends Controller
             "name" => "required",
             "email" => "required|email",
             "password" => "required",
-            "department_id" => "nullable|exists:departments,id"
+            "department_id" => "nullable|exists:departments,id",
+            "profile_photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"
         ]);
-    
+
         $user = User::find($id);
+
+        if ($request->hasFile('profile_photo')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('profile_photo')->getRealPath())->getSecurePath();
+            $user->profile_photo = $uploadedFileUrl;
+        }
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
