@@ -91,12 +91,9 @@ table tr {
 table th,
 table td {
     border: none;
-    padding: 1rem;
+    padding: 1rem 0rem;
 }
 
-table .btn {
-    padding: 0.5rem;
-}
 .mobile-navigation {
     display: none;
 }
@@ -123,6 +120,16 @@ table .btn {
 
     .search {
         display: none;
+    }
+    table th,
+    table td {
+        border: none;
+        font-size: 15px;
+        padding: 0.5rem 0rem;
+    }
+    .edit-show {
+        font-size: 15px;
+        padding: 0;
     }
 }
 

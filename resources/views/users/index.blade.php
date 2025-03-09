@@ -91,8 +91,8 @@
             }
 
             userDetailsDiv.innerHTML = `
-                <div class="d-flex align-items-start p-5 bg-white border-bottom" style="height: 220px;">
-                    <img src="https://cdn1.hammers.news/uploads/25/2023/08/GettyImages-1342442688-1024x693.jpg" class="h-100 rounded-circle me-4" style="aspect-ratio: 1/1;">
+                <div class="edit-show d-flex align-items-start p-5 bg-white border-bottom gap-5" style="height: 220px;">
+                        <img src="https://cdn1.hammers.news/uploads/25/2023/08/GettyImages-1342442688-1024x693.jpg" class="h-100 rounded-circle" style="aspect-ratio: 1/1;">
                     <div class="position-relative d-flex justify-content-start align-items-center h-100">
                         <div class="d-flex flex-column justify-content-between align-items-start h-100 px-5">
                             <p class="m-0 fw-bold">Name :</p>
@@ -105,7 +105,7 @@
                             <p class="m-0">${user.name}</p>
                             <p class="m-0">${user.email}</p>
                             <p class="m-0">${user.phone_number || 'N/A'}</p>
-                            <p class="m-0">${user.department ? user.department.name : 'No Department Assigned'}</p>
+                            <p class="m-0">${user.department ? user.department.name : 'N/A'}</p>
                             <p class="m-0">${roles || 'N/A' }</p>
                         </div>
                     </div>
