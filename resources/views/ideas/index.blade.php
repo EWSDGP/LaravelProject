@@ -12,12 +12,9 @@
                 </a>
             @endcan
             @can('download-ideas')
-                <a href="{{ route('ideas.export.csv') }}" class="btn btn-outline-primary btn-sm me-2">
-                    <i class="bi bi-file-earmark-spreadsheet"></i> Download CSV
-                </a>
-                <a href="{{ route('ideas.export.zip') }}" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-file-earmark-zip"></i> Download Documents (ZIP)
-                </a>
+            <a href="{{ route('ideas.export.combined') }}" class="btn btn-outline-primary btn-sm">
+    <i class="bi bi-file-earmark-zip"></i> Download CSV & Documents (ZIP)
+</a>
             @endcan
         </div>
 

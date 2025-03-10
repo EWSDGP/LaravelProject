@@ -3,73 +3,74 @@
 namespace App\Http\Controllers;
 
 use App\Models\Idea;
+use App\Models\Document;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class IdeaExportController extends Controller
 {
- 
-   
-        public function exportCSV()
-        {
-            $fileName = 'ideas_export.csv';
-            $headers = [
-                "Content-Type" => "text/csv",
-                "Content-Disposition" => "attachment; filename=$fileName",
-            ];
-    
-            $callback = function () {
-                $file = fopen('php://output', 'w');
-    
-                
+    public function exportCombined()
+    {
+        
+        $masterZipFileName = 'combined_export.zip';
+        $zip = new ZipArchive();
+        $zipPath = storage_path("app/public/$masterZipFileName");
+
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+           
+            $csvFileName = 'ideas_export.csv';
+            $csvFilePath = storage_path("app/public/$csvFileName");
+
+           
+            $callback = function () use ($csvFilePath) {
+                $file = fopen($csvFilePath, 'w');
                 fputcsv($file, ['Idea ID', 'Title', 'Description', 'Submitted By', 'Category ID', 'Created At']);
-    
-                
-                $ideas = Idea::with('user')->get();
-    
+                $ideas = Idea::all();
                 foreach ($ideas as $idea) {
                     fputcsv($file, [
                         $idea->idea_id,
                         $idea->title,
                         $idea->description,
-                        optional($idea->user)->name ?? 'Anonymous',  
+                        optional($idea->user)->name ?? 'Anonymous',
                         $idea->category_id,
                         $idea->created_at,
                     ]);
                 }
-    
                 fclose($file);
             };
-    
-            return response()->stream($callback, 200, $headers);
-        }
-    
-    
+            $callback();
 
-    
-    public function exportZIP()
-    {
-        $zipFileName = 'documents_export.zip';
-        $zipPath = storage_path("app/public/$zipFileName");
+           
+            $zip->addFile($csvFilePath, $csvFileName);
 
-        $zip = new ZipArchive;
+           
+            $documentsZipFileName = 'documents_export.zip';
+            $documentsZipPath = storage_path("app/public/$documentsZipFileName");
 
-        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-            $documents = \App\Models\Document::all();
-
-            foreach ($documents as $document) {
-                $filePath = storage_path("app/public/" . $document->file_path);
-                
-                if (file_exists($filePath)) {
-                    $zip->addFile($filePath, basename($filePath));
+            $documentsZip = new ZipArchive();
+            if ($documentsZip->open($documentsZipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+                $documents = Document::all();
+                foreach ($documents as $document) {
+                    $filePath = storage_path("app/public/" . $document->file_path);
+                    if (file_exists($filePath)) {
+                        $documentsZip->addFile($filePath, basename($filePath));
+                    }
                 }
+                $documentsZip->close();
             }
 
+            
+            $zip->addFile($documentsZipPath, $documentsZipFileName);
+
+            
             $zip->close();
+
+           
+            return response()->download($zipPath)->deleteFileAfterSend(true);
         }
 
-        return response()->download($zipPath)->deleteFileAfterSend(true);
+        return response()->json(['error' => 'Could not generate the files'], 500);
     }
 }
+
