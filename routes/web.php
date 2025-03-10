@@ -40,5 +40,4 @@ Route::resource('ideas', IdeaSubmissionController::class);
 Route::post('/ideas/{idea}/vote', [VoteController::class, 'vote'])->name('ideas.vote');
 Route::get('/ideas/{idea_id}/check-vote', [IdeaSubmissionController::class, 'checkVote']);
 Route::post('/comments/{idea}', [CommentController::class, 'store'])->name('comments.store');
-Route::get('/ideas/export/csv', [IdeaExportController::class, 'exportCSV'])->name('ideas.export.csv');
-Route::get('/ideas/export/zip', [IdeaExportController::class, 'exportZIP'])->name('ideas.export.zip');
+Route::get('/ideas/export/combined', [IdeaExportController::class, 'exportCombined'])->name('ideas.export.combined');
