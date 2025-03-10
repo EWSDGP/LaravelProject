@@ -3,14 +3,22 @@
 @section('content')
     <div class="container mt-4">
         <div class="d-flex justify-content-end mb-3">
-            @can('idea-submit')
-                <a href="{{ route('ideas.create') }}" 
-                   class="btn btn-outline-success btn-sm me-2" 
-                   id="submit-button"
-                   data-closure-date="{{ $ideas->first()->closureDate ? $ideas->first()->closureDate->Idea_ClosureDate : '' }}">
-                   Submit Ideas
-                </a>
-            @endcan
+        @php
+   
+    $latestClosureDate = \App\Models\ClosureDate::latest()->first()->Idea_ClosureDate;
+    $currentDate = now();
+@endphp
+
+@can('idea-submit')
+    <a href="{{ route('ideas.create') }}" 
+       class="btn btn-outline-success btn-sm me-2" 
+       id="submit-button"
+       data-closure-date="{{ $latestClosureDate }}"
+       @if($currentDate->greaterThanOrEqualTo($latestClosureDate)) disabled @endif>
+       Submit Ideas
+    </a>
+@endcan
+
             @can('download-ideas')
             <a href="{{ route('ideas.export.combined') }}" class="btn btn-outline-primary btn-sm">
     <i class="bi bi-file-earmark-zip"></i> Download CSV & Documents (ZIP)
@@ -78,28 +86,28 @@
                             @endif
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div class="d-flex align-items-center mt-2">
-                                    <button class="btn btn-outline-primary btn-sm me-2 vote-btn" 
-                                            data-idea="{{ $idea->idea_id }}" 
-                                            data-user="{{ Auth::id() }}" 
-                                            data-type="like"
-                                            id="like-btn-{{ $idea->idea_id }}" 
-                                            {{ $idea->votes->where('vote_type', 'like')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
-                                        <i class="bi bi-hand-thumbs-up-fill"></i> Like 
-                                        <span class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
-                                    </button>
+                            <div class="d-flex align-items-center mt-2">
+                                <button class="btn btn-outline-primary btn-sm me-2 vote-btn" 
+                                        data-idea="{{ $idea->idea_id }}" 
+                                        data-user="{{ Auth::id() }}" 
+                                        data-type="like"
+                                        id="like-btn-{{ $idea->idea_id }}" 
+                                        {{ $ideaDisabled || $idea->votes->where('vote_type', 'like')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
+                                    <i class="bi bi-hand-thumbs-up-fill"></i> Like 
+                                    <span class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
+                                </button>
 
-                                    <button class="btn btn-outline-danger btn-sm me-2 vote-btn" 
-                                            data-idea="{{ $idea->idea_id }}" 
-                                            data-user="{{ Auth::id() }}" 
-                                            data-type="dislike"
-                                            id="dislike-btn-{{ $idea->idea_id }}"
-                                            {{ $idea->votes->where('vote_type', 'dislike')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
-                                        <i class="bi bi-hand-thumbs-down-fill"></i> Dislike 
-                                        <span class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
-                                    </button>
-                                </div>
+                                <button class="btn btn-outline-danger btn-sm me-2 vote-btn" 
+                                        data-idea="{{ $idea->idea_id }}" 
+                                        data-user="{{ Auth::id() }}" 
+                                        data-type="dislike"
+                                        id="dislike-btn-{{ $idea->idea_id }}"
+                                        {{ $ideaDisabled || $idea->votes->where('vote_type', 'dislike')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
+                                    <i class="bi bi-hand-thumbs-down-fill"></i> Dislike 
+                                    <span class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
+                                </button>
                             </div>
+                        </div>
 
                             <div class="mt-3">
                                 <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
@@ -151,6 +159,22 @@
         </div>
 
         <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const submitButton = document.getElementById('submit-button');
+              const ideaClosureDate = submitButton.dataset.closureDate;
+
+              if (ideaClosureDate) {
+              const currentDate = new Date();
+
+       
+               if (new Date(ideaClosureDate) <= currentDate) {
+             submitButton.disabled = true;
+             submitButton.classList.add('disabled');
+             }
+             }
+            });
+
+
             document.addEventListener("DOMContentLoaded", function () {
                 document.querySelectorAll(".vote-btn").forEach(button => {
                     let ideaId = button.getAttribute("data-idea");

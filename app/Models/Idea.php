@@ -27,9 +27,10 @@ class Idea extends Model {
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function closureDate() {
-        return $this->belongsTo(ClosureDate::class, 'closure_date_id');
-    }
+    public function closureDate()
+{
+    return $this->belongsTo(ClosureDate::class, 'closure_date_id', 'ClosureDate_id');
+}
    
 public function documents()
 {
