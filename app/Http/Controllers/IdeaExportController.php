@@ -25,18 +25,29 @@ class IdeaExportController extends Controller
            
             $callback = function () use ($csvFilePath) {
                 $file = fopen($csvFilePath, 'w');
-                fputcsv($file, ['Idea ID', 'Title', 'Description', 'Submitted By', 'Category ID', 'Created At']);
-                $ideas = Idea::all();
-                foreach ($ideas as $idea) {
-                    fputcsv($file, [
-                        $idea->idea_id,
-                        $idea->title,
-                        $idea->description,
-                        optional($idea->user)->name ?? 'Anonymous',
-                        $idea->category_id,
-                        $idea->created_at,
-                    ]);
-                }
+                fputcsv($file, ['Idea ID', 'Title', 'Description', 'Submitted By','Department Name', 'Category Name', 'File Path', 'Created At']);
+
+                $ideas = Idea::whereHas('closureDate', function ($query) {
+                    $query->where('Comment_ClosureDate', '<', now()); 
+                })->with(['category', 'documents', 'user.department'])->get(); 
+            
+            foreach ($ideas as $idea) { 
+                $filePaths = $idea->documents->pluck('file_path')->implode(', ');
+                
+                fputcsv($file, [
+                    $idea->idea_id,
+                    $idea->title,
+                    $idea->description,
+                    optional($idea->user)->name ?? 'Anonymous',
+                    optional($idea->user->department)->name ?? 'No Department', 
+                    optional($idea->category)->category_name ?? 'No Category',
+                    $filePaths ?: 'No Documents', 
+                    $idea->created_at,
+                ]);
+            }
+            
+            
+            
                 fclose($file);
             };
             $callback();
@@ -50,7 +61,10 @@ class IdeaExportController extends Controller
 
             $documentsZip = new ZipArchive();
             if ($documentsZip->open($documentsZipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-                $documents = Document::all();
+                $documents = Document::whereHas('idea.closureDate', function ($query) {
+                    $query->where('Comment_ClosureDate', '<', now()); 
+                })->get();
+            
                 foreach ($documents as $document) {
                     $filePath = storage_path("app/public/" . $document->file_path);
                     if (file_exists($filePath)) {

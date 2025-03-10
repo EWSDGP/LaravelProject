@@ -67,11 +67,20 @@ class IdeaSubmissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'title' => 'required|string|max:100',
+            'description' => 'required|string|max:2500',
             'category_id' => 'required|exists:categories,category_id',
-            'documents.*' => 'nullable|mimes:pdf,docx,txt,jpg,png|max:2048',
+            'documents.*' => 'nullable|mimes:pdf,docx,txt,jpg,png|max:5120',
             'user_id' => 'required|exists:users,id',
+            'terms' => 'accepted',
+        ], [
+            'title.required' => 'The title is required.',
+            'title.max' => 'The title must not exceed 100 characters.',
+            'description.required' => 'The description is required.',
+            'description.max' => 'The description must not exceed 2,500 characters.',
+            'category_id.required' => 'Please select a category.',
+            'documents.*.max' => 'Each file must not exceed 5MB.',
+            'terms.accepted' => 'You must accept the Terms & Conditions to submit.',
         ]);
     
         
