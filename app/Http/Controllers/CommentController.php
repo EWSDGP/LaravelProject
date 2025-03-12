@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Mail\CommentNotification;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
@@ -41,6 +42,15 @@ class CommentController extends Controller
         //     ]
             
         // ]);
+        
+        //CommentNotification
+        $idea = Idea::find($idea_id);
+        $user = User::find($idea->user_id); 
+
+        if ($user) {
+            Mail::to($user->email)->send(new comment($user));
+        }
+
         return back()->with('success', 'Comment added successfully!');
 
     }
