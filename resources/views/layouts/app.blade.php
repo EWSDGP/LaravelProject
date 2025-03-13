@@ -94,6 +94,10 @@
                     @endcanany
 
                     <div class="d-flex flex-column mt-auto w-100">
+                        <div class="hover-div d-flex justify-content-start align-items-center w-100 ps-2" style="height: 60px;">
+                            <i class="fa-solid fa-key pe-2"></i>
+                            <a class="text-decoration-none" href="{{ route('change-password.form') }}">Change Password</a>
+                        </div>
                         <div class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
                             style="height: 95px">
                             <i class="fa-solid fa-gear pe-2"></i>
