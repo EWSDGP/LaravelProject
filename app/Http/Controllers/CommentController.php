@@ -44,12 +44,12 @@ class CommentController extends Controller
         // ]);
         
         //CommentNotification
-        $idea = Idea::find($idea_id);
-        $user = User::find($idea->user_id); 
+        // $idea = Idea::find($idea_id);
+        // $user = User::find($idea->user_id); 
 
-        if ($user) {
-            Mail::to($user->email)->send(new comment($user));
-        }
+        // if ($user) {
+        //     Mail::to($user->email)->send(new comment($user));
+        // }
 
         return back()->with('success', 'Comment added successfully!');
 

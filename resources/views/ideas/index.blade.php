@@ -107,6 +107,37 @@
                                     <span class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
                                 </button>
                             </div>
+                            @if($idea->user_id !== Auth::id()) 
+    <div class="mt-3">
+        <button class="btn btn-outline-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#reportModal-{{ $idea->idea_id }}">
+            <i class="bi bi-flag"></i> Report
+        </button>
+    </div>
+
+   
+    <div class="modal fade" id="reportModal-{{ $idea->idea_id }}" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">Report Idea</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('ideas.report', $idea->idea_id) }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <label for="reason" class="form-label">Reason:</label>
+                        <textarea name="reason" class="form-control" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Submit Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endif
+
                         </div>
 
                             <div class="mt-3">

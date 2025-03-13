@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\IdeaExportController;
 use App\Http\Controllers\IdeaSubmissionController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VoteController;
 
 
@@ -44,3 +45,4 @@ Route::post('/comments/{idea}', [CommentController::class, 'store'])->name('comm
 Route::get('/ideas/export/combined', [IdeaExportController::class, 'exportCombined'])->name('ideas.export.combined');
 Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('change-password.form');
 Route::post('/change-password', [UserController::class, 'changePassword'])->name('change-password');
+Route::post('/ideas/{idea}/report', [ReportController::class, 'store'])->name('ideas.report');
