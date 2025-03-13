@@ -34,19 +34,27 @@ class CommentController extends Controller
             'comment_text' => $request->comment_text,
             'is_anonymous' => $request->has('is_anonymous'),
         ]);
-
-        $idea = Idea::find($idea_id);
-        
-        if ($idea) {
-            $user = User::find($idea->user_id); 
+        // email notification //
+        // return response()->json([
+        //     'status' => 'success',
+        //     'comment' => [
+        //         'id' => $comment->comment_id,
+        //         'text' => $comment->comment_text,
+        //         'is_anonymous' => $comment->is_anonymous,
+        //         'user' => $comment->is_anonymous ? 'Anonymous' : Auth::user()->name,
+        //         'created_at' => $comment->created_at->diffForHumans(),
+        //     ]
             
-            if ($user) {
-                
-                Mail::to($user->email)->send(new CommentNotification($idea));
-            }
-        }
-
+        // ]);
         
+        //CommentNotification
+        // $idea = Idea::find($idea_id);
+        // $user = User::find($idea->user_id); 
+
+        // if ($user) {
+        //     Mail::to($user->email)->send(new comment($user));
+        // }
+
         return back()->with('success', 'Comment added successfully!');
 
     }
