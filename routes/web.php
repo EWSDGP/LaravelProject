@@ -15,6 +15,7 @@ use App\Http\Controllers\VoteController;
 
 
 
+
 Route::get('/', function () {
     return redirect('/login');
 });
@@ -41,3 +42,5 @@ Route::post('/ideas/{idea}/vote', [VoteController::class, 'vote'])->name('ideas.
 Route::get('/ideas/{idea_id}/check-vote', [IdeaSubmissionController::class, 'checkVote']);
 Route::post('/comments/{idea}', [CommentController::class, 'store'])->name('comments.store');
 Route::get('/ideas/export/combined', [IdeaExportController::class, 'exportCombined'])->name('ideas.export.combined');
+Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('change-password.form');
+Route::post('/change-password', [UserController::class, 'changePassword'])->name('change-password');
