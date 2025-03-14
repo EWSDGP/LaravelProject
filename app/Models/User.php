@@ -24,7 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'department_id',
-        'profile'
+        'profile',
+        'is_banned'
     ];
     public function department()
 {

@@ -12,9 +12,7 @@ use App\Http\Controllers\IdeaExportController;
 use App\Http\Controllers\IdeaSubmissionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VoteController;
-
-
-
+use App\Http\Middleware\CheckIfBanned;
 
 
 Route::get('/', function () {
@@ -30,7 +28,7 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 
 Auth::routes();
-
+Route::middleware([CheckIfBanned::class])->group(function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('categories', CategoryController::class);
 Route::resource('roles', RoleController::class);
@@ -46,3 +44,9 @@ Route::get('/ideas/export/combined', [IdeaExportController::class, 'exportCombin
 Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('change-password.form');
 Route::post('/change-password', [UserController::class, 'changePassword'])->name('change-password');
 Route::post('/ideas/{idea}/report', [ReportController::class, 'store'])->name('ideas.report');
+Route::get('/manage-reports', [ReportController::class, 'index'])->name('manage.reports.index');
+Route::delete('/manage-reports/{id}', [ReportController::class, 'destroy'])->name('manage.reports.delete');
+Route::post('/manage-reports/{user_id}/ban', [ReportController::class, 'banUser'])->name('manage.reports.ban');
+Route::post('/manage-reports/{user_id}/unban', [ReportController::class, 'unbanUser'])->name('manage.reports.unban');
+ 
+});
