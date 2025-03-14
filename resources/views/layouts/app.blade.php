@@ -71,6 +71,14 @@
                             <a class="text-decoration-none" href="{{ route('departments.index') }}">Departments</a>
                         </li>
                     @endcanany
+                    @canany(['manage-reports'])
+                    <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                            style="height: 95px">
+                            <i class="fa-solid fa-user-tie pe-4"></i>
+                            <a class="text-decoration-none" href="{{ route('manage.reports.index') }}">Manage Report</a>
+
+                        </li>
+                    @endcanany
                     @canany(['closure_date-create', 'closure_date-list', 'closure_date-edit', 'closure_date-delete'])
                         <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
                             style="height: 95px">

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>University Staff/Admin Login</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
@@ -144,9 +144,15 @@ body {
 </style>
 
 <body>
+@if (session('error'))
+    <div class="alert alert-danger" style="text-align: center; color: red; padding: 10px; margin-bottom: 10px;">
+        {{ session('error') }}
+    </div>
+@endif
+
     <div class="login-container">
         <div class="logo-container">
-            <img src="hhh.png" alt="Logo" class="logo">
+            <!-- <img src="hhh.png" alt="Logo" class="logo"> -->
             <h1>KMD</h1>
             <h5>Aim High Think High</h5>
         </div>
@@ -234,6 +240,11 @@ body {
 
 <body>
 
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 
     <div class="container">
         <div class="row justify-content-center">
