@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\User;
+use App\Models\Idea;
 use App\Mail\CommentNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+
 
 class CommentController extends Controller
 {   
@@ -30,26 +34,19 @@ class CommentController extends Controller
             'comment_text' => $request->comment_text,
             'is_anonymous' => $request->has('is_anonymous'),
         ]);
-        // email notification //
-        // return response()->json([
-        //     'status' => 'success',
-        //     'comment' => [
-        //         'id' => $comment->comment_id,
-        //         'text' => $comment->comment_text,
-        //         'is_anonymous' => $comment->is_anonymous,
-        //         'user' => $comment->is_anonymous ? 'Anonymous' : Auth::user()->name,
-        //         'created_at' => $comment->created_at->diffForHumans(),
-        //     ]
-            
-        // ]);
-        /*
-        $idea = Idea::find($idea_id);
-        $user = User::find($idea->user_id); 
 
-        if ($user) {
-            Mail::to($user->email)->send(new CommentNotification($user));
+        $idea = Idea::find($idea_id);
+        
+        if ($idea) {
+            $user = User::find($idea->user_id); 
+            
+            if ($user) {
+                
+                Mail::to($user->email)->send(new CommentNotification($idea));
+            }
         }
-        */
+
+        
         return back()->with('success', 'Comment added successfully!');
 
     }

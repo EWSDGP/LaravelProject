@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Idea;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -64,8 +65,16 @@ class CategoryController extends Controller
 public function destroy($category_id)
 {
     $category = Category::findOrFail($category_id);
+
+    // Check if the category is associated with any ideas
+    if (Idea::where('category_id', $category_id)->exists()) {
+        return redirect()->route('categories.index')->with("error", "Cannot delete this category because it is associated with one or more ideas.");
+    }
+
+    // If no related ideas exist, delete the category
     $category->delete();
-    return redirect()->route('categories.index')->with("success","Categories Deleted");
+    return redirect()->route('categories.index')->with("success", "Category Deleted Successfully.");
 }
+
 }
 

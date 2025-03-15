@@ -8,19 +8,10 @@ use Illuminate\Queue\SerializesModels;
 
 class CommentNotification extends Mailable
 {
-    use Queueable, SerializesModels;
-
-    public $user;
-
-    public function __construct($user)
-    {
-        $this->user = $user;
-    }
-
     public function build()
     {
-        return $this->subject('Comment Notification')
-                    ->html('<p>Your post have new comment.</p>');
+        return $this->subject('New Comment Notification')
+                    ->html('<p><strong>Your post has a new comment.</strong></p>');
 
     }
 }
