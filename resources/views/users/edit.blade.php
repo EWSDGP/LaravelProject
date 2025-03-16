@@ -30,7 +30,7 @@
                 </div>
                 <div class="mt-4">
                     <label class="mb-1">Password:</label>
-                    <input type="password" name="password" class="form-control">
+                    <input type="password" name="password" class="form-control" value="{{ $user->password }}">
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -45,6 +45,7 @@
                 <div class="mt-4">
                     <label class="mb-1">Role:</label>
                     <select class="form-select" name="roles[]">
+                        validation
                         <option value="" disabled selected>-- Select Role --</option>
                         @foreach($roles as $role)
                                 <option value="{{$role->name}}"{{$user->hasRole($role->name)?"selected":""}}>{{$role->name}}</option>
