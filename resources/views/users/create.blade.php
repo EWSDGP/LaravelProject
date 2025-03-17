@@ -28,11 +28,44 @@
                 </div>
                 <div class="mt-4">
                     <label class="mb-1">Password:</label>
-                    <input type="password" name="password" class="form-control">
+                    <input type="password" id="password"  name="password" class="form-control">
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
+                    <span id="password_error" class="text-danger"></span>
                 </div>
+
+                <script>
+                    document.getElementById('password').addEventListener('input', function () {
+                        let password = this.value;
+                        let errorSpan = document.getElementById('password_error');
+                        let Button = document.getElementById('Button');
+                        let hasNumber = /\d/;
+                        let hasSpecialChar = /[@!#$%]/;
+                        let minLength = password.length >= 8;
+
+                        let errorMessages = [];
+
+                        if (!minLength) {
+                            errorMessages.push("At least 8 characters.");
+                        }
+                        if (!hasNumber.test(password)) {
+                            errorMessages.push("At least one number.");
+                        }
+                        if (!hasSpecialChar.test(password)) {
+                            errorMessages.push("At least one special character (@!#$%).");
+                        }
+
+                        if (errorMessages.length === 0) {
+                            errorSpan.textContent = "";
+                            Button.disabled = false;  
+                        } else {
+                            errorSpan.textContent = errorMessages.join(" ");
+                            Button.disabled = true;
+                        }
+                    });
+                </script>
+
                 <div class="mt-4">
                     <label class="mb-1">Photo:</label>
                     <input type="file" name="photo" class="form-control">
@@ -61,7 +94,8 @@
                 </div>
 
                 <div class="mt-5">
-                    <button class="btn btn-primary w-100 p-2">Submit</button>
+                    <button class="btn btn-primary w-100 p-2" id="Button" disabled>Submit</button>
+
                 </div>
             </form>
         </div>

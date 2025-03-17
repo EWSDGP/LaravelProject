@@ -42,17 +42,28 @@
                         let password = this.value;
                         let errorSpan = document.getElementById('password_error');
                         let Button = document.getElementById('Button');
-                        let regex = /^(?=.*\d)(?=.*[@!#$%])[A-Za-z\d@!#$%]{8,}$/;
+                        let hasNumber = /\d/;
+                        let hasSpecialChar = /[@!#$%]/;
+                        let minLength = password.length >= 8;
 
-                        if (password.length >= 8 || regex.test(password)) {
-                            errorSpan.textContent = ""; 
-                            Button.disabled = false;    
-                        } else if (!regex.test(password)) {
-                            errorSpan.textContent = "Password must be at least 8 characters, include a number and a special character (@!#$%).";
-                            Button.disabled = true;     
+                        let errorMessages = [];
+
+                        if (!minLength) {
+                            errorMessages.push("At least 8 characters.");
+                        }
+                        if (!hasNumber.test(password)) {
+                            errorMessages.push("At least one number.");
+                        }
+                        if (!hasSpecialChar.test(password)) {
+                            errorMessages.push("At least one special character (@!#$%).");
+                        }
+
+                        if (errorMessages.length === 0) {
+                            errorSpan.textContent = "";
+                            Button.disabled = false;  
                         } else {
-                            errorSpan.textContent = ""; 
-                            Button.disabled = true;     
+                            errorSpan.textContent = errorMessages.join(" ");
+                            Button.disabled = true;
                         }
                     });
                 </script>
