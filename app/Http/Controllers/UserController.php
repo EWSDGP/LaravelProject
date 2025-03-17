@@ -33,6 +33,7 @@ class UserController extends Controller
   
     public function create()
     {   $roles = Role::all();
+        $roles = Role::where('name', '!=', 'Admin')->get();
         $departments = Department::all();
         return view ("users.create",compact("roles","departments"));
     }
@@ -75,12 +76,17 @@ class UserController extends Controller
 
     
     public function edit(string $id)
-    {
-        $user = User::find($id);
-        $roles=Role::all();
-        $departments = Department::all();
-        return view("users.edit",compact("user","roles","departments"));
+{
+    $user = User::find($id);
+    $roles = Role::where('name', '!=', 'Admin')->get();
+    $departments = Department::all();
+    if ($user->hasRole('Admin')) {
+        $roles = Role::where('name', 'Admin')->get();
     }
+
+    return view('users.edit', compact('user', 'roles', 'departments'));
+}
+
 
     
     public function update(Request $request, string $id)

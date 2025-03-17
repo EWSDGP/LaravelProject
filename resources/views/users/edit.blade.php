@@ -44,20 +44,19 @@
                         let Button = document.getElementById('Button');
                         let regex = /^(?=.*\d)(?=.*[@!#$%])[A-Za-z\d@!#$%]{8,}$/;
 
-
-                        if (password.length >= 8) {
-                            errorSpan.textContent = "";  
-                            Button.disabled = false;   
+                        if (password.length >= 8 || regex.test(password)) {
+                            errorSpan.textContent = ""; 
+                            Button.disabled = false;    
                         } else if (!regex.test(password)) {
                             errorSpan.textContent = "Password must be at least 8 characters, include a number and a special character (@!#$%).";
                             Button.disabled = true;     
-                            errorSpan.textContent = "";  
-                            Button.disabled = true;    
+                        } else {
+                            errorSpan.textContent = ""; 
+                            Button.disabled = true;     
                         }
                     });
                 </script>
-
-
+                
                 <div class="mt-4">
                     <label class="mb-1">Photo:</label>
                     <input type="file" name="photo" class="form-control">
