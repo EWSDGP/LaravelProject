@@ -8,7 +8,7 @@
             <div class="bg-leaf text-white d-flex justify-content-center align-items-center p-4">
                 <h3 class="m-0 fs-4">Staff Management System</h3>
             </div>
-
+        
             <div class="bg-white" id="user-details">
                 <!-- User details will be displayed here -->
             </div>

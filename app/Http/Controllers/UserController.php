@@ -33,7 +33,6 @@ class UserController extends Controller
   
     public function create()
     {   $roles = Role::all();
-        $roles = Role::where('name', '!=', 'Admin')->get();
         $departments = Department::all();
         return view ("users.create",compact("roles","departments"));
     }
