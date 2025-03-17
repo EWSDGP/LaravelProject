@@ -11,6 +11,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\IdeaExportController;
 use App\Http\Controllers\IdeaSubmissionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\VoteController;
 use App\Http\Middleware\CheckIfBanned;
 
@@ -48,5 +49,5 @@ Route::get('/manage-reports', [ReportController::class, 'index'])->name('manage.
 Route::delete('/manage-reports/{id}', [ReportController::class, 'destroy'])->name('manage.reports.delete');
 Route::post('/manage-reports/{user_id}/ban', [ReportController::class, 'banUser'])->name('manage.reports.ban');
 Route::post('/manage-reports/{user_id}/unban', [ReportController::class, 'unbanUser'])->name('manage.reports.unban');
- 
+Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index'); 
 });

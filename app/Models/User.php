@@ -29,7 +29,7 @@ class User extends Authenticatable
     ];
     public function department()
 {
-    return $this->belongsTo(Department::class);
+    return $this->belongsTo(Department::class, 'department_id');
 }
     /**
      * The attributes that should be hidden for serialization.
@@ -54,8 +54,18 @@ class User extends Authenticatable
         ];
     }
     public function votes()
-{
-    return $this->hasMany(Vote::class, 'user_id');
-}
+    {
+        return $this->hasMany(Vote::class, 'user_id');
+    }
+   
+    public function ideas()
+    {
+        return $this->hasMany(Idea::class, 'user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'user_id');
+    }
 
 }
