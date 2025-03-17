@@ -59,7 +59,14 @@
                                                 class="btn btn-warning btn-sm">Edit</a>
                                         @endcan
                                         @can('user-delete')
-                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                        <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                                        <script>
+                                            var userRole = "{{ Auth::user()->id }}"; 
+
+                                            if (userRole === "1") {
+                                                document.querySelector(".delete-btn").style.display = "none";
+                                            }
+                                        </script>
                                         @endcan
                                     </form>
                                 </td>
