@@ -30,11 +30,34 @@
                 </div>
                 <div class="mt-4">
                     <label class="mb-1">Password:</label>
-                    <input type="password" name="password" class="form-control" value="{{ $user->password }}">
+                    <input type="password" id="password" name="password" class="form-control" value="{{ $user->password }}">
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
+                    <span id="password_error" class="text-danger"></span>
                 </div>
+
+                <script>
+                    document.getElementById('password').addEventListener('input', function () {
+                        let password = this.value;
+                        let errorSpan = document.getElementById('password_error');
+                        let Button = document.getElementById('Button');
+                        let regex = /^(?=.*\d)(?=.*[@!#$%])[A-Za-z\d@!#$%]{8,}$/;
+
+
+                        if (password.length >= 8) {
+                            errorSpan.textContent = "";  
+                            Button.disabled = false;   
+                        } else if (!regex.test(password)) {
+                            errorSpan.textContent = "Password must be at least 8 characters, include a number and a special character (@!#$%).";
+                            Button.disabled = true;     
+                            errorSpan.textContent = "";  
+                            Button.disabled = true;    
+                        }
+                    });
+                </script>
+
+
                 <div class="mt-4">
                     <label class="mb-1">Photo:</label>
                     <input type="file" name="photo" class="form-control">
@@ -66,7 +89,7 @@
 
                 </div>
                 <div class="mt-5">
-                    <button class="btn btn-primary w-100 p-2">Submit</button>
+                    <button type="submit" id="Button" class="btn btn-primary w-100 p-2">Submit</button>
                 </div>
             </form>
         </div>
