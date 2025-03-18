@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClosureDate;
+use App\Models\Idea;
 
 use Illuminate\Http\Request;
 
@@ -31,16 +32,16 @@ class ClosureDateController extends Controller
 
    
     public function store(Request $request)
-    {
-        $request->validate([
-            'Idea_ClosureDate' => 'required|date',
-            'Comment_ClosureDate' => 'required|date',
-            'Academic_Year' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'Idea_ClosureDate' => 'required|date|after_or_equal:today',
+        'Comment_ClosureDate' => 'required|date|after_or_equal:today',
+        'Academic_Year' => 'required|string',
+    ]);
 
-        ClosureDate::create($request->all());
-        return redirect()->route('closure_dates.index')->with('success', 'Closure Date created successfully!');
-    }
+    ClosureDate::create($request->all());
+    return redirect()->route('closure_dates.index')->with('success', 'Closure Date created successfully!');
+}
 
    
     public function edit(ClosureDate $closureDate)
@@ -64,6 +65,12 @@ class ClosureDateController extends Controller
     
     public function destroy($ClosureDate_id)
     {    
+        $ClosureDate = ClosureDate::findOrFail($ClosureDate_id);
+
+    // Check if the ClosureDate is associated with any ideas
+    if (Idea::where('Closure_Date_id', $ClosureDate_id)->exists()) {
+        return redirect()->route('closure_dates.index')->with("error", "Cannot delete this closure date because it is associated with one or more ideas.");
+    }
         $closureDate = ClosureDate::findOrFail($ClosureDate_id); 
         $closureDate->delete();
         return redirect()->route('closure_dates.index')->with('success', 'Closure Date deleted successfully!');
