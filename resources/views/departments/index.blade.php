@@ -30,6 +30,11 @@
             <div class="card">
     @session('success')
     <div class="alert alert-success">
+    @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
                                     {{$value}}
                         </div>
                         @endsession  
@@ -57,7 +62,7 @@
                 @can ('department-edit')
                     <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-warning">Edit</a>
               @endcan
-              @can ('department-delete')
+              <!-- @can ('department-delete')
                     <form action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this category?');">
                         @csrf
                         @method('DELETE')
@@ -66,7 +71,7 @@
                                 data-url="{{ route('departments.destroy', $department->id) }}">
                                 Delete                 
                         </button>
-@endcan
+                @endcan -->
                     </form>
                 </td>
             </tr>
