@@ -25,6 +25,38 @@
 </a>
             @endcan
         </div>
+        <form method="GET" action="{{ route('ideas.index') }}" class="mb-4">
+    <div class="row">
+        <div class="col-md-4">
+            <select name="category_id" class="form-select">
+                <option value="">Filter by Category</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->category_id }}" {{ request('category_id') == $category->category_id ? 'selected' : '' }}>
+                        {{ $category->category_name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+       
+        <div class="col-md-4">
+            <select name="department_id" class="form-select">
+                <option value="">Filter by Department</option>
+                @foreach($departments as $department)
+                    <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
+                        {{ $department->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+       
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+            <a href="{{ route('ideas.index') }}" class="btn btn-secondary">Reset</a>
+        </div>
+    </div>
+</form>
 
         <h2 class="mb-4">Submitted Ideas</h2>
         <div class="row justify-content-center">
@@ -186,7 +218,8 @@
         </div>
 
         <div class="d-flex justify-content-center">
-            {{ $ideas->links('pagination::bootstrap-5') }}
+        {{ $ideas->appends(request()->query())->links('pagination::bootstrap-5') }}
+
         </div>
 
         <script>
