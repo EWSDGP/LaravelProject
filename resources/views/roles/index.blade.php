@@ -69,7 +69,29 @@
                                         <a href="{{route('roles.edit',$role->id)}}" class="btn btn-sm btn-warning">Edit</a>
                                         @endcan
                                         @can ('role-delete')
-                                        <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{$role->id}}" data-url="{{ route('roles.destroy', $role->id) }}" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                                        <button type="button" class="btn btn-danger btn-sm delete-btn" 
+                                                data-id="{{$role->id}}" 
+                                                data-url="{{ route('roles.destroy', $role->id) }}" 
+                                                data-role="{{$role->name}}"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal">
+                                            Delete
+                                        </button>
+
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function () 
+                                            {
+                                                document.querySelectorAll(".delete-btn").forEach(function (button) 
+                                                {
+                                                    if (button.getAttribute("data-role") === "Admin") 
+                                                    {
+                                                        button.style.display = "none";
+                                                    }
+                                                });
+                                            });
+
+                                        </script>
+
                                         @endcan
                                     </form>
                                 </td>
