@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\ClosureDate;
 use App\Models\Vote;
 use App\Mail\IdeaSubmitted;
+use App\Models\Department;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
@@ -25,12 +26,29 @@ class IdeaSubmissionController extends Controller
         $this->middleware('permission:idea-edit', ["only" => ["edit", "update"]]);
         $this->middleware('permission:idea-delete', ["only" => ["destroy"]]);
     }
-    public function index()
+    public function index(Request $request)
     {
         $currentDate = now(); 
         
-        $ideas = Idea::with('category', 'user') 
-                    ->paginate(5); 
+        $query = Idea::query();
+
+        
+        if ($request->has('category_id') && !empty($request->category_id)) {
+            $query->where('category_id', $request->category_id);
+        }
+    
+       
+        if ($request->has('department_id') && !empty($request->department_id)) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('department_id', $request->department_id);
+            });
+        }
+    
+        $ideas = $query->with(['user', 'category', 'documents', 'comments', 'votes', 'closureDate'])
+                       ->paginate(5);
+    
+        $categories = Category::all();  
+        $departments = Department::all();  
     
        
         foreach ($ideas as $idea) {
@@ -44,7 +62,9 @@ class IdeaSubmissionController extends Controller
             $idea->can_comment = $currentDate->lessThanOrEqualTo($closureDate->Comment_ClosureDate);
         }
     
-        return view('ideas.index', compact('ideas')); 
+        return view('ideas.index', compact('ideas', 'categories', 'departments'))
+                ->with('category_id', $request->category_id)
+                ->with('department_id', $request->department_id);; 
     }
     
     
