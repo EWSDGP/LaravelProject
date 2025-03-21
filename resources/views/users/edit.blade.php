@@ -28,16 +28,16 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="mt-4">
+                <!-- <div class="mt-4">
                     <label class="mb-1">Password:</label>
                     <input type="password" id="password" name="password" class="form-control" value="{{ $user->password }}">
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                     <span id="password_error" class="text-danger"></span>
-                </div>
+                </div> -->
 
-                <script>
+                <!-- <script>
                     document.getElementById('password').addEventListener('input', function () {
                         let password = this.value;
                         let errorSpan = document.getElementById('password_error');
@@ -66,7 +66,7 @@
                             Button.disabled = true;
                         }
                     });
-                </script>
+                </script> -->
                 
                 <div class="mt-4">
                     <label class="mb-1">Photo:</label>

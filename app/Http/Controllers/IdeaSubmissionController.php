@@ -32,7 +32,7 @@ class IdeaSubmissionController extends Controller
         
         $query = Idea::query();
 
-        
+
         if ($request->has('category_id') && !empty($request->category_id)) {
             $query->where('category_id', $request->category_id);
         }
@@ -45,7 +45,7 @@ class IdeaSubmissionController extends Controller
         }
     
         $ideas = $query->with(['user', 'category', 'documents', 'comments', 'votes', 'closureDate'])
-                       ->paginate(5);
+                       ->paginate(5); //latest 
     
         $categories = Category::all();  
         $departments = Department::all();  

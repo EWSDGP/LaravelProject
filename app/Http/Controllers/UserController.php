@@ -93,7 +93,7 @@ class UserController extends Controller
         $request->validate([
             "name" => "required",
             "email" => "required|email",
-            "password" => "required",
+            // "password" => "required",
             "department_id" => "nullable|exists:departments,id",
             "profile_photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"
         ]);
@@ -107,7 +107,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        // $user->password = Hash::make($request->password);
         $user->department_id = $request->department_id;
         $user->save();
     

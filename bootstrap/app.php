@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\CheckIfBanned;
+use App\Http\Middleware\PreventBackHistory;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,7 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append([
-            CheckIfBanned::class, 
+            CheckIfBanned::class,
+            PreventBackHistory::class,
         ]); 
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
