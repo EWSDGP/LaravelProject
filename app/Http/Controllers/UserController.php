@@ -32,39 +32,42 @@ class UserController extends Controller
 
   
     public function create()
-    {   $roles = Role::all();
+    {   $roles = Role::where('name', '!=', 'Admin')->get();
         $departments = Department::all();
         return view ("users.create",compact("roles","departments"));
     }
 
     
     public function store(Request $request)
-    {
-        // dd($request->all());
-        $request->validate([
-            "name"=>"required",
-            "email"=>"required|email",
-            "password"=>"required",
-            "department_id" => "nullable|exists:departments,id",
-            "profile_photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"
-        ]);
+{
+    // dd($request->all());
+    $request->validate([
+        "name" => "required",
+        "email" => "required|email|unique:users,email",
+        "password" => "required",
+        "department_id" => "nullable|exists:departments,id",
+        "profile_photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"
+    ]);
 
-        $profilePhotoUrl = null;
-        if ($request->hasFile('profile_photo')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('profile_photo')->getRealPath())->getSecurePath();
-            $profilePhotoUrl = $uploadedFileUrl;
-        }
-
-       $user= User::create([
-            "name"=>$request->name,
-            "email"=>$request->email,
-            "password"=>Hash::make($request->password),
-            "department_id" => $request->department_id ?? null,
-            "profile_photo" => $profilePhotoUrl
-        ]);
-        $user->syncRoles($request->roles);
-        return redirect()->route("users.index")->with("success","Users created");
+    $profilePhotoUrl = null;
+    if ($request->hasFile('profile_photo')) {
+        $uploadedFileUrl = Cloudinary::upload($request->file('profile_photo')->getRealPath())->getSecurePath();
+        $profilePhotoUrl = $uploadedFileUrl;
     }
+
+    $user = User::create([
+        "name" => $request->name,
+        "email" => $request->email,
+        "password" => Hash::make($request->password),
+        "department_id" => $request->department_id ?? null,
+        "profile_photo" => $profilePhotoUrl
+    ]);
+
+    $user->syncRoles($request->roles);
+
+    return redirect()->route("users.index")->with("success", "User created");
+}
+
 
   
     public function show(string $id)
@@ -92,7 +95,7 @@ class UserController extends Controller
     {
         $request->validate([
             "name" => "required",
-            "email" => "required|email",
+            "email" => "required|email|unique:users,email",
             // "password" => "required",
             "department_id" => "nullable|exists:departments,id",
             "profile_photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"

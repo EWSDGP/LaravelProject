@@ -42,7 +42,7 @@ class RoleController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            "name"=>"required"
+            "name"=>"required|unique:roles,name"
         ]);
         $role = Role::create(["name"=>$request->name]);
         $role->syncPermissions($request->permissions);
@@ -72,7 +72,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {    $request->validate([
-        "name"=>"required"
+        "name"=>"required|unique:roles,name"
         ]);
         
         $role = Role::find($id);
