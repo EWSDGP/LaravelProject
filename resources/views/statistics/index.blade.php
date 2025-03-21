@@ -1,68 +1,146 @@
 @extends('layouts.app')
 
-
 @section('content')
 <div class="container">
-    <h1 class="mb-4">System Statistics</h1>
+    <h1 class="mb-4 text-center">📊 System Statistics</h1>
 
-    <h2>Number of Ideas Submitted per Department</h2>
-    <ul>
-        @foreach($ideasPerDepartment as $dept)
-            <li>{{ $dept->name }}: {{ $dept->ideas_count }}</li>
-        @endforeach
-    </ul>
+    <div class="row">
+       
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">📌 Ideas Submitted per Department</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @foreach($ideasPerDepartment as $dept)
+                            <li class="list-group-item">{{ $dept->name }}: <strong>{{ $dept->ideas_count }}</strong></li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-    <h2>Top Contributors (Ideas Submitted per Staff Member)</h2>
-    <ul>
-        @foreach($ideasPerStaff as $user)
-            <li>{{ $user->name }}: {{ $user->ideas_count }}</li>
-        @endforeach
-    </ul>
+       
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">🏆 Top Contributors</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @foreach($ideasPerStaff as $user)
+                            <li class="list-group-item">{{ $user->name }}: <strong>{{ $user->ideas_count }}</strong></li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-    <h2>Number of Ideas Submitted per Category</h2>
-    <ul>
-    @foreach($ideasPerCategory as $data)
-    <p>{{ $data->category->category_name }}: {{ $data->total }} ideas</p>
-@endforeach
+       
+        <div class="col-md-6 mt-3">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">📂 Ideas per Category</h5>
+                </div>
+                <div class="card-body">
+                    @foreach($ideasPerCategory as $data)
+                        <p class="mb-1">{{ $data->category->category_name }}: <strong>{{ $data->total }}</strong> ideas</p>
+                    @endforeach
+                </div>
+            </div>
+        </div>
 
-    </ul>
+       
+        <div class="col-md-6 mt-3">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">📅 Ideas per Academic Year</h5>
+                </div>
+                <div class="card-body">
+                    @foreach($ideasPerYear as $data)
+                        <p class="mb-1">{{ $data->year }}: <strong>{{ $data->total }}</strong> ideas</p>
+                    @endforeach
+                </div>
+            </div>
+        </div>
 
-    <h2>Number of Ideas Submitted per Academic Year</h2>
-    <ul>
-    @foreach($ideasPerYear as $data)
-    <p>{{ $data->year }}: {{ $data->total }} ideas</p>
-@endforeach
+        
+        <div class="col-md-6 mt-3">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">🕵️ Anonymous vs Named Submissions</h5>
+                </div>
+                <div class="card-body">
+                    <p>🔒 Anonymous: <strong>{{ $anonymousCount }}</strong></p>
+                    <p>👤 Named: <strong>{{ $namedCount }}</strong></p>
+                </div>
+            </div>
+        </div>
 
-    </ul>
+      
+        <div class="col-md-6 mt-3">
+            <div class="card shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">📈 User Engagement</h5>
+                </div>
+                <div class="card-body">
+                    <p>💡 Active Users: <strong>{{ $activeUsersCount }}</strong></p>
+                    <p>👥 Total Users: <strong>{{ $totalUsers }}</strong></p>
+                    <p>👍 Only Voted/Commented: <strong>{{ $onlyVotedOrCommented }}</strong></p>
+                    <p>🚫 Inactive Users: <strong>{{ $inactiveUsers }}</strong></p>
+                </div>
+            </div>
+        </div>
 
-    <h2>Anonymous vs Named Submissions</h2>
-    <p>Anonymous Submissions: {{ $anonymousCount }}</p>
-    <p>Named Submissions: {{ $namedCount }}</p>
+       
+        <div class="col-md-6 mt-3">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">🔥 Most Popular Ideas</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @foreach($mostPopularIdeas as $idea)
+                            <li class="list-group-item">
+                                <strong>{{ $idea->title }}</strong> (By: {{ $idea->user->name }}) - ❤️ Likes: {{ $idea->likes }}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-    <h2>User Engagement</h2>
-    <p>Users Who Submitted at Least One Idea: {{ $activeUsersCount }}</p>
-    <p>Total Registered Staff Users: {{ $totalUsers }}</p>
-    <p>Users Who Only Voted or Commented: {{ $onlyVotedOrCommented }}</p>
-    <p>Users Who Never Engaged: {{ $inactiveUsers }}</p>
-
-<h3>Most Popular Ideas</h3>
-<ul>
-    @foreach($mostPopularIdeas as $idea)
-        <li>
-            <strong>{{ $idea->title }}</strong> (Submitted by: {{ $idea->user->name }}) - Likes: {{ $idea->likes }}
-        </li>
-    @endforeach
-</ul>
-
-
-<h3>Least Popular Ideas</h3>
-<ul>
-    @foreach($leastPopularIdeas as $idea)
-        <li>
-            <strong>{{ $idea->title }}</strong> (Submitted by: {{ $idea->user->name }}) - Dislikes: {{ $idea->dislikes }}
-        </li>
-    @endforeach
-</ul>
-
+      
+        <div class="col-md-6 mt-3">
+            <div class="card shadow">
+                <div class="card-header bg-light text-dark">
+                    <h5 class="mb-0">❄️ Least Popular Ideas</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @foreach($leastPopularIdeas as $idea)
+                            <li class="list-group-item">
+                                <strong>{{ $idea->title }}</strong> (By: {{ $idea->user->name }}) - 👎 Dislikes: {{ $idea->dislikes }}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let cards = document.querySelectorAll(".card");
+        cards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+            }, index * 150);
+        });
+    });
+</script>
+
 @endsection

@@ -55,7 +55,7 @@
                     <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
                         style="height: 95px">
                         <i class="fa-solid fa-home pe-4"></i>
-                        <a class="text-decoration-none" href="{{ route('dashboard') }}">Dashboard</a>
+                        <a class="text-decoration-none" href="{{ route('statistics.index') }}">Dashboard</a>
                     </li>
                     @canany(['category-create', 'category-list', 'category-edit', 'category-delete'])
                         <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
