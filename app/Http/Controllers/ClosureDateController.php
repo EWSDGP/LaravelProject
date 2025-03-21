@@ -36,7 +36,7 @@ class ClosureDateController extends Controller
     $request->validate([
         'Idea_ClosureDate' => 'required|date|after_or_equal:today',
         'Comment_ClosureDate' => 'required|date|after_or_equal:today',
-        'Academic_Year' => 'required|string',
+        'Academic_Year' => 'required|string|unique:closure_dates,Academic_Year',
     ]);
 
     ClosureDate::create($request->all());
@@ -55,7 +55,7 @@ class ClosureDateController extends Controller
         $request->validate([
             'Idea_ClosureDate' => 'required|date',
             'Comment_ClosureDate' => 'required|date',
-            'Academic_Year' => 'required|string',
+            'Academic_Year' => 'required|string|unique:closure_dates,Academic_Year',
         ]);
 
         $closureDate->update($request->all());
