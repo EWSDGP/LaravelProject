@@ -42,7 +42,7 @@ Route::post('/ideas/{idea}/vote', [VoteController::class, 'vote'])->name('ideas.
 Route::get('/ideas/{idea_id}/check-vote', [IdeaSubmissionController::class, 'checkVote']);
 Route::post('/comments/{idea}', [CommentController::class, 'store'])->name('comments.store');
 Route::get('/ideas/export/combined', [IdeaExportController::class, 'exportCombined'])->name('ideas.export.combined');
-Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('change-password.form');
+Route::get('/settings/{section?}', [UserController::class, 'showSettings'])->name('settings');
 Route::post('/change-password', [UserController::class, 'changePassword'])->name('change-password');
 Route::post('/ideas/{idea}/report', [ReportController::class, 'store'])->name('ideas.report');
 Route::get('/manage-reports', [ReportController::class, 'index'])->name('manage.reports.index');
