@@ -36,96 +36,93 @@
                 <!-- Authentication Links -->
                 @guest
 
-                    @if (Route::has('login'))
-                        <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
-                            style="height: 95px">
-                            <i class="fa-solid fa-arrow-right-to-bracket pe-4"></i>
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                    @endif
+                @if (Route::has('login'))
+                <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                    style="height: 95px">
+                    <i class="fa-solid fa-arrow-right-to-bracket pe-4"></i>
+                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                </li>
+                @endif
 
-                    @if (Route::has('register'))
-                        <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
-                            style="height: 95px">
-                            <i class="fa-solid fa-arrow-right-to-bracket pe-4"></i>
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                    @endif
+                @if (Route::has('register'))
+                <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                    style="height: 95px">
+                    <i class="fa-solid fa-arrow-right-to-bracket pe-4"></i>
+                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                </li>
+                @endif
                 @else
-                    <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
-                        style="height: 95px">
-                        <i class="fa-solid fa-home pe-4"></i>
-                        <a class="text-decoration-none" href="{{ route('statistics.index') }}">Dashboard</a>
-                    </li>
-                    @canany(['category-create', 'category-list', 'category-edit', 'category-delete'])
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
-                            style="height: 95px">
-                            <i class="fa-solid fa-calendar-days pe-4"></i>
-                            <a class="text-decoration-none" href="{{ route('categories.index') }}">Categories</a>
-                        </li>
-                    @endcanany
-                    @canany(['department-create', 'department-list', 'department-edit', 'department-delete'])
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
-                            style="height: 95px">
-                            <i class="fa-solid fa-user-tie pe-4"></i>
-                            <a class="text-decoration-none" href="{{ route('departments.index') }}">Departments</a>
-                        </li>
-                    @endcanany
-                    @canany(['manage-reports'])
-                    <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
-                            style="height: 95px">
-                            <i class="fa-solid fa-user-tie pe-4"></i>
-                            <a class="text-decoration-none" href="{{ route('manage.reports.index') }}">Manage Report</a>
+                <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                    style="height: 95px">
+                    <i class="fa-solid fa-home pe-4"></i>
+                    <a class="text-decoration-none" href="{{ route('statistics.index') }}">Dashboard</a>
+                </li>
+                @canany(['category-create', 'category-list', 'category-edit', 'category-delete'])
+                <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                    style="height: 95px">
+                    <i class="fa-solid fa-calendar-days pe-4"></i>
+                    <a class="text-decoration-none" href="{{ route('categories.index') }}">Categories</a>
+                </li>
+                @endcanany
+                @canany(['department-create', 'department-list', 'department-edit', 'department-delete'])
+                <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                    style="height: 95px">
+                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <a class="text-decoration-none" href="{{ route('departments.index') }}">Departments</a>
+                </li>
+                @endcanany
+                @canany(['manage-reports'])
+                <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                    style="height: 95px">
+                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <a class="text-decoration-none" href="{{ route('manage.reports.index') }}">Manage Report</a>
 
-                        </li>
-                    @endcanany
-                    @canany(['closure_date-create', 'closure_date-list', 'closure_date-edit', 'closure_date-delete'])
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
-                            style="height: 95px">
-                            <i class="fa-solid fa-user-tie pe-4"></i>
-                            <a class="text-decoration-none" href="{{ route('closure_dates.index') }}">Manage Closure_Dates</a>
-                        </li>
-                    @endcanany
-                    @role('Admin')
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
-                            style="height: 95px">
-                            <i class="fa-solid fa-calendar-days pe-4"></i>
-                            <a class="text-decoration-none" href="{{ route('roles.index') }}">Role Management</a>
-                        </li>
-                    @endrole
-                    @canany(['user-list', 'user-create', 'user-edit', 'user-delete'])
-                        <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
-                            style="height: 95px">
-                            <i class="fa-solid fa-user-tie pe-4"></i>
-                            <a class="text-decoration-none" href="{{ route('users.index') }}">Account Management</a>
-                        </li>
-                    @endcanany
+                </li>
+                @endcanany
+                @canany(['closure_date-create', 'closure_date-list', 'closure_date-edit', 'closure_date-delete'])
+                <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                    style="height: 95px">
+                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <a class="text-decoration-none" href="{{ route('closure_dates.index') }}">Manage Closure_Dates</a>
+                </li>
+                @endcanany
+                @role('Admin')
+                <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                    style="height: 95px">
+                    <i class="fa-solid fa-calendar-days pe-4"></i>
+                    <a class="text-decoration-none" href="{{ route('roles.index') }}">Role Management</a>
+                </li>
+                @endrole
+                @canany(['user-list', 'user-create', 'user-edit', 'user-delete'])
+                <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                    style="height: 95px">
+                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <a class="text-decoration-none" href="{{ route('users.index') }}">Account Management</a>
+                </li>
+                @endcanany
 
+                <div class="d-flex flex-column mt-auto w-100">
                     <div class="d-flex flex-column mt-auto w-100">
-                        <div class="hover-div d-flex justify-content-start align-items-center w-100 ps-2" style="height: 60px;">
-                            <i class="fa-solid fa-key pe-2"></i>
-                            <a class="text-decoration-none" href="{{ route('change-password.form') }}">Change Password</a>
-                        </div>
-                        <div class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
-                            style="height: 95px">
+                        <div class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5" style="height: 95px">
                             <i class="fa-solid fa-gear pe-2"></i>
-                            <a class="text-decoration-none" href="#">Setting</a>
+                            <a class="text-decoration-none" href="{{ route('settings') }}">Setting</a>
                         </div>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                            class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
-                            style="height: 95px">
-                            @csrf
-                            <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </form>
                     </div>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                        class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-5"
+                        style="height: 95px">
+                        @csrf
+                        <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </form>
+                </div>
 
                 @endguest
             </div>
