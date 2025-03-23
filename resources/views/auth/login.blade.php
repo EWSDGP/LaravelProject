@@ -1,158 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>University Staff/Admin Login</title>
-    <!-- <link rel="stylesheet" href="style.css"> -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .left-panel {
+            flex: 1;
+            color: white;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+        }
+
+        .left-panel h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .left-panel p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .login-container {
+            flex: 1;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-container h1 {
+            margin: 0;
+            color: #333;
+        }
+
+        .logo-container h5 {
+            margin: 0;
+            color: #F59A23;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        .input input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            box-sizing: border-box;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .input input:focus {
+            border-color: #8E2DE2;
+        }
+
+        .input .forgot-password,
+        .btn-link {
+            font-size: 13px;
+            text-align: right;
+            display: block;
+            margin-top: 5px;
+            color: #8E2DE2;
+            text-decoration: none;
+        }
+
+        .input .forgot-password:hover,
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .input button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(to right, #8E2DE2, #4A00E0);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .input button:hover {
+            background: linear-gradient(to right, #4A00E0, #8E2DE2);
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .invalid-feedback {
+            color: red;
+            font-size: 13px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .left-panel, .login-container {
+                flex: none;
+                width: 100%;
+                padding: 30px;
+                height: auto;
+            }
+            .left-panel {
+                text-align: center;
+            }
+        }
+    </style>
 </head>
-
-<style>
-
-body {
-    font-family: 'Poppins', sans-serif;
-    /*background: linear-gradient(to right, #00ABE4, #336699);*/
-    background: linear-gradient(to right, #fff, #00ABE4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.login-container {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-}
-
-.logo-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/*.logo {
-    width: 100px;
-    height: 100px;
-}*/
-
-.logo-container h1 {
-    margin: 10px 0 0;
-    color: #333;
-}
-
-.logo-container h5 {
-    margin: 10px 0 0;
-    color: #F59A23;
-}
-
-.login-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.input {
-    margin-bottom: 15px;
-}
-
-.input label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.input input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.input .forgot-password {
-    display: block;
-    text-align: right;
-    margin-top: -10px;
-    margin-bottom: 10px;
-    color: #0066cc;
-    text-decoration: none;
-}
-
-.input .forgot-password:hover {
-    text-decoration: underline;
-}
-
-.input button {
-    width: 100%;
-    padding: 10px;
-    background: #00ABE4;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.input button:hover {
-    background: #003366;
-}
-
-.error-message {
-    color: red;
-    text-align: center;
-    margin-top: 10px;
-}
-
-.register-container {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-}
-
-.register-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.input input, .input select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.radio-group {
-    display: flex;
-}
-
-.radio-group label {
-    display: flex;
-    align-items: center;
-    color: #333;
-}
-
-
-</style>
-
 <body>
+
 @if (session('error'))
     <div class="alert alert-danger" style="text-align: center; color: red; padding: 10px; margin-bottom: 10px;">
         {{ session('error') }}
     </div>
 @endif
 
+<div class="container">
+    <!-- Left welcome panel -->
+    <div class="left-panel">
+        <h1>Welcome to School</h1>
+        <p>Hello Welcome from Our School Website. Have a nice day!!!</p>
+    </div>
+
+    <!-- Right login panel -->
     <div class="login-container">
         <div class="logo-container">
-            <!-- <img src="hhh.png" alt="Logo" class="logo"> -->
             <h1>KMD</h1>
             <h5>Aim High Think High</h5>
         </div>
@@ -162,67 +181,69 @@ body {
                 <div class="input">
                     <label for="email">Email Address</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                        name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
+                           name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
                 </div>
+
                 <div class="input">
                     <label for="password">Password</label>
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                        name="password" required autocomplete="current-password">
-
+                           name="password" required autocomplete="current-password">
                     @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
                 </div>
+
                 <div class="input">
                     @if (Route::has('password.request'))
-                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                        <a class="btn-link" href="{{ route('password.request') }}">
                             {{ __('Forgot Your Password?') }}
                         </a>
                     @endif
                 </div>
+
                 <div class="input">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit">
                         {{ __('Login') }}
                     </button>
-                    
                 </div>
+
                 <div class="input">
                     <p id="error-message" class="error-message"></p>
                 </div>
             </form>
         </div>
     </div>
-    <script>
-        function validateForm() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('error-message');
+</div>
 
-            if (username === "" || password === "") {
-                errorMessage.textContent = "All fields are required.";
-                return false;
-            }
+<script>
+    function validateForm() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errorMessage = document.getElementById('error-message');
 
-            if (password.length < 6) {
-                errorMessage.textContent = "Password must be at least 6 characters long.";
-                return false;
-            }
-
-            errorMessage.textContent = "";
-            alert('Login successful!');
-            return true;
+        if (email === "" || password === "") {
+            errorMessage.textContent = "All fields are required.";
+            return false;
         }
-    </script>
-</body>
 
+        if (password.length < 6) {
+            errorMessage.textContent = "Password must be at least 6 characters long.";
+            return false;
+        }
+
+        errorMessage.textContent = "";
+        return true;
+    }
+</script>
+
+</body>
 </html>
 
 
