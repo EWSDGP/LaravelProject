@@ -71,9 +71,10 @@ class RoleController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {    $request->validate([
-        "name"=>"required|unique:roles,name"
-        ]);
+    {   
+        //  $request->validate([
+        // "name"=>"required|unique:roles,name"
+        // ]);
         
         $role = Role::find($id);
         $role->name=$request->name;
