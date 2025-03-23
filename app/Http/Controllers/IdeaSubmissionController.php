@@ -44,8 +44,10 @@ class IdeaSubmissionController extends Controller
             });
         }
     
-        $ideas = $query->with(['user', 'category', 'documents', 'comments', 'votes', 'closureDate'])
-                       ->paginate(5); //latest 
+        $ideas = $query->with(['user', 'category', 'documents', 'comments', 'votes', 'closureDate']) 
+        ->latest() 
+        ->paginate(5);
+
     
         $categories = Category::all();  
         $departments = Department::all();  
