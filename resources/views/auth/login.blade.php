@@ -183,8 +183,8 @@
     <div class="left-panel">
         <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Logo">
         <h1>K M D</h1>
-        <p>Welcome From Our School Organization</p>
-        <p>Have Fun Today!!!</p>
+        <p>Welcome to the University Ideas Portal. This secure system is designed for all academic and support staff to submit, view, and engage with ideas for improvement across the University. Please log in using your staff credentials—your identity will be stored securely for accountability, but you may choose to post ideas and comments anonymously.</p>
+        
     </div>
     <div class="login-container">
         <div class="logo-container">
