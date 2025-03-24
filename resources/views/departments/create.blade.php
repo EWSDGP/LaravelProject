@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-vh-100 bg-sky py-5">
-    <div class="container-fluid px-4 px-md-5">
+<div class="min-vh-100 bg-sky py-3 py-md-5">
+    <div class="container-fluid px-3 px-md-4 px-lg-5">
         <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-12 col-lg-8 col-xl-6">
+            <div class="col-11 col-sm-10 col-lg-8 col-xl-6">
                 <div class="card shadow-lg border-0 overflow-hidden glass-effect">
                     <div class="card-header bg-gradient-sky text-white py-4">
                         <div class="d-flex align-items-center">
@@ -13,10 +13,10 @@
                         </div>
                     </div>
 
-                    <div class="card-body p-4 p-md-5">
+                    <div class="card-body p-3 p-sm-4 p-md-5">
                         <form action="{{ route('departments.store') }}" method="POST">
                             @csrf
-                            <div class="mb-5">
+                            <div class="mb-4 mb-md-5">
                                 <label for="name" class="form-label fw-bold fs-5 mb-3 text-sky">
                                     <i class="fas fa-tag me-2"></i>Department Name
                                 </label>
@@ -33,11 +33,11 @@
                                 </div>
                             </div>
                             
-                            <div class="d-flex justify-content-between align-items-center mt-5">
-                                <a href="{{route('departments.index')}}" class="btn btn-outline-sky btn-lg">
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mt-4 mt-md-5">
+                                <a href="{{route('departments.index')}}" class="btn btn-outline-sky w-100 w-sm-auto">
                                     <i class="fas fa-arrow-left me-2"></i>Back
                                 </a>
-                                <button type="submit" class="btn btn-sky btn-lg px-5">
+                                <button type="submit" class="btn btn-sky w-100 w-sm-auto">
                                     <i class="fas fa-save me-2"></i>Save Department
                                 </button>
                             </div>
@@ -131,17 +131,15 @@
     
     @media (max-width: 768px) {
         .card-body {
-            padding: 2rem !important;
+            padding: 1.5rem !important;
         }
         .btn {
             padding: 0.6rem 1.5rem;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
         .input-group-text, .form-control {
             padding: 0.6rem 1rem;
-        }
-        .card {
-            margin: 1rem;
+            font-size: 1rem;
         }
     }
 
@@ -150,14 +148,21 @@
             padding: 1rem !important;
         }
         .card-body {
-            padding: 1.5rem !important;
+            padding: 1.25rem !important;
         }
         .btn {
             padding: 0.5rem 1rem;
             font-size: 0.9rem;
+            width: 100%;
         }
         h4 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+        }
+        .fa-2x {
+            font-size: 1.5em;
+        }
+        .form-label {
+            font-size: 1.1rem !important;
         }
     }
 </style>
