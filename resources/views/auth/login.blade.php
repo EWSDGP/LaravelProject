@@ -1,175 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University Staff/Admin Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: stretch;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>University Staff/Admin Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        .container {
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
 
-        .left-panel {
-            flex: 1;
-            color: white;
-            padding: 60px 40px;
-            background: linear-gradient(135deg, #ff6a00, #ee0979);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: left;
-        }
+    .container {
+      display: flex;
+      width: 90%;
+      max-width: 1000px;
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
 
-        .left-panel h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
+    .left-panel {
+      flex: 1;
+      background: linear-gradient(to bottom right, #FFD700, #FFC107);
+      color: white;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
 
-        .left-panel p {
-            font-size: 16px;
-            line-height: 1.6;
-        }
+    .left-panel img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 20px;
+    }
 
-        .login-container {
-            flex: 1;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px;
-            max-width: 500px;
-            width: 100%;
-            box-sizing: border-box;
-        }
+    .left-panel h1 {
+      font-size: 24px;
+      margin: 10px 0;
+      font-weight: 700;
+    }
 
-        .logo-container {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+    .left-panel p {
+      font-size: 14px;
+      max-width: 300px;
+      margin: 5px 0;
+    }
 
-        .logo-container h1 {
-            margin: 0;
-            color: #333;
-        }
+    .login-container {
+      flex: 1;
+      background: #fff;
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
 
-        .logo-container h5 {
-            margin: 0;
-            color: #F59A23;
-        }
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+    .logo-container h1 {
+      margin: 0;
+      color: #333;
+      font-weight: 700;
+    }
 
-        .input label {
-            font-weight: 500;
-            margin-bottom: 5px;
-            display: block;
-            color: #333;
-        }
+    .logo-container h5 {
+      margin: 0;
+      color: #F59A23;
+    }
 
-        .input input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 30px;
-            box-sizing: border-box;
-            outline: none;
-            font-size: 14px;
-        }
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
-        .input input:focus {
-            border-color: #8E2DE2;
-        }
+    .input {
+      position: relative;
+    }
 
-        .input .forgot-password,
-        .btn-link {
-            font-size: 13px;
-            text-align: right;
-            display: block;
-            margin-top: 5px;
-            color: #8E2DE2;
-            text-decoration: none;
-        }
+    .input label {
+      font-weight: 500;
+      margin-bottom: 5px;
+      display: block;
+      color: #333;
+    }
 
-        .input .forgot-password:hover,
-        .btn-link:hover {
-            text-decoration: underline;
-        }
+    .input input {
+      width: 100%;
+      padding: 12px 40px;
+      padding-left: 45px;
+      border: 1px solid #ccc;
+      border-radius: 30px;
+      box-sizing: border-box;
+      outline: none;
+      font-size: 14px;
+    }
 
-        .input button {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 30px;
-            background: linear-gradient(to right, #8E2DE2, #4A00E0);
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
+    .input .fa-solid {
+      position: absolute;
+      top: 65%;
+      left: 18px;
+      transform: translateY(-50%);
+      color: #999;
+      font-size: 16px;
+      pointer-events: none;
+    }
 
-        .input button:hover {
-            background: linear-gradient(to right, #4A00E0, #8E2DE2);
-        }
+    .input .btn-link {
+      font-size: 13px;
+      text-align: right;
+      display: block;
+      margin-top: 5px;
+      color: #FFC107;
+      text-decoration: none;
+    }
 
-        .error-message {
-            color: red;
-            font-size: 14px;
-            text-align: center;
-        }
+    .input .btn-link:hover {
+      text-decoration: underline;
+    }
 
-        .invalid-feedback {
-            color: red;
-            font-size: 13px;
-        }
+    .input button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 30px;
+      background: #FFC107;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
 
-        @media screen and (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            .left-panel, .login-container {
-                flex: none;
-                width: 100%;
-                padding: 30px;
-                height: auto;
-            }
-            .left-panel {
-                text-align: center;
-            }
-        }
-    </style>
+    .input button:hover {
+      background: #e6ac00;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .invalid-feedback {
+      color: red;
+      font-size: 13px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        height: auto;
+      }
+    }
+  </style>
 </head>
 <body>
-
 @if (session('error'))
     <div class="alert alert-danger" style="text-align: center; color: red; padding: 10px; margin-bottom: 10px;">
         {{ session('error') }}
     </div>
 @endif
-
 <div class="container">
-    <!-- Left welcome panel -->
     <div class="left-panel">
-        <h1>Welcome to School</h1>
-        <p>Hello Welcome from Our School Website. Have a nice day!!!</p>
+        <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Logo">
+        <h1>K M D</h1>
+        <p>Welcome From Our School Organization</p>
+        <p>Have Fun Today!!!</p>
     </div>
-
-    <!-- Right login panel -->
     <div class="login-container">
         <div class="logo-container">
             <h1>KMD</h1>
@@ -180,6 +196,7 @@
                 @csrf
                 <div class="input">
                     <label for="email">Email Address</label>
+                    <i class="fa-solid fa-user"></i>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
                            name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     @error('email')
@@ -191,6 +208,7 @@
 
                 <div class="input">
                     <label for="password">Password</label>
+                    <i class="fa-solid fa-lock"></i>
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
                            name="password" required autocomplete="current-password">
                     @error('password')
@@ -221,7 +239,6 @@
         </div>
     </div>
 </div>
-
 <script>
     function validateForm() {
         const email = document.getElementById('email').value;
@@ -242,9 +259,9 @@
         return true;
     }
 </script>
-
 </body>
 </html>
+
 
 
 
