@@ -26,48 +26,74 @@ class IdeaSubmissionController extends Controller
         $this->middleware('permission:idea-edit', ["only" => ["edit", "update"]]);
         $this->middleware('permission:idea-delete', ["only" => ["destroy"]]);
     }
+    
+    
     public function index(Request $request)
-    {
-        $currentDate = now(); 
-        
-        $query = Idea::query();
+{
+    $currentDate = now(); 
+    $query = Idea::query()->with(['user', 'category', 'documents', 'comments', 'votes', 'closureDate']);
 
-
-        if ($request->has('category_id') && !empty($request->category_id)) {
-            $query->where('category_id', $request->category_id);
-        }
-    
-       
-        if ($request->has('department_id') && !empty($request->department_id)) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->where('department_id', $request->department_id);
-            });
-        }
-    
-        $ideas = $query->with(['user', 'category', 'documents', 'comments', 'votes', 'closureDate']) 
-        ->latest() 
-        ->paginate(5);
-
-    
-        $categories = Category::all();  
-        $departments = Department::all();  
-    
-       
-        foreach ($ideas as $idea) {
-            
-            $closureDate = ClosureDate::find($idea->closure_date_id); 
-    
-           
-            $idea->is_disabled = $currentDate->greaterThanOrEqualTo($closureDate->Idea_ClosureDate);
-    
-           
-            $idea->can_comment = $currentDate->lessThanOrEqualTo($closureDate->Comment_ClosureDate);
-        }
-    
-        return view('ideas.index', compact('ideas', 'categories', 'departments'))
-                ->with('category_id', $request->category_id)
-                ->with('department_id', $request->department_id);; 
+    if ($request->has('category_id') && !empty($request->category_id)) {
+        $query->where('category_id', $request->category_id);
     }
+
+    if ($request->has('department_id') && !empty($request->department_id)) {
+        $query->whereHas('user', function ($q) use ($request) {
+            $q->where('department_id', $request->department_id);
+        });
+    }
+
+    if ($request->has('sort')) {
+        if ($request->sort == 'popular') {
+            $query->withCount([
+                'votes as likes_count' => function ($q) {
+                    $q->where('vote_type', 'like');
+                },
+                'votes as dislikes_count' => function ($q) {
+                    $q->where('vote_type', 'dislike');
+                }
+            ])
+            ->orderByRaw('(COALESCE(likes_count, 0) - COALESCE(dislikes_count, 0)) DESC');
+        } elseif ($request->sort == 'latest_comment') {
+            $query->leftJoin('comments', 'ideas.idea_id', '=', 'comments.idea_id')
+                  ->select('ideas.*')
+                  ->selectRaw('MAX(comments.created_at) as latest_comment_time')
+                  ->groupBy([
+                      'ideas.idea_id', 
+                      'ideas.title', 
+                      'ideas.description', 
+                      'ideas.category_id', 
+                      'ideas.user_id', 
+                      'ideas.is_anonymous', 
+                      'ideas.is_enabled', 
+                      'ideas.closure_date_id', 
+                      'ideas.created_at', 
+                      'ideas.updated_at'
+                  ])
+                  ->orderByDesc('latest_comment_time');
+        } else {
+            $query->latest(); 
+        }
+    } else {
+        $query->latest();
+    }
+
+    $ideas = $query->paginate(5);
+    $categories = Category::all();
+    $departments = Department::all();
+
+    foreach ($ideas as $idea) {
+        $closureDate = ClosureDate::find($idea->closure_date_id);
+        $idea->is_disabled = $currentDate->greaterThanOrEqualTo($closureDate->Idea_ClosureDate);
+        $idea->can_comment = $currentDate->lessThanOrEqualTo($closureDate->Comment_ClosureDate);
+    }
+
+    return view('ideas.index', compact('ideas', 'categories', 'departments'))
+            ->with('category_id', $request->category_id)
+            ->with('department_id', $request->department_id);
+}
+
+
     
     
     

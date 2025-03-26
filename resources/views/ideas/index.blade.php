@@ -58,6 +58,16 @@
     </div>
 </form>
 
+<form method="GET" action="{{ route('ideas.index') }}" class="mb-4">
+    <label for="sort">Sort by:</label>
+    <select name="sort" id="sort" onchange="this.form.submit()">
+        <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Latest</option>
+        <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular</option>
+        <option value="latest_comment" {{ request('sort') == 'latest_comment' ? 'selected' : '' }}>Latest Comment</option>
+    </select>
+</form>
+
+
         <h2 class="mb-4">Submitted Ideas</h2>
         <div class="row justify-content-center">
             <div class="col-lg-8">

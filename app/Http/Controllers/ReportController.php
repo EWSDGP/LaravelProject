@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use App\Models\Idea;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BannedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,6 +60,7 @@ class ReportController extends Controller {
         if (Auth::id() === $user->id) {
             Auth::logout();
         }
+        Mail::to($user_id->email)->send(new BannedNotification($user));
     
         return back()->with('success', 'User has been banned.');
     }
