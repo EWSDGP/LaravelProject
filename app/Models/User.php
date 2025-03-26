@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\UserLogin;
 
 
 class User extends Authenticatable
-{  
-   
-    use HasFactory, Notifiable,HasRoles;
+{
+
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -24,13 +25,13 @@ class User extends Authenticatable
         'email',
         'password',
         'department_id',
-        'profile',
+        'profile_photo', // Add this field
         'is_banned'
     ];
     public function department()
-{
-    return $this->belongsTo(Department::class, 'department_id');
-}
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -57,7 +58,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Vote::class, 'user_id');
     }
-   
+
     public function ideas()
     {
         return $this->hasMany(Idea::class, 'user_id');
@@ -68,4 +69,8 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class, 'user_id');
     }
 
+    public function logins()
+    {
+        return $this->hasMany(UserLogin::class); // Replace 'Login' with the actual model name for your login history table
+    }
 }

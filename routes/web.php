@@ -44,6 +44,7 @@ Route::post('/comments/{idea}', [CommentController::class, 'store'])->name('comm
 Route::get('/ideas/export/combined', [IdeaExportController::class, 'exportCombined'])->name('ideas.export.combined');
 Route::get('/settings/{section?}', [UserController::class, 'showSettings'])->name('settings');
 Route::post('/change-password', [UserController::class, 'changePassword'])->name('change-password');
+Route::get('/settings/login-history', [UserController::class, 'showLoginHistory'])->name('settings.login-history');
 Route::post('/ideas/{idea}/report', [ReportController::class, 'store'])->name('ideas.report');
 Route::get('/manage-reports', [ReportController::class, 'index'])->name('manage.reports.index');
 Route::delete('/manage-reports/{id}', [ReportController::class, 'destroy'])->name('manage.reports.delete');

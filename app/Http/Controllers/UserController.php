@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\User;
+use App\Models\UserLogin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
@@ -153,8 +154,14 @@ class UserController extends Controller
     }
 
 
-    public function showSettings($section = null)
-    {
-        return view('settings.index', compact('section'));
+   
+public function showSettings($section = null)
+{
+    $loginHistory = [];
+    if ($section === 'login-history') {
+        $loginHistory = Auth::user()->logins()->orderBy('created_at', 'desc')->get();
     }
+
+    return view('settings.index', compact('section', 'loginHistory'));
+}
 }
