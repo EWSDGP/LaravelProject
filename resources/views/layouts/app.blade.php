@@ -150,8 +150,10 @@
 
                     <div class="d-flex justify-content-end align-items-center fs-2 gap-5">
                         <i class="fa-solid fa-bell"></i>
-                        <img src="https://media.istockphoto.com/id/639454418/photo/close-up-of-beagle-against-gray-background.jpg?s=612x612&w=0&k=20&c=dlac4lCaSPRkVwD2wLB7J1y1DCb9rKcjY6eBSxYyOEM="
-                            class="border rounded-circle" style="width: 50px; height: 50px;">
+                        <img src="{{ Auth::user()->profile_photo ?? asset('default-profile.png') }}"
+                            class="border rounded-circle"
+                            style="width: 50px; height: 50px;"
+                            alt="Profile Photo">
                     </div>
                 </div>
             </div>

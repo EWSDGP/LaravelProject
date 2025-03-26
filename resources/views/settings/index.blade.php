@@ -18,24 +18,28 @@
                            class="list-group-item list-group-item-action {{ $section === 'change-password' ? 'active' : '' }}">
                             Change Password
                         </a>
-                        <!-- Add more settings links here in the future -->
+                        <a href="{{ route('settings', ['section' => 'login-history']) }}" 
+                           class="list-group-item list-group-item-action {{ $section === 'login-history' ? 'active' : '' }}">
+                            Login History
+                        </a>
                     </div>
                 </div>
 
                 <!-- Main content area -->
                 <div class="p-4" style="width: 75%;">
+                    <!-- Success Message -->
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
                     @if ($section === 'change-password')
                         <!-- Change Password Form -->
                         <div class="card">
                             <div class="card-header">{{ __('Change Password') }}</div>
-
                             <div class="card-body">
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
-
                                 <form method="POST" action="{{ route('change-password') }}">
                                     @csrf
 
@@ -77,6 +81,35 @@
                                         </button>
                                     </div>
                                 </form>
+                            </div>
+                        </div>
+                    @elseif ($section === 'login-history')
+                        <!-- Login History Section -->
+                        <div class="card">
+                            <div class="card-header">{{ __('Login History') }}</div>
+                            <div class="card-body">
+                                @if ($loginHistory->isEmpty())
+                                    <p>No login history available.</p>
+                                @else
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Date</th>
+                                                <th>Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($loginHistory as $index => $login)
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td>{{ $login->login_date }}</td>
+                                                    <td>{{ $login->login_time }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                @endif
                             </div>
                         </div>
                     @else
