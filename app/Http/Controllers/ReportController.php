@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use App\Models\Idea;
 use App\Models\User;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\BannedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BannedNotification;
+use App\Mail\UnbannedNotification;
+
 
 class ReportController extends Controller {
     public function __construct()
@@ -54,13 +56,14 @@ class ReportController extends Controller {
 
     public function banUser($user_id) {
         $user = User::findOrFail($user_id);
+        Mail::to($user->email)->send(new BannedNotification($user));
         $user->is_banned = true;
         $user->save();
     
         if (Auth::id() === $user->id) {
             Auth::logout();
-        }
-        Mail::to($user_id->email)->send(new BannedNotification($user));
+        };
+        
     
         return back()->with('success', 'User has been banned.');
     }
@@ -68,8 +71,11 @@ class ReportController extends Controller {
     
     public function unbanUser($user_id) {
         $user = User::findOrFail($user_id);
+        Mail::to($user->email)->send(new UnbannedNotification($user));
         $user->is_banned = false;
         $user->save();
+
+        
     
         return back()->with('success', 'User has been unbanned.');
     }
