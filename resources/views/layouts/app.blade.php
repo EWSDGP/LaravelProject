@@ -151,7 +151,7 @@
                     <div class="d-flex justify-content-start align-items-center gap-4 m-auto">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRalke-Kf6_TB5yrnMuUYP158MBQd4bezQIxw&s"
                             style="width: 80px; height: 80px;">
-                        <h3>Admin Dashboard</h3>
+                        <h3> {{ session('title') }} </h3>
                     </div>
 
                 </div>

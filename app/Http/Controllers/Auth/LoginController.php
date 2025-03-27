@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\UserLogin;
 use Illuminate\Http\Request;
 
-
 class LoginController extends Controller
 {
     /*
@@ -49,5 +48,15 @@ class LoginController extends Controller
             'login_date' => now()->toDateString(), // Current date
             'login_time' => now()->toTimeString(), // Current time
         ]);
+
+        // Redirect based on user role
+        $role = $user->getRoleNames()->first(); // Assuming roles are managed via a package like Spatie
+        if ($role === 'Admin') {
+            session()->put('title', 'Admin Dashboard'); // Store title in session
+            return redirect()->route('statistics.index');
+        }
+
+        session()->put('title', 'User Dashboard'); // Store title in session
+        return redirect()->route('ideas.index');
     }
 }
