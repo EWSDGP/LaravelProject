@@ -55,7 +55,7 @@ class DepartmentController extends Controller
     public function update(Request $request,$id)
     {   
         $request->validate([
-            "name" => "required|unique:departments,name",
+            "name" => "required",
         ]);
         
         $department = Department::findOrFail($id);
