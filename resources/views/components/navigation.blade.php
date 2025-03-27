@@ -163,7 +163,7 @@
                 <div class="d-flex justify-content-start align-items-center px-1 fs-5 gap-4 w-44">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRalke-Kf6_TB5yrnMuUYP158MBQd4bezQIxw&s"
                         style="width: 80px; height: 80px;">
-                    <h1>Admin Dashboard</h1>
+                    <h1> {{ $title }} </h1>
                 </div>
 
                 <div class="search d-flex justify-content-evenly align-items-center px-5 w-50">

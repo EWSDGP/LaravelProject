@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+    @component('components.navigation', ['title' => session('title')])
+    @endcomponent
     <div class="container mt-4">
         <div class="d-flex justify-content-end mb-3">
         @php
