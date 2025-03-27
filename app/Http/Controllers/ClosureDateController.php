@@ -36,8 +36,14 @@ class ClosureDateController extends Controller
     $request->validate([
         'Idea_ClosureDate' => 'required|date|after_or_equal:today',
         'Comment_ClosureDate' => 'required|date|after_or_equal:today',
-        'Academic_Year' => 'required|string|unique:closure_dates,Academic_Year',
+        'Academic_Year' => [
+            'required',
+            'string',
+            'unique:closure_dates,Academic_Year',
+            'regex:/^\d{4}(-\d{4})?$/',
+        ],
     ]);
+    
 
     ClosureDate::create($request->all());
     return redirect()->route('closure_dates.index')->with('success', 'Closure Date created successfully!');
@@ -53,11 +59,16 @@ class ClosureDateController extends Controller
     public function update(Request $request, ClosureDate $closureDate)
     {
         $request->validate([
-            'Idea_ClosureDate' => 'required|date',
-            'Comment_ClosureDate' => 'required|date',
-            'Academic_Year' => 'required|string|unique:closure_dates,Academic_Year',
+            'Idea_ClosureDate' => 'required|date|after_or_equal:today',
+            'Comment_ClosureDate' => 'required|date|after_or_equal:today',
+            'Academic_Year' => [
+                'required',
+                'string',
+                'regex:/^\d{4}(-\d{4})?$/',
+            ],
         ]);
-
+        
+        
         $closureDate->update($request->all());
         return redirect()->route('closure_dates.index')->with('success', 'Closure Date updated successfully!');
     }
