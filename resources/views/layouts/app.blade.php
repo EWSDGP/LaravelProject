@@ -160,10 +160,15 @@
 
                     <div class="d-flex justify-content-end align-items-center fs-2 gap-5">
                         <i class="fa-solid fa-bell"></i>
-                        <img src="{{ Auth::user()->profile_photo ?? asset('default-profile.png') }}"
-                            class="border rounded-circle"
-                            style="width: 50px; height: 50px;"
-                            alt="Profile Photo">
+                        <img src="{{ Auth::user()->profile_photo ? asset('storage/' . Auth::user()->profile_photo) : asset('default-profile.png') }}" 
+                            alt="Profile Photo" 
+                            class="img-fluid rounded-circle" 
+                            width="100" 
+                            height="100">
+
+
+
+                     
                     </div>
                 </div>
             </div>

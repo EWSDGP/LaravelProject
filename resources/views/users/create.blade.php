@@ -9,7 +9,7 @@
     </div>
     <div class="bg-white">
         <div>
-            <form class="px-5 py-1" action="{{ route('users.store') }}" method="POST">
+            <form class="px-5 py-1" action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mt-4">
