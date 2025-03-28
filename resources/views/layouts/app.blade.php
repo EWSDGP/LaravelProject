@@ -160,32 +160,38 @@
 
                     <div class="d-flex justify-content-end align-items-center fs-2 gap-5">
                         <i class="fa-solid fa-bell"></i>
-                        @php
-    use Illuminate\Support\Facades\Storage;
+                    @php
+                        use Illuminate\Support\Facades\Storage;
 
-    $profilePhotoPath = Auth::user()->profile_photo;
-    $defaultPhoto = asset('storage/profile_photos/default-profile.jpg');
+                        $profilePhotoPath = Auth::user()->profile_photo;
+                        $defaultPhoto = asset('storage/profile_photos/default-profile.jpg');
 
-    if (!empty($profilePhotoPath) && Storage::exists($profilePhotoPath)) {
-        $profilePhoto = asset('storage/' . $profilePhotoPath);
-    } else {
-        $profilePhoto = $defaultPhoto;
-    }
-@endphp
+                        if (!empty($profilePhotoPath) && Storage::exists($profilePhotoPath)) {
+                            $profilePhoto = asset('storage/' . $profilePhotoPath);
+                        } else {
+                            $profilePhoto = $defaultPhoto;
+                        }
+                    @endphp
 
-<img src="{{ $profilePhoto }}" 
-     alt="Profile Photo" 
-     class="img-fluid rounded-circle" 
-     width="75" 
-     height="75">
+                    <img src="{{ $profilePhoto }}" 
+                        alt="Profile Photo" 
+                        class="img-fluid rounded-circle" 
+                        width="75" 
+                        height="75">
+                    </div></div>
+                    @php
+                        $lastLogin = \App\Models\UserLogin::where('user_id', Auth::id())
+                                                    ->orderBy('login_date', 'desc')
+                                                    ->orderBy('login_time', 'desc')
+                                                    ->first();
+                    @endphp
 
+                    @if($lastLogin)
+                        <p>Last Login: {{ $lastLogin->login_date }} at {{ $lastLogin->login_time }}</p>
+                    @else
+                        <p>No login record found.</p>
+                    @endif
 
-
-
-
-                     
-                    </div>
-                </div>
             </div>
 
             <div style="background-color: #e9f1fa; height: 100vh">
