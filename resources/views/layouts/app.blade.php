@@ -160,11 +160,26 @@
 
                     <div class="d-flex justify-content-end align-items-center fs-2 gap-5">
                         <i class="fa-solid fa-bell"></i>
-                        <img src="{{ Auth::user()->profile_photo ? asset('storage/' . Auth::user()->profile_photo) : asset('default-profile.png') }}" 
-                            alt="Profile Photo" 
-                            class="img-fluid rounded-circle" 
-                            width="100" 
-                            height="100">
+                        @php
+    use Illuminate\Support\Facades\Storage;
+
+    $profilePhotoPath = Auth::user()->profile_photo;
+    $defaultPhoto = asset('storage/profile_photos/default-profile.jpg');
+
+    if (!empty($profilePhotoPath) && Storage::exists($profilePhotoPath)) {
+        $profilePhoto = asset('storage/' . $profilePhotoPath);
+    } else {
+        $profilePhoto = $defaultPhoto;
+    }
+@endphp
+
+<img src="{{ $profilePhoto }}" 
+     alt="Profile Photo" 
+     class="img-fluid rounded-circle" 
+     width="75" 
+     height="75">
+
+
 
 
 

@@ -8,8 +8,6 @@ use App\Models\UserLogin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -97,32 +95,45 @@ class UserController extends Controller
 
 
     public function update(Request $request, string $id)
-    {
-        $request->validate([
-            "name" => "required",
-            "email" => "required|email",
-            // "password" => "required",
-            "department_id" => "nullable|exists:departments,id",
-            "profile_photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"
-        ]);
+{
+    $user = User::find($id);
 
-        $user = User::find($id);
-
-        if ($request->hasFile('profile_photo')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('profile_photo')->getRealPath())->getSecurePath();
-            $user->profile_photo = $uploadedFileUrl;
-        }
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-        // $user->password = Hash::make($request->password);
-        $user->department_id = $request->department_id;
-        $user->save();
-
-        $user->syncRoles($request->roles);
-
-        return redirect()->route("users.index")->with("success", "User updated successfully.");
+    if (!$user) {
+        return redirect()->route("users.index")->with("error", "User not found.");
     }
+
+    $request->validate([
+        "name" => "required",
+        "email" => "required|email|unique:users,email," . $id,
+        "department_id" => "nullable|exists:departments,id",
+        "photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"
+    ]);
+
+    
+    if ($request->hasFile('photo')) {
+      
+        if ($user->profile_photo && file_exists(public_path('storage/' . $user->profile_photo))) {
+            unlink(public_path('storage/' . $user->profile_photo));  
+        }
+    
+       
+        $user->profile_photo = $request->file('photo')->store('profile_photos', 'public');
+    }
+    
+
+   
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->department_id = $request->department_id;
+    $user->save();
+
+    
+    if ($request->has('roles')) {
+        $user->syncRoles($request->roles);
+    }
+
+    return redirect()->route("users.index")->with("success", "User updated successfully.");
+}
 
 
     public function destroy(string $id)

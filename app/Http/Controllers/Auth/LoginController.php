@@ -42,21 +42,30 @@ class LoginController extends Controller
 
     public function authenticated(Request $request, $user)
     {
-        // Record the user's login history
+
         UserLogin::create([
             'user_id' => $user->id,
-            'login_date' => now()->toDateString(), // Current date
-            'login_time' => now()->toTimeString(), // Current time
+            'login_date' => now()->toDateString(), 
+            'login_time' => now()->toTimeString(), 
         ]);
 
-        // Redirect based on user role
-        $role = $user->getRoleNames()->first(); // Assuming roles are managed via a package like Spatie
+       
+        $role = $user->getRoleNames()->first();
         if ($role === 'Admin') {
-            session()->put('title', 'Admin Dashboard'); // Store title in session
+            session()->put('title', 'Admin Dashboard'); 
+            return redirect()->route('statistics.index');
+        }
+        else if($role === 'Manager') {
+            session()->put('title', 'Manager Dashboard'); 
+            return redirect()->route('statistics.index');
+        }
+        else if($role === 'QA_Coordinator') {
+            session()->put('title', 'QA Coordinator Dashboard'); 
             return redirect()->route('statistics.index');
         }
 
-        session()->put('title', 'User Dashboard'); // Store title in session
+
+        session()->put('title', 'User Dashboard'); 
         return redirect()->route('ideas.index');
     }
 }
