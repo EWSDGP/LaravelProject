@@ -35,7 +35,7 @@ Route::resource('categories', CategoryController::class);
 Route::resource('roles', RoleController::class);
 Route::resource("users", UserController::class);
 Route::resource('departments', DepartmentController::class);
-
+Route::get('/ideas/closed', [IdeaSubmissionController::class, 'indexClosedIdeas'])->name('ideas.closed');
 Route::resource('closure_dates', ClosureDateController::class);
 Route::resource('ideas', IdeaSubmissionController::class);
 Route::post('/ideas/{idea}/vote', [VoteController::class, 'vote'])->name('ideas.vote');
@@ -51,6 +51,6 @@ Route::delete('/manage-reports/{id}', [ReportController::class, 'destroy'])->nam
 Route::post('/manage-reports/{user_id}/ban', [ReportController::class, 'banUser'])->name('manage.reports.ban');
 Route::post('/manage-reports/{user_id}/unban', [ReportController::class, 'unbanUser'])->name('manage.reports.unban');
 Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index'); 
-Route::get('/ideas/past-comment-closure', [IdeaSubmissionController::class, 'pastCommentClosureIdeas'])
-    ->name('ideas.past_comment_closure');
+
+
 });
