@@ -88,6 +88,11 @@
                     <i class="fa-solid fa-user-tie pe-4"></i>
                     <a class="text-decoration-none" href="{{ route('ideas.index') }}">View Ideas</a>
                 </li>
+                <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
+                    style="height: 95px">
+                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <a class="text-decoration-none" href="{{ route('ideas.closed') }}">View Closed Ideas</a>
+                </li>
             @endcanany
                 @canany(['closure_date-create', 'closure_date-list', 'closure_date-edit', 'closure_date-delete'])
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-5"
