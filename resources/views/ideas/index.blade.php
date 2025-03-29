@@ -21,12 +21,25 @@
     </a>
 @endcan
 
-            @can('download-ideas')
-            <a href="{{ route('ideas.export.combined') }}" class="btn btn-outline-primary btn-sm">
-    <i class="bi bi-file-earmark-zip"></i> Download CSV & Documents (ZIP)
-</a>
-            @endcan
+      
         </div>
+        @can('download-ideas')
+            <!-- <a href="{{ route('ideas.export.combined') }}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-file-earmark-zip"></i> Download CSV & Documents (ZIP)
+            </a> -->
+            <form action="{{ route('ideas.export.combined') }}" method="GET">
+                <label for="academic_year">Select Academic Year:</label>
+                <select name="academic_year" id="academic_year" class="form-select" required>
+                    <option value="">-- Choose Academic Year --</option>
+                    @foreach($academicYears as $id => $year)
+                        <option value="{{ $id }}">{{ $year }}</option>
+                    @endforeach
+                </select>
+                
+                <button type="submit" class="btn btn-primary mt-2">Download Ideas</button>
+            </form>
+
+            @endcan
         <form method="GET" action="{{ route('ideas.index') }}" class="mb-4">
     <div class="row">
         <div class="col-md-4">

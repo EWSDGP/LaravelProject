@@ -91,8 +91,10 @@ class IdeaSubmissionController extends Controller
             $idea->is_disabled = $currentDate->greaterThanOrEqualTo($closureDate->Idea_ClosureDate);
             $idea->can_comment = $currentDate->lessThanOrEqualTo($closureDate->Comment_ClosureDate);
         }
-    
-        return view('ideas.index', compact('ideas', 'categories', 'departments'))
+        $academicYears = ClosureDate::where('Comment_ClosureDate', '<', now())
+         ->pluck('Academic_Year', 'ClosureDate_id');
+
+        return view('ideas.index', compact('ideas', 'categories', 'departments','academicYears'))
                 ->with('category_id', $request->category_id)
                 ->with('department_id', $request->department_id);
     }
