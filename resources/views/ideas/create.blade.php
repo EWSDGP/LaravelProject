@@ -157,52 +157,220 @@
             descCounter.textContent = descInput.value.length;
         });
 
-       
-        fileInput.addEventListener("change", function () {
-            filePreview.innerHTML = "";
-            for (let file of fileInput.files) {
-                let fileSize = (file.size / 1024 / 1024).toFixed(2); 
-                if (fileSize > 5) {
-                    Swal.fire("File too large!", `The file "${file.name}" exceeds the 5MB limit.`, "error");
-                    fileInput.value = ""; 
-                    return;
-                }
-                filePreview.innerHTML += `<p class="text-muted">📄 ${file.name} (${fileSize} MB)</p>`;
+        // Custom SweetAlert2 configuration
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
 
-       
+        // File validation with modern alert
+        fileInput.addEventListener("change", function () {
+            filePreview.innerHTML = "";
+            for (let file of fileInput.files) {
+                let fileSize = (file.size / 1024 / 1024).toFixed(2);
+                if (fileSize > 5) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'File too large!',
+                        text: `${file.name} exceeds 5MB limit`,
+                        background: '#FFF0F0',
+                        iconColor: '#dc3545'
+                    });
+                    fileInput.value = "";
+                    return;
+                }
+                filePreview.innerHTML += `
+                    <div class="alert alert-light border d-flex align-items-center">
+                        <i class="bi bi-file-earmark-text me-2"></i>
+                        <span>${file.name} (${fileSize} MB)</span>
+                    </div>`;
+            }
+        });
+
+        // Remove default HTML5 validation
+        form.setAttribute('novalidate', true);
+
+        // Input validation function with modern alerts
+        function validateInput(input, fieldName) {
+            if (input.validity.valueMissing) {
+                Swal.fire({
+                    title: `${fieldName} Required`,
+                    text: `Please fill out the ${fieldName.toLowerCase()} field`,
+                    icon: 'warning',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInRight'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutRight'
+                    },
+                    background: '#fff3cd',
+                    iconColor: '#ffc107',
+                    customClass: {
+                        title: 'text-warning'
+                    }
+                });
+                return false;
+            }
+            return true;
+        }
+
+        // Add input event listeners for real-time validation
+        titleInput.addEventListener('invalid', (e) => {
+            e.preventDefault();
+            validateInput(titleInput, 'Title');
+        });
+
+        descInput.addEventListener('invalid', (e) => {
+            e.preventDefault();
+            validateInput(descInput, 'Description');
+        });
+
+        document.getElementById('category_id').addEventListener('invalid', (e) => {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Category Required',
+                text: 'Please select a category for your idea',
+                icon: 'warning',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: '#fff3cd',
+                iconColor: '#ffc107'
+            });
+        });
+
+        // Update form submission validation
         form.addEventListener("submit", function (event) {
             event.preventDefault();
             let errors = [];
+            let hasValidationError = false;
 
-            if (titleInput.value.trim().length === 0) {
-                errors.push("Title is required.");
-            } else if (titleInput.value.length > 100) {
-                errors.push("Title must not exceed 100 characters.");
+            // Check required fields with modern alerts
+            if (!titleInput.value.trim()) {
+                hasValidationError = true;
+                validateInput(titleInput, 'Title');
             }
-
-            if (descInput.value.trim().length === 0) {
-                errors.push("Description is required.");
-            } else if (descInput.value.length > 2500) {
-                errors.push("Description must not exceed 2,500 characters.");
+            if (!descInput.value.trim()) {
+                hasValidationError = true;
+                validateInput(descInput, 'Description');
             }
-
+            if (!document.getElementById('category_id').value) {
+                hasValidationError = true;
+                Swal.fire({
+                    title: 'Category Required',
+                    text: 'Please select a category for your idea',
+                    icon: 'warning',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: '#fff3cd',
+                    iconColor: '#ffc107'
+                });
+            }
             if (!termsCheckbox.checked) {
-                errors.push("You must accept the Terms & Conditions.");
+                hasValidationError = true;
+                Swal.fire({
+                    title: 'Terms & Conditions',
+                    text: 'Please accept the terms and conditions',
+                    icon: 'warning',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: '#fff3cd',
+                    iconColor: '#ffc107'
+                });
+            }
+
+            if (hasValidationError) {
+                return false;
+            }
+
+            // Character limit validation
+            if (titleInput.value.length > 100) {
+                errors.push({
+                    field: 'Title',
+                    message: 'Title must not exceed 100 characters'
+                });
+            }
+            if (descInput.value.length > 2500) {
+                errors.push({
+                    field: 'Description',
+                    message: 'Description must not exceed 2,500 characters'
+                });
             }
 
             if (errors.length > 0) {
-                Swal.fire("Oops!", errors.join("<br>"), "error");
-            } else {
+                let errorHtml = '<div class="text-start">';
+                errors.forEach(error => {
+                    errorHtml += `
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-exclamation-circle text-danger me-2"></i>
+                            <span><strong>${error.field}:</strong> ${error.message}</span>
+                        </div>`;
+                });
+                errorHtml += '</div>';
+
                 Swal.fire({
-                    title: "Submit Idea?",
-                    text: "Are you sure you want to submit this idea?",
-                    icon: "question",
+                    title: 'Validation Error',
+                    html: errorHtml,
+                    icon: 'error',
+                    confirmButtonText: 'Got it!',
+                    confirmButtonColor: '#3085d6',
+                    customClass: {
+                        popup: 'animate__animated animate__fadeInDown',
+                        title: 'text-danger'
+                    }
+                });
+            } else {
+                // Success confirmation dialog
+                Swal.fire({
+                    title: 'Submit Your Idea?',
+                    text: 'This will share your idea with the community',
+                    icon: 'question',
                     showCancelButton: true,
-                    confirmButtonText: "Yes, Submit!",
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: '<i class="bi bi-rocket-takeoff"></i> Launch Idea!',
+                    cancelButtonText: 'Review Again',
+                    customClass: {
+                        popup: 'animated fadeIn',
+                        confirmButton: 'btn btn-primary btn-lg',
+                        cancelButton: 'btn btn-secondary btn-lg'
+                    },
+                    buttonsStyling: false,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeIn'
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        // Show loading state
+                        Swal.fire({
+                            title: 'Submitting...',
+                            html: 'Please wait while we process your idea',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        // Submit the form
                         form.submit();
                     }
                 });
@@ -213,4 +381,7 @@
 
 <!-- Add Bootstrap Icons CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<!-- Add Animate.css for smoother animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 @endsection
