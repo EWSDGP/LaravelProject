@@ -1,116 +1,145 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="alert alert-danger">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this role?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <form id="deleteForm" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
+<div class="container-fluid px-4 py-4">
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="alert alert-danger m-0 rounded-top">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                </div>
+                <div class="modal-body py-4">
+                    <p class="mb-0">Are you sure you want to delete this role?</p>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-2"></i>Cancel
+                    </button>
+                    <form id="deleteForm" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-2"></i>Delete
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
+    <!-- Main Content -->
+    <div class="row g-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Roles</li>
+                </ol>
+            </nav>
+
+            <div class="card border-0 shadow-sm">
                 @session('success')
-                <div class="alert alert-success">
-                    {{$value}}
+                <div class="alert alert-success alert-dismissible fade show m-3">
+                    <i class="bi bi-check-circle-fill me-2"></i>{{$value}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endsession
-                <div class="card-header d-flex justify-content-between align-items-center ">
-                    <span>{{ __('Roles') }}</span>
-                    <input type="text" id="searchInput" class="form-control w-25" placeholder="Search">
-                    <button id="resetSearch" class="btn btn-secondary ms-2">Reset</button>
+                
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <h5 class="mb-0">
+                        <i class="bi bi-shield-lock me-2"></i>{{ __('Roles Management') }}
+                    </h5>
+                    <div class="d-flex gap-2 align-items-center">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Search roles...">
+                        </div>
+                        <button id="resetSearch" class="btn btn-light">
+                            <i class="bi bi-x-circle me-2"></i>Reset
+                        </button>
+                    </div>
                 </div>
+
                 <div class="card-body">
                     @can ('role-create')
-                    <a href="{{route('roles.create')}}" class="btn btn-success mb-3">Create Role</a>
+                    <div class="mb-4">
+                        <a href="{{route('roles.create')}}" class="btn btn-success">
+                            <i class="bi bi-plus-lg me-2"></i>Create Role
+                        </a>
+                    </div>
                     @endcan
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>                      
-                        <tbody id="rolesTable">
-                            @foreach($roles as $role)
-                            <tr>
-                                <td>{{$role->id}}</td>
-                                <td>{{$role->name}}</td>
-                                <td>
-                                    @foreach($role->permissions as $permission)
-                                        <span class="badge bg-primary">{{ $permission->name }}</span>
-                                    @endforeach
-                                </td>
-                                <td>
-                                    <form action="{{route('roles.destroy',$role->id)}}" method="POST" class="d-flex flex-wrap gap-2 justify-content-center">
-                                        @csrf
-                                        @method ('DELETE')
-                                        @can ('role-list')
-                                        <a href="{{route('roles.show',$role->id)}}" class="btn btn-sm btn-info">Details</a>
-                                        @endcan
-                                        @can ('role-edit')
-                                        <a href="{{route('roles.edit',$role->id)}}" class="btn btn-sm btn-warning">Edit</a>
-                                        @endcan
-                                        @can ('role-delete')
-                                        <button type="button" class="btn btn-danger btn-sm delete-btn" 
-                                                data-id="{{$role->id}}" 
-                                                data-url="{{ route('roles.destroy', $role->id) }}" 
-                                                data-role="{{$role->name}}"
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#deleteModal">
-                                            Delete
-                                        </button>
 
-                                        <script>
-                                            document.addEventListener("DOMContentLoaded", function () 
-                                            {
-                                                document.querySelectorAll(".delete-btn").forEach(function (button) 
-                                                {
-                                                    if (button.getAttribute("data-role") === "Admin") 
-                                                    {
-                                                        button.style.display = "none";
-                                                    }
-                                                });
-                                            });
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Permissions</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>                      
+                            <tbody id="rolesTable">
+                                @foreach($roles as $role)
+                                <tr>
+                                    <td>{{$role->id}}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-person-badge me-2"></i>
+                                            {{$role->name}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @foreach($role->permissions as $permission)
+                                            <span class="badge bg-primary rounded-pill">
+                                                <i class="bi bi-key-fill me-1"></i>{{ $permission->name }}
+                                            </span>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2 justify-content-center">
+                                            @can ('role-list')
+                                            <a href="{{route('roles.show',$role->id)}}" class="btn btn-sm btn-info">
+                                                <i class="bi bi-eye me-1"></i>View
+                                            </a>
+                                            @endcan
+                                            @can ('role-edit')
+                                            <a href="{{route('roles.edit',$role->id)}}" class="btn btn-sm btn-warning">
+                                                <i class="bi bi-pencil me-1"></i>Edit
+                                            </a>
+                                            @endcan
+                                            @can ('role-delete')
+                                            <button type="button" class="btn btn-danger btn-sm delete-btn" 
+                                                    data-id="{{$role->id}}" 
+                                                    data-url="{{ route('roles.destroy', $role->id) }}" 
+                                                    data-role="{{$role->name}}"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#deleteModal">
+                                                <i class="bi bi-trash me-1"></i>Delete
+                                            </button>
+                                            @endcan
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-                                        </script>
-
-                                        @endcan
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <label> 
-                                <select id="entriesSelect" class="form-select d-inline w-auto">
-                                    <option value="5">5</option>
-                                    <option value="10" selected>10</option>
-                                </select>
-                            </label>
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
+                        <div class="d-flex align-items-center">
+                            <label class="me-2">Show entries:</label>
+                            <select id="entriesSelect" class="form-select form-select-sm w-auto">
+                                <option value="5">5</option>
+                                <option value="10" selected>10</option>
+                            </select>
                         </div>
-
                         <nav>
-                            <ul class="pagination mb-0"></ul>
+                            <ul class="pagination pagination-sm mb-0"></ul>
                         </nav>
                     </div>
                 </div>
