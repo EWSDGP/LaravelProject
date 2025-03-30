@@ -67,8 +67,25 @@
                     <div class="card shadow-sm mb-4 rounded-3">
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-3">
-                                <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim($idea->user->email))) }}?s=50" 
-                                     class="rounded-circle me-3" alt="User Avatar" width="50" height="50">
+                            @php
+                            $defaultPhoto = asset('storage/profile_photos/default-profile.jpg');
+
+                            if ($idea->is_anonymous) {
+                                
+                                $profilePhoto = $defaultPhoto;
+                            } else {
+                                
+                                $profilePhotoPath = $idea->user->profile_photo ?? null;
+
+                                if ($profilePhotoPath && Storage::exists($profilePhotoPath)) {
+                                    $profilePhoto = asset('storage/' . $profilePhotoPath);
+                                } else {
+                                    $profilePhoto = $defaultPhoto;
+                                }
+                            }
+                        @endphp
+
+                        <img src="{{ $profilePhoto }}" class="rounded-circle me-3" alt="User Avatar" width="50" height="50">
                                 <div>
                                 <h6 class="mb-0">
     <strong>

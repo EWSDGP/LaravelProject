@@ -181,8 +181,8 @@
                     <img src="{{ $profilePhoto }}" 
                         alt="Profile Photo" 
                         class="img-fluid rounded-circle" 
-                        width="75" 
-                        height="75">
+                        width="50" 
+                        height="50">
                     </div></div>
                     @php
                         $lastLogin = \App\Models\UserLogin::where('user_id', Auth::id())
