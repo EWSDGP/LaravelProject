@@ -1,104 +1,110 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid px-4">
+<div class="container-fluid px-4 py-3">
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="alert alert-danger">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-body text-center p-4">
+                <i class="fas fa-exclamation-circle text-danger" style="font-size: 3rem;"></i>
+                <h4 class="mt-3">Are you sure?</h4>
+                <p class="text-muted">Do you really want to delete this category? This process cannot be undone.</p>
+                <div class="mt-4">
+                    <button type="button" class="btn btn-outline-secondary px-4 me-2" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger px-4">Delete</button>
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">
-                Are you sure you want to delete this Category?
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 start-50 translate-middle-x notification-container" style="z-index: 1070">
+    <div id="notificationToast" class="toast align-items-center border-0 text-white" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body d-flex align-items-center">
+                <i class="fas me-2"></i>
+                <span class="toast-message"></span>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <form id="deleteForm" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-12">
-        <div class="card shadow-sm border-0 rounded-3 mb-4">
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show m-3">
-                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show m-3">
-                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
-            
-            <div class="card-header bg-white py-3">
-                <div class="row align-items-center">
-                    <div class="col-md-4">
-                        <h5 class="mb-0"><i class="fas fa-folder me-2"></i>Categories</h5>
+        <div class="card shadow border-0 rounded-4 mb-4">
+            <div class="card-header border-0 bg-transparent pt-4 pb-3">
+                <div class="row align-items-center gy-2">
+                    <div class="col-lg-4 col-md-6">
+                        <h4 class="mb-0 text-dark">
+                            <i class="fas fa-layer-group me-2 text-primary"></i>Categories
+                        </h4>
                     </div>
-                    <div class="col-md-8">
-                        <div class="d-flex justify-content-md-end">
-                            <div class="input-group w-auto">
-                                <span class="input-group-text bg-white border-end-0">
-                                    <i class="fas fa-search text-muted"></i>
-                                </span>
-                                <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Search categories...">
+                    <div class="col-lg-8 col-md-6">
+                        <div class="d-flex flex-wrap justify-content-md-end gap-2">
+                            <div class="search-wrapper flex-grow-1 flex-md-grow-0">
+                                <div class="input-group">
+                                    <span class="input-group-text border-end-0 bg-transparent">
+                                        <i class="fas fa-search text-primary"></i>
+                                    </span>
+                                    <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Search categories...">
+                                    <button id="resetSearch" class="btn btn-light border" title="Reset">
+                                        <i class="fas fa-undo-alt"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <button id="resetSearch" class="btn btn-outline-secondary ms-2">
-                                <i class="fas fa-undo-alt"></i>
-                            </button>
+                            @can('category-create')
+                                <a href="{{ route('categories.create') }}" class="btn btn-primary">
+                                    <i class="fas fa-plus-circle me-2"></i>New Category
+                                </a>
+                            @endcan
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card-body">
-                @can('category-create')
-                    <a href="{{ route('categories.create') }}" class="btn btn-primary mb-3">
-                        <i class="fas fa-plus-circle me-2"></i>Create New Category
-                    </a>
-                @endcan
-
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
+            <div class="card-body px-4 pb-4">
+                <div class="table-responsive rounded-3 border">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
                             <tr>
-                                <th>Category Name</th>
-                                <th class="text-end">Actions</th>
+                                <th class="ps-4">Category Name</th>
+                                <th class="text-end pe-4" width="120">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="categoryTable">
                             @foreach ($categories as $category)
                                 <tr>
-                                    <td>
-                                        <i class="fas fa-folder-open text-warning me-2"></i>
-                                        {{ $category->category_name }}
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="category-icon me-3">
+                                                <i class="fas fa-folder text-warning"></i>
+                                            </div>
+                                            <span>{{ $category->category_name }}</span>
+                                        </div>
                                     </td>
-                                    <td class="text-end">
-                                        @can('category-edit')
-                                            <a href="{{ route('categories.edit', $category->category_id) }}" 
-                                               class="btn btn-sm btn-outline-primary me-2">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                        @endcan
-
-                                        @can('category-delete')
-                                            <button type="button" 
-                                                    class="btn btn-sm btn-outline-danger delete-btn"
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#deleteModal"
-                                                    data-url="{{ route('categories.destroy', $category->category_id) }}">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        @endcan
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group">
+                                            @can('category-edit')
+                                                <a href="{{ route('categories.edit', $category->category_id) }}" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endcan
+                                            @can('category-delete')
+                                                <button type="button" 
+                                                        class="btn btn-sm btn-outline-danger delete-btn"
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#deleteModal"
+                                                        data-url="{{ route('categories.destroy', $category->category_id) }}">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            @endcan
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -106,14 +112,13 @@
                     </table>
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div class="d-flex align-items-center">
-                        <label class="me-2">Show</label>
-                        <select id="entriesSelect" class="form-select form-select-sm w-auto">
-                            <option value="5">5</option>
-                            <option value="10" selected>10</option>
+                <div class="d-flex flex-wrap justify-content-between align-items-center mt-4 gap-3">
+                    <div class="entries-wrapper">
+                        <select id="entriesSelect" class="form-select form-select-sm">
+                            <option value="5">5 entries</option>
+                            <option value="10" selected>10 entries</option>
+                            <option value="25">25 entries</option>
                         </select>
-                        <label class="ms-2">entries</label>
                     </div>
                     <nav>
                         <ul class="pagination pagination-sm mb-0"></ul>
@@ -133,73 +138,204 @@
     }
     
     .card {
-        background-color: #87CEEB; /* Sky blue color for container */
-        transition: box-shadow 0.3s ease-in-out;
-        box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+        background-color: #87CEEB !important; /* Sky blue color for card */
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 32px rgba(0, 31, 63, 0.1);
     }
     
     .card:hover {
-        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(0, 31, 63, 0.15);
     }
     
-    /* Make card header match the container */
     .card-header {
-        background-color: #87CEEB !important;
+        background-color: #87CEEB !important; /* Match card background */
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
     
-    /* Make table background slightly transparent for better contrast */
-    .table {
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 0.5rem;
-    }
-    
-    /* Adjust text color for better readability */
-    .card-header h5 {
+    /* Update text colors for better contrast on sky blue background */
+    .card-header h4 {
         color: #2c3e50;
     }
     
-    .table th {
+    .search-wrapper {
+        min-width: 250px;
+        max-width: 400px;
+    }
+    
+    .input-group {
+        border-radius: 0.5rem;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .input-group-text, .form-control {
+        border-color: rgba(255, 255, 255, 0.2);
+        background: transparent;
+    }
+    
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #4aa9e9;
+        background: rgba(255, 255, 255, 0.95);
+    }
+    
+    .table {
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 0.5rem;
+        margin-bottom: 0;
+    }
+    
+    .table thead {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .table thead th {
         font-weight: 600;
         text-transform: uppercase;
-        font-size: 0.875rem;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        padding: 1rem;
+        color: #2c3e50;
     }
     
-    .btn {
-        border-radius: 0.5rem;
-        padding: 0.375rem 0.75rem;
+    .table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(135, 206, 235, 0.2);
     }
     
-    .btn-sm {
-        padding: 0.25rem 0.5rem;
+    .category-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background-color: rgba(255, 193, 7, 0.15);
+        transition: all 0.3s ease;
+    }
+    
+    tr:hover .category-icon {
+        transform: scale(1.1);
+        background-color: rgba(255, 193, 7, 0.25);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(45deg, #4aa9e9, #87CEEB);
+        border: none;
+        box-shadow: 0 4px 15px rgba(74, 169, 233, 0.2);
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #3998d8, #76bde0);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(74, 169, 233, 0.25);
+    }
+    
+    .btn-group .btn {
+        border-radius: 0.375rem;
+        margin: 0 0.125rem;
+        backdrop-filter: blur(5px);
     }
     
     .pagination .page-link {
-        border-radius: 0.25rem;
+        border-radius: 0.375rem;
         margin: 0 0.125rem;
+        padding: 0.375rem 0.75rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-color: rgba(135, 206, 235, 0.2);
+        color: #2c3e50;
     }
     
-    .form-control:focus, .form-select:focus {
-        border-color: #86b7fe;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    .pagination .page-link:hover {
+        background: rgba(135, 206, 235, 0.1);
+        border-color: rgba(135, 206, 235, 0.3);
     }
     
-    .alert {
-        border-radius: 0.5rem;
+    .pagination .active .page-link {
+        background: linear-gradient(45deg, #4aa9e9, #87CEEB);
+        border-color: transparent;
     }
     
-    @media (max-width: 768px) {
-        .d-flex {
-            flex-wrap: wrap;
+    .entries-wrapper {
+        min-width: 120px;
+    }
+    
+    .form-select {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-color: rgba(135, 206, 235, 0.2);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 991.98px) {
+        .card-header {
+            padding: 1.5rem 1rem;
         }
         
-        .input-group {
-            margin-bottom: 1rem;
+        .card-body {
+            padding: 1rem;
         }
         
-        .btn {
-            margin-bottom: 0.5rem;
+        .search-wrapper {
+            width: 100%;
+            max-width: none;
         }
+    }
+    
+    @media (max-width: 767.98px) {
+        .container-fluid {
+            padding: 1rem !important;
+        }
+        
+        .table thead th,
+        .table tbody td {
+            padding: 0.75rem;
+        }
+        
+        .btn-group .btn {
+            padding: 0.25rem 0.5rem;
+        }
+    }
+    
+    /* Toast notification styles */
+    .notification-container {
+        padding: 1rem;
+        z-index: 1070;
+    }
+    
+    .toast {
+        background: linear-gradient(45deg, #4aa9e9, #87CEEB);
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 8px 32px rgba(0, 31, 63, 0.15);
+        min-width: 300px;
+    }
+    
+    .toast.bg-success {
+        background: linear-gradient(45deg, #28a745, #5cc990) !important;
+    }
+    
+    .toast.bg-danger {
+        background: linear-gradient(45deg, #dc3545, #ff6b6b) !important;
+    }
+    
+    .toast-body {
+        padding: 1rem 1.25rem;
+        font-weight: 500;
+    }
+    
+    /* Modal styles */
+    .modal-content {
+        background: rgba(255, 255, 255, 0.98);
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 10px 40px rgba(0, 31, 63, 0.2);
+        backdrop-filter: blur(10px);
+    }
+    
+    .modal-body {
+        padding: 2rem;
     }
 </style>
 
@@ -270,6 +406,44 @@
     });
 
     paginate();
+
+    // Add toast notification function
+    function showNotification(message, type) {
+        const toast = document.getElementById('notificationToast');
+        const toastBody = toast.querySelector('.toast-body');
+        const icon = toastBody.querySelector('i');
+        const messageSpan = toastBody.querySelector('.toast-message');
+
+        // Set toast classes and icon based on type
+        if (type === 'success') {
+            toast.classList.remove('bg-danger');
+            toast.classList.add('bg-success');
+            icon.classList.remove('fa-exclamation-circle');
+            icon.classList.add('fa-check-circle');
+        } else {
+            toast.classList.remove('bg-success');
+            toast.classList.add('bg-danger');
+            icon.classList.remove('fa-check-circle');
+            icon.classList.add('fa-exclamation-circle');
+        }
+
+        messageSpan.textContent = message;
+        
+        const bsToast = new bootstrap.Toast(toast, {
+            autohide: true,
+            delay: 3000
+        });
+        bsToast.show();
+    }
+
+    // Check for flash messages on page load
+    @if(session('success'))
+        showNotification("{{ session('success') }}", 'success');
+    @endif
+
+    @if(session('error'))
+        showNotification("{{ session('error') }}", 'error');
+    @endif
 });
 
 
