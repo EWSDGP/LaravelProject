@@ -155,6 +155,12 @@
             font-size: 0.9rem;
             width: 100%;
         }
+        .btn-outline-sky {
+            order: 2;
+        }
+        .btn-sky {
+            order: 1;
+        }
         h4 {
             font-size: 1.1rem;
         }
