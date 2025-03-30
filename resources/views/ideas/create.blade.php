@@ -2,14 +2,20 @@
 
 @section('content')
 <!-- {{ var_dump($closureDate) }} -->
-<div class="container">
+<div class="container-fluid min-vh-100 bg-light py-4">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <a href="{{ route('ideas.index') }}" class="btn btn-outline-dark mb-3">← Back</a>
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <a href="{{ route('ideas.index') }}" class="btn btn-outline-primary mb-4">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
 
-            <div class="card shadow-sm rounded">
-                <div class="card-body">
-                    <h5 class="card-title text-center fw-bold">💡 Share Your Idea</h5>
+            <div class="card border-0 shadow-lg rounded-3">
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-lightbulb display-4 text-warning"></i>
+                        <h2 class="card-title fw-bold mt-3">Share Your Innovative Idea</h2>
+                        <p class="text-muted">Your ideas can make a difference!</p>
+                    </div>
 
                     <form action="{{ route('ideas.store') }}" method="POST" enctype="multipart/form-data" id="ideaForm">
                         @csrf
@@ -20,48 +26,73 @@
                         <input type="hidden" name="user_department" value="{{ Auth::user()->department_id }}">
 
                        
-                        <div class="mb-3">
-                            <input type="text" name="title" id="title" class="form-control form-control-lg"
-                                placeholder="What's your idea?" required maxlength="100">
-                            <small class="text-muted"><span id="titleCounter">0</span>/100 characters</small>
+                        <div class="mb-4">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-transparent border-end-0">
+                                    <i class="bi bi-chat-square-text"></i>
+                                </span>
+                                <input type="text" name="title" id="title" 
+                                    class="form-control form-control-lg border-start-0"
+                                    placeholder="What's your brilliant idea?" required maxlength="100">
+                            </div>
+                            <small class="text-muted float-end"><span id="titleCounter">0</span>/100 characters</small>
                         </div>
 
                        
-                        <div class="mb-3">
-                            <textarea name="description" id="description" class="form-control" rows="5"
-                                placeholder="Describe your idea..." required maxlength="2500"></textarea>
-                            <small class="text-muted"><span id="descCounter">0</span>/2500 characters</small>
+                        <div class="mb-4">
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent border-end-0">
+                                    <i class="bi bi-pencil-square"></i>
+                                </span>
+                                <textarea name="description" id="description" 
+                                    class="form-control border-start-0" rows="6"
+                                    placeholder="Describe your idea in detail..." required maxlength="2500"></textarea>
+                            </div>
+                            <small class="text-muted float-end"><span id="descCounter">0</span>/2500 characters</small>
                         </div>
 
                        
-                        <div class="mb-3">
-                            <input type="checkbox" name="is_anonymous" id="is_anonymous">
-                            <label for="is_anonymous">Submit Anonymously</label>
-                        </div>
-
-                        
-                        <div class="mb-3">
-                            <select name="category_id" id="category_id" class="form-select" required>
-                                <option value="" disabled selected>Choose a category</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->category_id }}">{{ $category->category_name }}</option>
-                                @endforeach
-                            </select>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" name="is_anonymous" id="is_anonymous" class="form-check-input">
+                                    <label class="form-check-label" for="is_anonymous">
+                                        <i class="bi bi-incognito"></i> Submit Anonymously
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <select name="category_id" id="category_id" class="form-select form-select-lg" required>
+                                    <option value="" disabled selected>
+                                        <i class="bi bi-tag"></i> Select Category
+                                    </option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->category_id }}">{{ $category->category_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                        
-                        <div class="mb-3">
-                            <label for="documents" class="form-label fw-bold">📎 Attach Files (Optional)</label>
-                            <input type="file" name="documents[]" id="documents" class="form-control" multiple>
+                        <div class="mb-4">
+                            <label for="documents" class="form-label">
+                                <i class="bi bi-paperclip"></i> Attach Supporting Documents
+                            </label>
+                            <input type="file" name="documents[]" id="documents" 
+                                class="form-control form-control-lg" multiple>
                             <div id="filePreview" class="mt-2"></div>
                         </div>
 
                        
-                        <div class="mb-3">
-                            <input type="checkbox" name="terms" id="terms" required>
-                            <label for="terms">
-                                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Conditions</a>
-                            </label>
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" name="terms" id="terms" class="form-check-input" required>
+                                <label class="form-check-label" for="terms">
+                                    <i class="bi bi-shield-check"></i> I agree to the 
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Conditions</a>
+                                </label>
+                            </div>
                         </div>
 
                         
@@ -89,10 +120,10 @@
                             $closureDate = \Carbon\Carbon::parse($closureDate->Idea_ClosureDate);
                         @endphp
 
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-primary btn-lg" id="submitButton"
-                                @if($currentDate->greaterThanOrEqualTo($closureDate)) disabled @endif>
-                                🚀 Post Idea
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 py-3 rounded-pill" 
+                                id="submitButton" @if($currentDate->greaterThanOrEqualTo($closureDate)) disabled @endif>
+                                <i class="bi bi-rocket-takeoff"></i> Launch Your Idea
                             </button>
                         </div>
 
@@ -179,4 +210,7 @@
         });
     });
 </script>
+
+<!-- Add Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 @endsection
