@@ -163,39 +163,54 @@
 
                 <div class="search d-flex justify-content-end align-items-center w-50 pe-4">
 
-                    <div class="d-flex justify-content-end align-items-center fs-2 gap-5">
-                        <i class="fa-solid fa-bell"></i>
-                    @php
-                        use Illuminate\Support\Facades\Storage;
+                <div class="d-flex justify-content-end align-items-center fs-2 gap-5">
+    <i class="fa-solid fa-bell"></i>
 
-                        $profilePhotoPath = Auth::user()->profile_photo;
-                        $defaultPhoto = asset('storage/profile_photos/default-profile.jpg');
+    @if(Auth::check()) 
+        @php
+        
 
-                        if (!empty($profilePhotoPath) && Storage::exists($profilePhotoPath)) {
-                            $profilePhoto = asset('storage/' . $profilePhotoPath);
-                        } else {
-                            $profilePhoto = $defaultPhoto;
+            $profilePhotoPath = Auth::user()->profile_photo;
+            $defaultPhoto = asset('storage/profile_photos/default-profile.jpg');
+
+            if (!empty($profilePhotoPath) && Storage::exists($profilePhotoPath)) {
+                $profilePhoto = asset('storage/' . $profilePhotoPath);
+            } else {
+                $profilePhoto = $defaultPhoto;
+            }
+        @endphp
+
+        <img src="{{ $profilePhoto }}" 
+            alt="Profile Photo" 
+            class="img-fluid rounded-circle" 
+            width="50" 
+            height="50">
+            @endif
+        </div>
+
+                </div>
+                @php
+                    use App\Models\UserLogin;
+                    
+                    $previousLogin = null;
+
+                    if (Auth::check()) {
+                        $logins = UserLogin::where('user_id', Auth::id())
+                                            ->orderBy('login_date', 'desc')
+                                            ->orderBy('login_time', 'desc')
+                                            ->take(2) 
+                                            ->get();
+
+                        if ($logins->count() > 1) {
+                            $previousLogin = $logins[1]; 
                         }
-                    @endphp
+                    }
+                @endphp
 
-                    <img src="{{ $profilePhoto }}" 
-                        alt="Profile Photo" 
-                        class="img-fluid rounded-circle" 
-                        width="50" 
-                        height="50">
-                    </div></div>
-                    @php
-                        $lastLogin = \App\Models\UserLogin::where('user_id', Auth::id())
-                                                    ->orderBy('login_date', 'desc')
-                                                    ->orderBy('login_time', 'desc')
-                                                    ->first();
-                    @endphp
+                @if ($previousLogin)
+                    <p>Last Login: {{ $previousLogin->login_date }} at {{ $previousLogin->login_time }}</p>
+                @endif
 
-                    @if($lastLogin)
-                        <p>Last Login: {{ $lastLogin->login_date }} at {{ $lastLogin->login_time }}</p>
-                    @else
-                        <p>No login record found.</p>
-                    @endif
 
             </div>
 
