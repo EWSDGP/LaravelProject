@@ -17,27 +17,21 @@ class RoleController extends Controller
         $this->middleware('permission:role-delete', ["only" => ["destroy"]]);
     }
     
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {   
         $roles = Role::all();
         return view ("roles.index",compact("roles"));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+   
     public function create()
     {   
         $permissions = Permission::all();
         return view ("roles.create",compact('permissions'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(Request $request)
     {
         // dd($request->all());
@@ -49,27 +43,21 @@ class RoleController extends Controller
         return redirect()->route("roles.index")->with("success","Role created");
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(string $id)
     {  
         $role = Role::find($id);
         return view("roles.show",compact("role"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+   
     public function edit(string $id)
     {    $permissions = Permission::all();
         $role = Role::find($id);
         return view("roles.edit",compact("role","permissions"));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id)
     {   
         //  $request->validate([
@@ -83,13 +71,19 @@ class RoleController extends Controller
         return redirect()->route("roles.index")->with("success","Role Updated");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+   
+    public function destroy($id)
     {
-        $role = Role::find($id);
+        $role = Role::findOrFail($id);
+    
+        if ($role->users()->count() > 0) {
+            return redirect()->route('roles.index')->with('error', 'Cannot delete role. There are users assigned to this role.');
+        }
+    
         $role->delete();
-        return redirect()->route("roles.index")->with("success","Role Deleted");
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
+    
+    
+    
 }
