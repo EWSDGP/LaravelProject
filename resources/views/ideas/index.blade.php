@@ -200,17 +200,55 @@
                     @csrf
                     <div class="modal-body">
                         <label for="reason" class="form-label">Reason:</label>
-                        <textarea name="reason" class="form-control" required></textarea>
+                        
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" value="Inappropriate Content" id="reason1" required>
+                            <label class="form-check-label" for="reason1">Inappropriate Content</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" value="Spam" id="reason2" required>
+                            <label class="form-check-label" for="reason2">Spam</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" value="Harassment" id="reason3" required>
+                            <label class="form-check-label" for="reason3">Harassment</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" value="Copyright Violation" id="reason4" required>
+                            <label class="form-check-label" for="reason4">Copyright Violation</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" value="False Information" id="reason5" required>
+                            <label class="form-check-label" for="reason5">False Information</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" value="Offensive Language" id="reason6" required>
+                            <label class="form-check-label" for="reason6">Offensive Language</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" value="Personal Attacks" id="reason7" required>
+                            <label class="form-check-label" for="reason7">Personal Attacks</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" value="Discrimination" id="reason8" required>
+                            <label class="form-check-label" for="reason8">Discrimination</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" value="Violence" id="reason9" required>
+                            <label class="form-check-label" for="reason9">Violence</label>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-danger">Submit Report</button>
                     </div>
                 </form>
+
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-@endif
+        @endif
 
                         </div>
 
