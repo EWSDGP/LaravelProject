@@ -44,7 +44,11 @@ class PermissionSeeder extends Seeder
             "comment-delete",
             "download-ideas",
             "manage-reports",
-            "statistics"
+            "statistics",
+            "admin-statistics",
+            "manager-statistics",
+            "coordinator-statistics"
+        
         ];
 
         foreach ($permissions as $permission) {

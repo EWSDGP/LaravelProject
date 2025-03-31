@@ -3,8 +3,9 @@
 @section('content')
 <div class="container-fluid px-4">
     <h1 class="mb-4 text-center">📊 System Statistics</h1>
-
+   
     <div class="row">
+    @can('manager-statistics')
         <div class="col-lg-6 col-xl-4 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header bg-primary text-white">
@@ -15,7 +16,8 @@
                 </div>
             </div>
         </div>
-
+    @endcan
+    @canany(['manager-statistics', 'coordinator-statistics'])
         <div class="col-lg-6 col-xl-4 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header bg-success text-white">
@@ -26,7 +28,7 @@
                 </div>
             </div>
         </div>
-
+   
         <div class="col-lg-6 col-xl-4 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header bg-warning text-dark">
@@ -48,29 +50,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-6 col-xl-4 mb-4">
-            <div class="card shadow h-100">
-                <div class="card-header bg-danger text-white">
-                    <h5 class="mb-0">🕵️ Anonymous vs Named Submissions</h5>
-                </div>
-                <div class="card-body" style="height: 300px;">
-                    <canvas id="submissionTypeChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6 col-xl-4 mb-4">
-            <div class="card shadow h-100">
-                <div class="card-header bg-secondary text-white">
-                    <h5 class="mb-0">📈 User Engagement</h5>
-                </div>
-                <div class="card-body" style="height: 300px;">
-                    <canvas id="userEngagementChart"></canvas>
-                </div>
-            </div>
-        </div>
-
         <div class="col-lg-6 col-xl-4 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header bg-dark text-white">
@@ -92,6 +71,32 @@
                 </div>
             </div>
         </div>
+    @endcanany
+    @can('manager-statistics')
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">🕵️ Anonymous vs Named Submissions</h5>
+                </div>
+                <div class="card-body" style="height: 300px;">
+                    <canvas id="submissionTypeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    @endcan
+    @canany(['manager-statistics', 'coordinator-statistics','admin-statistics'])
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">📈 User Engagement</h5>
+                </div>
+                <div class="card-body" style="height: 300px;">
+                    <canvas id="userEngagementChart"></canvas>
+                </div>
+            </div>
+        </div>
+        @endcanany
+     
     </div>
 </div>
 
