@@ -1,8 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show m-3">
+        <i class="bi bi-exclamation-circle-fill me-2"></i>{{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 <div class="container-fluid px-4 py-4">
-    <!-- Delete Modal -->
+
+
+    
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
@@ -29,7 +37,7 @@
         </div>
     </div>
 
-    <!-- Main Content -->
+   
     <div class="row g-4">
         <div class="col-12">
             <nav aria-label="breadcrumb" class="mb-4">
@@ -212,6 +220,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
 </script>
 
 @endsection
