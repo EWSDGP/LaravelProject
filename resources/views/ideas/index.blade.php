@@ -214,50 +214,60 @@
 
                         </div>
 
-                            <div class="mt-3">
-                                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
-                                    <i class="bi bi-chat-left-text"></i> Comments ({{ $idea->comments->count() }})
-                                </button>
+            <div class="mt-3">
+                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
+                    <i class="bi bi-chat-left-text"></i> Comments ({{ $idea->comments->count() }})
+                </button>
 
-                                @can('comment-list')
-                                <div class="collapse mt-2" id="comments-{{ $idea->idea_id }}">
-    @foreach($idea->comments as $comment)
-        <div class="border rounded p-2 mb-2 bg-light">
-            <strong>{{ $comment->is_anonymous ? 'Anonymous' : $comment->user->name }}</strong>
-            <p class="mb-1">{{ $comment->comment_text }}</p>
-            <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-        </div>
-    @endforeach
+                @can('comment-list')
+                <div class="collapse mt-2" id="comments-{{ $idea->idea_id }}">
+                    @foreach($idea->comments as $comment)
+                        <div class="border rounded p-2 mb-2 bg-light d-flex align-items-start">
+                        
+                            @if(!$comment->is_anonymous)
+                                <img src="{{ $comment->user->profile_photo ? asset('storage/' . $comment->user->profile_photo) : asset('storage/profile_photos/default-profile.jpg') }}" 
+                                    alt="User Profile" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                            @else
+                                <img src="{{ asset('storage/profile_photos/default-profile.jpg') }}" 
+                                    alt="Anonymous" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                            @endif
 
-    @can('comment-submit')
-    @auth
-       
-        @if($canComment)
-            <form action="{{ route('comments.store', $idea->idea_id) }}" method="POST" class="mt-2">
-                @csrf
-                <textarea class="form-control mb-2" name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <input type="checkbox" name="is_anonymous" id="anonymous-{{ $idea->idea_id }}">
-                        <label for="anonymous-{{ $idea->idea_id }}">Post as Anonymous</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-sm">Comment</button>
-                </div>
-            </form>
-        @else
-            <p class="text-muted">Comments Close</p>
-        @endif
-    @endauth
-    @endcan
-</div>
-
-                                @endcan
+                            <div>
+                                <strong>{{ $comment->is_anonymous ? 'Anonymous' : $comment->user->name }}</strong>
+                                <p class="mb-1">{{ $comment->comment_text }}</p>
+                                <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+
+                    @can('comment-submit')
+                    @auth
+                        @if($canComment)
+                            <form action="{{ route('comments.store', $idea->idea_id) }}" method="POST" class="mt-2">
+                                @csrf
+                                <textarea class="form-control mb-2" name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <input type="checkbox" name="is_anonymous" id="anonymous-{{ $idea->idea_id }}">
+                                        <label for="anonymous-{{ $idea->idea_id }}">Post as Anonymous</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Comment</button>
+                                </div>
+                            </form>
+                        @else
+                            <p class="text-muted">Comments Closed</p>
+                        @endif
+                    @endauth
+                    @endcan
+                </div>
+                @endcan
             </div>
-        </div>
+
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
 
         <div class="d-flex justify-content-center">
         {{ $ideas->appends(request()->query())->links('pagination::bootstrap-5') }}
