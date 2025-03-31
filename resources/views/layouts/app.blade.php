@@ -128,11 +128,14 @@
                         style="height: 95px">
                         @csrf
                         <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
+                        <a class="dropdown-item" href="#" id="logoutButton">
+                            <i class="bi bi-box-arrow-right me-2"></i>{{ __('Logout') }}
                         </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
@@ -226,6 +229,28 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
     <script src="{{ asset('components/script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.getElementById('logoutButton').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will be logged out from your account!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Yes, logout",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    });
+    </script>
+
 
 </body>
 
