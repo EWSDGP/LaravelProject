@@ -5,7 +5,7 @@
     <div class="row g-0">
         <div class="col-12">
             <div class="card border-0 shadow-lg rounded-0 h-100">
-                <div class="card-header bg-primary bg-gradient text-white py-4 d-flex justify-content-between align-items-center">
+                <div class="card-header bg-info bg-gradient text-white py-4 d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-shield-lock-fill fs-3 me-3"></i>
                         <h4 class="mb-0">{{ __('Role Details') }}</h4>
@@ -23,25 +23,25 @@
                             <div class="card h-100 border-0 shadow-sm">
                                 <div class="card-body p-4">
                                     <div class="d-flex align-items-center mb-3">
-                                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                                            <i class="bi bi-person-badge-fill fs-3 text-primary"></i>
+                                        <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
+                                            <i class="bi bi-person-badge-fill fs-3 text-info"></i>
                                         </div>
                                         <div>
                                             <h6 class="text-muted mb-1">Role Name</h6>
-                                            <h3 class="mb-0 fw-bold text-primary">{{$role->name}}</h3>
+                                            <h3 class="mb-0 fw-bold text-info">{{$role->name}}</h3>
                                         </div>
                                     </div>
                                     <div class="mt-4">
                                         <div class="d-flex align-items-center mb-2">
-                                            <i class="bi bi-tag-fill me-2 text-primary"></i>
+                                            <i class="bi bi-tag-fill me-2 text-info"></i>
                                             <span class="text-muted">Role ID: <span class="text-dark">{{$role->id}}</span></span>
                                         </div>
                                         <div class="d-flex align-items-center mb-2">
-                                            <i class="bi bi-info-circle-fill me-2 text-primary"></i>
+                                            <i class="bi bi-info-circle-fill me-2 text-info"></i>
                                             <span class="text-muted">This role has been assigned to users with specific permissions.</span>
                                         </div>
                                         <div class="d-flex align-items-center">
-                                            <i class="bi bi-shield-check me-2 text-primary"></i>
+                                            <i class="bi bi-shield-check me-2 text-info"></i>
                                             <span class="text-muted">Total Permissions: <span class="text-dark">{{count($role->permissions)}}</span></span>
                                         </div>
                                     </div>
@@ -53,8 +53,8 @@
                             <div class="card h-100 border-0 shadow-sm">
                                 <div class="card-body p-4">
                                     <div class="d-flex align-items-center mb-3">
-                                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                                            <i class="bi bi-clock-history fs-3 text-primary"></i>
+                                        <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
+                                            <i class="bi bi-clock-history fs-3 text-info"></i>
                                         </div>
                                         <div>
                                             <h6 class="text-muted mb-1">Created</h6>
@@ -63,19 +63,19 @@
                                     </div>
                                     <div class="mt-4">
                                         <div class="d-flex align-items-center mb-2">
-                                            <i class="bi bi-calendar-event me-2 text-primary"></i>
+                                            <i class="bi bi-calendar-event me-2 text-info"></i>
                                             <span class="text-muted">Created Date: <span class="text-dark">{{$role->created_at ? $role->created_at->format('M d, Y') : 'N/A'}}</span></span>
                                         </div>
                                         <div class="d-flex align-items-center mb-2">
-                                            <i class="bi bi-clock me-2 text-primary"></i>
+                                            <i class="bi bi-clock me-2 text-info"></i>
                                             <span class="text-muted">Created Time: <span class="text-dark">{{$role->created_at ? $role->created_at->format('h:i A') : 'N/A'}}</span></span>
                                         </div>
                                         <div class="d-flex align-items-center mb-2">
-                                            <i class="bi bi-pencil-square me-2 text-primary"></i>
+                                            <i class="bi bi-pencil-square me-2 text-info"></i>
                                             <span class="text-muted">Last Updated: <span class="text-dark">{{$role->updated_at ? $role->updated_at->format('M d, Y h:i A') : 'N/A'}}</span></span>
                                         </div>
                                         <div class="d-flex align-items-center">
-                                            <i class="bi bi-arrow-repeat me-2 text-primary"></i>
+                                            <i class="bi bi-arrow-repeat me-2 text-info"></i>
                                             <span class="text-muted">Update Count: <span class="text-dark">{{$role->updated_at && $role->created_at ? $role->updated_at->diffInDays($role->created_at) : '0'}}</span> days</span>
                                         </div>
                                     </div>
@@ -87,12 +87,12 @@
                     <div class="row mt-4">
                         <div class="col-12">
                             <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-light py-4">
+                                <div class="card-header bg-info bg-opacity-10 py-4">
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                                            <i class="bi bi-people-fill fs-3 text-primary"></i>
+                                        <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
+                                            <i class="bi bi-people-fill fs-3 text-info"></i>
                                         </div>
-                                        <h4 class="mb-0 fw-bold text-primary">Staff with this Role</h4>
+                                        <h4 class="mb-0 fw-bold text-info">Staff with this Role</h4>
                                     </div>
                                 </div>
                                 <div class="card-body p-4">
@@ -115,8 +115,8 @@
                                             @endforeach
                                         @else
                                             <div class="col-12">
-                                                <div class="alert alert-info d-flex align-items-center">
-                                                    <i class="bi bi-info-circle-fill me-2 fs-4"></i>
+                                                <div class="alert bg-info bg-opacity-10 d-flex align-items-center">
+                                                    <i class="bi bi-info-circle-fill me-2 fs-4 text-info"></i>
                                                     <span>No staff members currently assigned to this role.</span>
                                                 </div>
                                             </div>
@@ -130,12 +130,12 @@
                     <div class="row mt-5">
                         <div class="col-12">
                             <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-light py-4">
+                                <div class="card-header bg-info bg-opacity-10 py-4">
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                                            <i class="bi bi-shield-lock-fill fs-3 text-primary"></i>
+                                        <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
+                                            <i class="bi bi-shield-lock-fill fs-3 text-info"></i>
                                         </div>
-                                        <h4 class="mb-0 fw-bold text-primary">Permissions</h4>
+                                        <h4 class="mb-0 fw-bold text-info">Permissions</h4>
                                     </div>
                                 </div>
                                 <div class="card-body p-4">
@@ -144,8 +144,8 @@
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                                 <div class="card border-0 shadow-sm h-100 hover-shadow">
                                                     <div class="card-body p-3 d-flex align-items-center">
-                                                        <div class="bg-success bg-opacity-10 rounded-circle p-2 me-3">
-                                                            <i class="bi bi-check-circle-fill fs-4 text-success"></i>
+                                                        <div class="bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                                                            <i class="bi bi-check-circle-fill fs-4 text-info"></i>
                                                         </div>
                                                         <div>
                                                             <h6 class="mb-0">{{$permission->name}}</h6>
