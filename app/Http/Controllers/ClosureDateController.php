@@ -68,7 +68,6 @@ class ClosureDateController extends Controller
             ],
         ]);
         
-        
         $closureDate->update($request->all());
         return redirect()->route('closure_dates.index')->with('success', 'Closure Date updated successfully!');
     }
