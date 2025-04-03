@@ -75,5 +75,49 @@ class CommentController extends Controller
             })
         ]);
     }
+
+    public function edit($comment_id)
+{
+    $comment = Comment::findOrFail($comment_id);
+
+    if ($comment->user_id !== Auth::id()) {
+        return back()->with('error', 'You are not authorized to edit this comment.');
+    }
+
+    return view('comments.edit', compact('comment'));
+}
+
+public function update(Request $request, $comment_id)
+{
+    $comment = Comment::findOrFail($comment_id);
+
+    if ($comment->user_id !== Auth::id()) {
+        return back()->with('error', 'You are not authorized to update this comment.');
+    }
+
+    $request->validate([
+        'comment_text' => 'required|string|max:500',
+    ]);
+
+    $comment->update([
+        'comment_text' => $request->comment_text,
+        'is_anonymous' => $request->has('is_anonymous'),
+    ]);
+
+    return redirect()->route('ideas.index')->with('success', 'Comment updated successfully!');
+}
+
+public function destroy($comment_id)
+{
+    $comment = Comment::findOrFail($comment_id);
+
+    if ($comment->user_id !== Auth::id()) {
+        return back()->with('error', 'You are not authorized to delete this comment.');
+    }
+
+    $comment->delete();
+
+    return back()->with('success', 'Comment deleted successfully!');
+}
 }
 
