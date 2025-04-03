@@ -20,12 +20,21 @@
 </div>
                 <div class="row">
                     <div class="col-12">
-                    <div class="card border-0 shadow-sm rounded-0">
-                    @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
+                    @session('success')
+                <div class="alert alert-success alert-dismissible fade show m-3 border-0 shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>{{$value}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endsession
+
+                @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show m-3 border-0 shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 @endif
+                    <div class="card border-0 shadow-sm rounded-0" style="margin: 30px;">
+                    
                 <div class="card-header bg-white py-4 border-bottom">
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
                         <div class="d-flex align-items-center">
@@ -41,6 +50,7 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
+                                <th>Profile Photo</th>
                                 <th>Name</th>
                                 <th>Idea Count</th>
                                 <th>Action</th>
@@ -50,6 +60,7 @@
                         @foreach ($usersWithIdeaCount as $deptUser)
                             @if ($deptUser->id !== $user->id)
                                 <tr>
+                                    <td class="py-3 px-4">{{ $deptUser->profile_photo }}</td>
                                     <td class="py-3 px-4">{{ $deptUser->name }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
@@ -58,12 +69,14 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class=" justify-content-center">
-                                        <button type="button" class="btn btn-danger btn-sm delete-btn" 
-                                                data-bs-toggle="modal" data-bs-target="#reminderModal"
-                                                data-user-id="{{ $deptUser->id }}">
-                                            <i class="bi bi-trash me-1"></i>Reminder
-                                        </button>
+                                        <div class="justify-content-center">
+                                            @if ($deptUser->ideas_count == 0)
+                                                <button type="button" class="btn btn-danger btn-sm delete-btn" 
+                                                        data-bs-toggle="modal" data-bs-target="#reminderModal"
+                                                        data-user-id="{{ $deptUser->id }}">
+                                                    <i class="bi bi-trash me-1"></i>Reminder
+                                                </button>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -75,6 +88,17 @@
             </div>
     </div>
 </div>
+<div class="toast-container position-fixed top-15  p-3">
+    <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Action completed successfully!
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
 
 <script>
     let selectedUserId = null;
@@ -102,10 +126,13 @@
         })
         .catch(error => console.error('Error:', error))
         .finally(() => {
-            var reminderModal = document.getElementById('reminderModal');
-            var modalInstance = bootstrap.Modal.getInstance(reminderModal);
-            modalInstance.hide();
-        });
+        var reminderModal = document.getElementById('reminderModal');
+        var modalInstance = bootstrap.Modal.getInstance(reminderModal);
+        modalInstance.hide();
+        var toastElement = document.getElementById('successToast');
+        var toast = new bootstrap.Toast(toastElement);
+        toast.show();
+    });
     }
 </script>
 

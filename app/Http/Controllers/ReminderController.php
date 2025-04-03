@@ -35,6 +35,8 @@ public function sendReminderEmail($userId)
     $user = User::findOrFail($userId);
 
     Mail::to($user->email)->send(new ReminderEmail());
+    return redirect()->route('reminder.index')->with('success', 'Operation completed successfully!');
+
 }
 
 }
