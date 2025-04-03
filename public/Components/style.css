@@ -5,6 +5,10 @@
     font-family: Arial, sans-serif;
 }
 
+html {
+    font-size: calc(100% / 1.25); /* Adjusts for 125% scaling */
+}
+
 .bg-nav {
     background-color: #1e98d7;
 }
