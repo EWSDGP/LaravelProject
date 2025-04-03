@@ -14,6 +14,9 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\VoteController;
 use App\Http\Middleware\CheckIfBanned;
+use App\Http\Controllers\ReminderController;
+
+
 
 
 Route::get('/', function () {
@@ -27,6 +30,10 @@ Route::get('/login', function () {
 Route::get('/dashboard', function () {
     return view('Webadmin/dashboard');
 })->name('dashboard');
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
 
 Auth::routes();
 Route::middleware([CheckIfBanned::class])->group(function () {
@@ -51,6 +58,9 @@ Route::delete('/manage-reports/{id}', [ReportController::class, 'destroy'])->nam
 Route::post('/manage-reports/{user_id}/ban', [ReportController::class, 'banUser'])->name('manage.reports.ban');
 Route::post('/manage-reports/{user_id}/unban', [ReportController::class, 'unbanUser'])->name('manage.reports.unban');
 Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index'); 
+Route::get('/reminder', [ReminderController::class, 'index'])->name('reminder');
+Route::post('/send-reminder-email/{id}', [ReminderController::class, 'sendReminderEmail']);
+
 
 
 });
