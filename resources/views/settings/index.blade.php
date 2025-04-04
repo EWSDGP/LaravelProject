@@ -2,7 +2,6 @@
 
 @section('content')
 
-<div class="container">
     <div style="background-color: #e9f1fa; height: 100vh">
         <div class="bg-white">
             <div class="bg-leaf text-white d-flex justify-content-center align-items-center p-4">
@@ -14,12 +13,16 @@
                 <div class="bg-white p-4" style="width: 25%; border-right: 1px solid #ddd;">
                     <h5 class="pb-2">Settings Menu</h5>
                     <div class="list-group">
-                        <a href="{{ route('settings', ['section' => 'change-password']) }}" 
-                           class="list-group-item list-group-item-action {{ $section === 'change-password' ? 'active' : '' }}">
+                        <a href="{{ route('settings', ['section' => 'change-password']) }}"
+                            class="list-group-item list-group-item-action {{ $section === 'change-password' ? 'active' : '' }}">
                             Change Password
                         </a>
-                        <a href="{{ route('settings', ['section' => 'login-history']) }}" 
-                           class="list-group-item list-group-item-action {{ $section === 'login-history' ? 'active' : '' }}">
+                        <a href="{{ route('settings', ['section' => 'change-profile']) }}"
+                            class="list-group-item list-group-item-action {{ $section === 'change-profile' ? 'active' : '' }}">
+                            Change Profile
+                        </a>
+                        <a href="{{ route('settings', ['section' => 'login-history']) }}"
+                            class="list-group-item list-group-item-action {{ $section === 'login-history' ? 'active' : '' }}">
                             Login History
                         </a>
                     </div>
@@ -44,10 +47,11 @@
                                     @csrf
 
                                     <div class="mb-3">
-                                        <label for="current_password" class="form-label">{{ __('Current Password') }}</label>
-                                        <input id="current_password" type="password" 
-                                               class="form-control @error('current_password') is-invalid @enderror" 
-                                               name="current_password" required autocomplete="current-password">
+                                        <label for="current_password"
+                                            class="form-label">{{ __('Current Password') }}</label>
+                                        <input id="current_password" type="password"
+                                            class="form-control @error('current_password') is-invalid @enderror"
+                                            name="current_password" required autocomplete="current-password">
 
                                         @error('current_password')
                                             <span class="invalid-feedback" role="alert">
@@ -58,9 +62,9 @@
 
                                     <div class="mb-3">
                                         <label for="new_password" class="form-label">{{ __('New Password') }}</label>
-                                        <input id="new_password" type="password" 
-                                               class="form-control @error('new_password') is-invalid @enderror" 
-                                               name="new_password" required autocomplete="new-password">
+                                        <input id="new_password" type="password"
+                                            class="form-control @error('new_password') is-invalid @enderror"
+                                            name="new_password" required autocomplete="new-password">
 
                                         @error('new_password')
                                             <span class="invalid-feedback" role="alert">
@@ -70,9 +74,10 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="new_password_confirmation" class="form-label">{{ __('Confirm New Password') }}</label>
-                                        <input id="new_password_confirmation" type="password" 
-                                               class="form-control" name="new_password_confirmation" required autocomplete="new-password">
+                                        <label for="new_password_confirmation"
+                                            class="form-label">{{ __('Confirm New Password') }}</label>
+                                        <input id="new_password_confirmation" type="password" class="form-control"
+                                            name="new_password_confirmation" required autocomplete="new-password">
                                     </div>
 
                                     <div class="mb-0">
@@ -83,6 +88,63 @@
                                 </form>
                             </div>
                         </div>
+                    @elseif ($section === 'change-profile')
+                        <!-- Change Profile Section -->
+                        <div class="card">
+                            <div class="card-header">{{ __('Change Profile') }}</div>
+                            <div class="card-body">
+                                <form method="POST" action="{{ route('change-profile') }}" enctype="multipart/form-data">
+                                    @csrf
+
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">{{ __('Name') }}</label>
+                                        <input id="name" type="text"
+                                            class="form-control @error('name') is-invalid @enderror"
+                                            name="name" value="{{ Auth::user()->name }}" required>
+
+                                        @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">{{ __('Email Address') }}</label>
+                                        <input id="email" type="email"
+                                            class="form-control @error('email') is-invalid @enderror"
+                                            name="email" value="{{ Auth::user()->email }}" required>
+
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="profile_picture" class="form-label">{{ __('Profile Picture') }}</label>
+                                        <input id="profile_picture" type="file"
+                                            class="form-control @error('profile_picture') is-invalid @enderror"
+                                            name="profile_picture">
+
+                                        @error('profile_picture')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+
+                                    <div class="mt-3 mb-0">
+                                        <button type="submit" class="btn btn-primary">
+                                            {{ __('Update Profile') }}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    
+
+
                     @elseif ($section === 'login-history')
                         <!-- Login History Section -->
                         <div class="card">
@@ -125,6 +187,5 @@
             </div>
         </div>
     </div>
-</div>
 
 @endsection
