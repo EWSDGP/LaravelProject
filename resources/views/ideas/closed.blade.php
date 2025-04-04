@@ -69,8 +69,8 @@
                         $ideaDisabled = $currentDate->greaterThanOrEqualTo($closureDate->Idea_ClosureDate);
                         $canComment = $currentDate->lessThanOrEqualTo($closureDate->Comment_ClosureDate);
                     @endphp
-                    <div class="show-idea card shadow-sm mb-4 rounded-3">
-                        <div class="card-body">
+                    <div class="show-idea card shadow-sm rounded-3">
+                        <div class="card-body d-flex flex-column gap-3 justify-content-start">
                             <div class="d-flex align-items-center mb-3">
                                 @php
                                     $defaultPhoto = asset('storage/profile_photos/default-profile.jpg');
@@ -100,29 +100,35 @@
                                 </div>
                             </div>
 
-                            <h5 class="fw-bold">{{ $idea->title }}</h5>
-                            <p class="card-text">{{ nl2br(e(\Str::limit($idea->description, 3000))) }}</p>
 
-                            @if ($idea->documents->isNotEmpty())
-                                <div class="mb-3">
-                                    @foreach ($idea->documents as $document)
-                                        @php
-                                            $filePath = asset('storage/' . $document->file_path);
-                                            $extension = pathinfo($document->file_path, PATHINFO_EXTENSION);
-                                        @endphp
-                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']))
-                                            <img src="{{ $filePath }}" alt="Document Image"
-                                                class="img-fluid rounded mb-2">
-                                        @else
-                                            <a href="{{ $filePath }}" class="btn btn-outline-primary btn-sm"
-                                                target="_blank">
-                                                <i class="bi bi-file-earmark-text"></i> View {{ strtoupper($extension) }}
-                                                File
-                                            </a>
-                                        @endif
-                                    @endforeach
-                                </div>
-                            @endif
+                            <div>
+
+                                <h5 class="fw-bold">{{ $idea->title }}</h5>
+                                <p class="card-text">{{ nl2br(e(\Str::limit($idea->description, 3000))) }}</p>
+
+                                @if ($idea->documents->isNotEmpty())
+                                    <div>
+                                        @foreach ($idea->documents as $document)
+                                            @php
+                                                $filePath = asset('storage/' . $document->file_path);
+                                                $extension = pathinfo($document->file_path, PATHINFO_EXTENSION);
+                                            @endphp
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']))
+                                                <img src="{{ $filePath }}" alt="Document Image"
+                                                    class="img-fluid rounded mb-2" style="width: 50%; aspect-ratio: 16/12;">
+                                            @else
+                                                <a href="{{ $filePath }}" class="btn btn-outline-primary btn-sm"
+                                                    target="_blank">
+                                                    <i class="bi bi-file-earmark-text"></i> View
+                                                    {{ strtoupper($extension) }}
+                                                    File
+                                                </a>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                            </div>
 
 
                             @if ($ideaDisabled)
@@ -137,69 +143,75 @@
                                 <!-- <p class="text-success">Comment Open Test</p> -->
                             @endif
 
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div class="d-flex align-items-center mt-2">
-                                    <button class="btn btn-outline-primary btn-sm me-2 vote-btn"
-                                        data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}" data-type="like"
-                                        id="like-btn-{{ $idea->idea_id }}"
-                                        {{ $ideaDisabled || $idea->votes->where('vote_type', 'like')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
-                                        <i class="bi bi-hand-thumbs-up-fill"></i> Like
-                                        <span
-                                            class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
-                                    </button>
 
-                                    <button class="btn btn-outline-danger btn-sm me-2 vote-btn"
-                                        data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
-                                        data-type="dislike" id="dislike-btn-{{ $idea->idea_id }}"
-                                        {{ $ideaDisabled || $idea->votes->where('vote_type', 'dislike')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
-                                        <i class="bi bi-hand-thumbs-down-fill"></i> Dislike
-                                        <span
-                                            class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
-                                    </button>
+                            <div class="mt-auto">
+
+                                <div class="d-flex justify-content-start">
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-outline-primary btn-sm me-2 vote-btn"
+                                            data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
+                                            data-type="like" id="like-btn-{{ $idea->idea_id }}"
+                                            {{ $ideaDisabled || $idea->votes->where('vote_type', 'like')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
+                                            <i class="fa-solid fa-thumbs-up"></i>
+                                            <span
+                                                class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
+                                        </button>
+
+                                        <button class="btn btn-outline-danger btn-sm me-2 vote-btn"
+                                            data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
+                                            data-type="dislike" id="dislike-btn-{{ $idea->idea_id }}"
+                                            {{ $ideaDisabled || $idea->votes->where('vote_type', 'dislike')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
+                                            <i class="fa-solid fa-thumbs-down"></i>
+                                            <span
+                                                class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
+                                        </button>
+                                    </div>
+
                                 </div>
 
-                            </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-outline-secondary btn-sm" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
+                                        <i class="bi bi-chat-left-text"></i> Comments ({{ $idea->comments->count() }})
+                                    </button>
 
-                            <div class="mt-3">
-                                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#comments-{{ $idea->idea_id }}">
-                                    <i class="bi bi-chat-left-text"></i> Comments ({{ $idea->comments->count() }})
-                                </button>
+                                    @can('comment-list')
+                                        <div class="collapse mt-2" id="comments-{{ $idea->idea_id }}">
+                                            @foreach ($idea->comments as $comment)
+                                                <div class="border rounded p-2 mb-2 bg-light">
+                                                    <strong>{{ $comment->is_anonymous ? 'Anonymous' : $comment->user->name }}</strong>
+                                                    <p class="mb-1">{{ $comment->comment_text }}</p>
+                                                    <small
+                                                        class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                                </div>
+                                            @endforeach
 
-                                @can('comment-list')
-                                    <div class="collapse mt-2" id="comments-{{ $idea->idea_id }}">
-                                        @foreach ($idea->comments as $comment)
-                                            <div class="border rounded p-2 mb-2 bg-light">
-                                                <strong>{{ $comment->is_anonymous ? 'Anonymous' : $comment->user->name }}</strong>
-                                                <p class="mb-1">{{ $comment->comment_text }}</p>
-                                                <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-                                            </div>
-                                        @endforeach
+                                            @can('comment-submit')
+                                                @auth
 
-                                        @can('comment-submit')
-                                            @auth
-
-                                                @if ($canComment)
-                                                    <form action="{{ route('comments.store', $idea->idea_id) }}" method="POST"
-                                                        class="mt-2">
-                                                        @csrf
-                                                        <textarea class="form-control mb-2" name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <div>
-                                                                <input type="checkbox" name="is_anonymous"
-                                                                    id="anonymous-{{ $idea->idea_id }}">
-                                                                <label for="anonymous-{{ $idea->idea_id }}">Post as Anonymous</label>
+                                                    @if ($canComment)
+                                                        <form action="{{ route('comments.store', $idea->idea_id) }}" method="POST"
+                                                            class="mt-2">
+                                                            @csrf
+                                                            <textarea class="form-control mb-2" name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div>
+                                                                    <input type="checkbox" name="is_anonymous"
+                                                                        id="anonymous-{{ $idea->idea_id }}">
+                                                                    <label for="anonymous-{{ $idea->idea_id }}">Post as
+                                                                        Anonymous</label>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary btn-sm">Comment</button>
                                                             </div>
-                                                            <button type="submit" class="btn btn-primary btn-sm">Comment</button>
-                                                        </div>
-                                                    </form>
-                                                @else
-                                                    <p class="text-muted">Comments Close</p>
-                                                @endif
-                                            @endauth
-                                        @endcan
-                                    </div>
-                                @endcan
+                                                        </form>
+                                                    @else
+                                                        <p class="text-muted">Comments Close</p>
+                                                    @endif
+                                                @endauth
+                                            @endcan
+                                        </div>
+                                    @endcan
+                                </div>
                             </div>
                         </div>
                     </div>
