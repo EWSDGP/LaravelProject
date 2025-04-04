@@ -152,7 +152,7 @@ class IdeaSubmissionController extends Controller
             $query->latest();
         }
     
-        $ideas = $query->paginate(5);
+        $ideas = $query->paginate(8);
         $categories = Category::all();
         $departments = Department::all();
     
