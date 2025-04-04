@@ -61,7 +61,7 @@
                     @endif
 
                     @if (Route::has('register'))
-                        <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-4"
+                        <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('register*') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-arrow-right-to-bracket pe-4"></i>
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
@@ -69,62 +69,61 @@
                     @endif
                 @else
                     @canany(['statistics'])
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('statistics*') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-home pe-4"></i>
                             <a class="text-decoration-none" href="{{ route('statistics.index') }}">Dashboard</a>
                         </li>
                     @endcanany
                     @canany(['category-create', 'category-list', 'category-edit', 'category-delete'])
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('categories*') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-calendar-days pe-4"></i>
                             <a class="text-decoration-none" href="{{ route('categories.index') }}">Categories</a>
                         </li>
                     @endcanany
                     @canany(['department-create', 'department-list', 'department-edit', 'department-delete'])
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('departments*') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-user-tie pe-4"></i>
                             <a class="text-decoration-none" href="{{ route('departments.index') }}">Departments</a>
                         </li>
                     @endcanany
                     @canany(['manage-reports'])
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('manage-reports*') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-user-tie pe-4"></i>
                             <a class="text-decoration-none" href="{{ route('manage.reports.index') }}">Manage Report</a>
-
                         </li>
                     @endcanany
                     @canany(['idea-list'])
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('ideas') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-user-tie pe-4"></i>
                             <a class="text-decoration-none" href="{{ route('ideas.index') }}">View Ideas</a>
                         </li>
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('ideas/closed') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-user-tie pe-4"></i>
                             <a class="text-decoration-none" href="{{ route('ideas.closed') }}">View Closed Ideas</a>
                         </li>
                     @endcanany
                     @canany(['closure_date-create', 'closure_date-list', 'closure_date-edit', 'closure_date-delete'])
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('closure-date') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-user-tie pe-4"></i>
                             <a class="text-decoration-none" href="{{ route('closure_dates.index') }}">Manage Closure_Dates</a>
                         </li>
                     @endcanany
                     @role('Admin')
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('roles') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-calendar-days pe-4"></i>
                             <a class="text-decoration-none" href="{{ route('roles.index') }}">Role Management</a>
                         </li>
                     @endrole
                     @canany(['user-list', 'user-create', 'user-edit', 'user-delete'])
-                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
+                        <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('users') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-user-tie pe-4"></i>
                             <a class="text-decoration-none" href="{{ route('users.index') }}">Account Management</a>
@@ -133,7 +132,7 @@
 
                     <div class="d-flex flex-column mt-auto w-100">
                         <div class="d-flex flex-column mt-auto w-100">
-                            <div class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
+                            <div class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('settings') ? 'hover_active' : '' }}"
                                 style="height: 7rem">
                                 <i class="fa-solid fa-gear pe-2"></i>
                                 <a class="text-decoration-none" href="{{ route('settings') }}">Setting</a>

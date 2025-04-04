@@ -171,7 +171,6 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
@@ -185,7 +184,6 @@ class UserController extends Controller
         }
 
         $user->name = $request->name;   
-        $user->email = $request->email;
         $user->save();
 
         return redirect()->route('statistics.index')->with('success', 'Profile updated successfully'); 

@@ -304,18 +304,6 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="email" class="form-label">{{ __('Email Address') }}</label>
-                        <input id="email" type="email"
-                        class="form-control @error('email') is-invalid @enderror" name="email"
-                        value="{{ Auth::user()->email }}" required>
-                        @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
                         <label for="profile_picture" class="form-label">{{ __('Profile Picture') }}</label>
                         <input id="profile_picture" type="file"
                         class="form-control @error('profile_picture') is-invalid @enderror"
