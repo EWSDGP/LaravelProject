@@ -6,7 +6,7 @@
 }
 
 html {
-    font-size: calc(100% / 1.25); /* Adjusts for 125% scaling */
+    font-size: calc(0.8vw); /* Adjusts for 125% scaling */
 }
 
 .bg-nav {

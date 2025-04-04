@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div style="margin: 0rem 9rem">
+    <div style="margin: 0rem 5rem">
 
         <h2 class="py-4">Closed Ideas</h2>
         <div class="d-flex justify-content-end gap-2">
@@ -13,10 +13,10 @@
 
         </div>
         <form method="GET" action="{{ route('ideas.closed') }}" class="mb-4">
-            <div class="row">
+            <div class="row gap-2 flex-wrap">
                 <div class="col-md-4">
                     <select name="category_id" class="form-select">
-                        <option value="">Filter by Category</option>
+                        <option value="">Filtered by Category</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->category_id }}"
                                 {{ request('category_id') == $category->category_id ? 'selected' : '' }}>
@@ -29,7 +29,7 @@
 
                 <div class="col-md-4">
                     <select name="department_id" class="form-select">
-                        <option value="">Filter by Department</option>
+                        <option value="">Filtered by Department</option>
                         @foreach ($departments as $department)
                             <option value="{{ $department->id }}"
                                 {{ request('department_id') == $department->id ? 'selected' : '' }}>
@@ -40,7 +40,7 @@
                 </div>
 
 
-                <div class="col-md-4">
+                <div class="col-md-4 w-auto ms-auto">
                     <button type="submit" class="btn btn-primary">Apply Filters</button>
                     <a href="{{ route('ideas.closed') }}" class="btn btn-secondary">Reset</a>
                 </div>
@@ -48,19 +48,20 @@
         </form>
 
         <form method="GET" action="{{ route('ideas.closed') }}" class="mb-4">
-            <label for="sort">Sort by:</label>
-            <select name="sort" id="sort" onchange="this.form.submit()">
-                <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Latest</option>
-                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular</option>
-                <option value="latest_comment" {{ request('sort') == 'latest_comment' ? 'selected' : '' }}>Latest Comment
+            <select name="sort" id="sort" onchange="this.form.submit()" class="form-select w-100">
+                <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Sorted by Latest</option>
+                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Sorted by Most Popular
+                </option>
+                <option value="latest_comment" {{ request('sort') == 'latest_comment' ? 'selected' : '' }}>Sorted by Latest
+                    Comment
                 </option>
             </select>
         </form>
 
 
 
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
+        <div class="row justify-content-start">
+            <div class="col-lg-8 w-100 d-flex flex-wrap gap-4">
                 @foreach ($ideas as $idea)
                     @php
                         $currentDate = now();
@@ -68,7 +69,7 @@
                         $ideaDisabled = $currentDate->greaterThanOrEqualTo($closureDate->Idea_ClosureDate);
                         $canComment = $currentDate->lessThanOrEqualTo($closureDate->Comment_ClosureDate);
                     @endphp
-                    <div class="card shadow-sm mb-4 rounded-3">
+                    <div class="show-idea card shadow-sm mb-4 rounded-3">
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-3">
                                 @php

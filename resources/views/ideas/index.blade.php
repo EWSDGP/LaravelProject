@@ -4,8 +4,7 @@
     <!-- @component('components.navigation', ['title' => session('title')])
     @endcomponent -->
 
-    <div style="margin: 0rem 9rem">
-
+    <div style="margin: 0rem 5rem">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="py-4">Submitted Ideas</h2>
 
@@ -33,11 +32,11 @@
 
         @can('download-ideas')
             <!-- <a href="{{ route('ideas.export.combined') }}" class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-file-earmark-zip"></i> Download CSV & Documents (ZIP)
-                                            </a> -->
+                                                    <i class="bi bi-file-earmark-zip"></i> Download CSV & Documents (ZIP)
+                                                    </a> -->
             <form action="{{ route('ideas.export.combined') }}" method="GET"
                 class="d-flex flex-wrap justify-content-between gap-3 mb-4">
-                <div class="w-100">
+                <div class="">
 
                     <select name="academic_year" id="academic_year" class="form-select" required>
                         <option value="">-- Choose Academic Year --</option>
@@ -48,57 +47,55 @@
 
                 </div>
 
-                <button type="submit" class="btn btn-primary">Download Ideas</button>
+                <button type="submit" class="btn btn-primary ms-auto">Download Ideas</button>
 
 
             </form>
-
-
-            @endcan
-            <form method="GET" action="{{ route('ideas.index') }}" class="mb-4">
-                <div class="row gap-3">
-                    <div class="col-md-4 w-100">
-                        <select name="category_id" class="form-select">
-                            <option value="">Filtered by Category</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->category_id }}"
-                                    {{ request('category_id') == $category->category_id ? 'selected' : '' }}>
-                                    {{ $category->category_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-
-                    <div class="col-md-4 w-100">
-                        <select name="department_id" class="form-select">
-                            <option value="">Filtered by Department</option>
-                            @foreach ($departments as $department)
-                                <option value="{{ $department->id }}"
-                                    {{ request('department_id') == $department->id ? 'selected' : '' }}>
-                                    {{ $department->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-
-                    <div class="col-md-4 w-100">
-                        <button type="submit" class="btn btn-primary">Apply Filters</button>
-                        <a href="{{ route('ideas.index') }}" class="btn btn-secondary">Reset</a>
-                    </div>
+        @endcan
+        <form method="GET" action="{{ route('ideas.index') }}" class="mb-4">
+            <div class="row gap-2 flex-wrap">
+                <div class="col-md-4">
+                    <select name="category_id" class="form-select">
+                        <option value="">Filtered by Category</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->category_id }}"
+                                {{ request('category_id') == $category->category_id ? 'selected' : '' }}>
+                                {{ $category->category_name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
-            </form>
 
-            <form method="GET" action="{{ route('ideas.index') }}" class="col mb-4">
-                <select name="sort" id="sort" onchange="this.form.submit()" class="form-select w-100">
-                    <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Sorted by Latest</option>
-                    <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular</option>
-                    <option value="latest_comment" {{ request('sort') == 'latest_comment' ? 'selected' : '' }}>Latest
-                        Comment
-                    </option>
-                </select>
-            </form>
+
+                <div class="col-md-4">
+                    <select name="department_id" class="form-select">
+                        <option value="">Filtered by Department</option>
+                        @foreach ($departments as $department)
+                            <option value="{{ $department->id }}"
+                                {{ request('department_id') == $department->id ? 'selected' : '' }}>
+                                {{ $department->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+
+                <div class="col-md-4 w-auto ms-auto">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    <a href="{{ route('ideas.index') }}" class="btn btn-secondary">Reset</a>
+                </div>
+            </div>
+        </form>
+
+        <form method="GET" action="{{ route('ideas.index') }}" class="col mb-4">
+            <select name="sort" id="sort" onchange="this.form.submit()" class="form-select w-100">
+                <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Sorted by Latest</option>
+                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular</option>
+                <option value="latest_comment" {{ request('sort') == 'latest_comment' ? 'selected' : '' }}>Latest
+                    Comment
+                </option>
+            </select>
+        </form>
 
 
         <div class="justify-content-start">
