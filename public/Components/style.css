@@ -7,6 +7,13 @@
 html {
     font-size: calc(0.8vw);
 }
+.hover_active {
+    background-color: whitesmoke;
+}
+.hover_active a,
+.hover_active i {
+    color: #1e98d7 !important;
+}
 .bg-nav {
     background-color: #1e98d7;
 }

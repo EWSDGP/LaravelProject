@@ -104,7 +104,7 @@
 
 
     <div class="justify-content-start">
-        <div class="col-lg-8 w-100 d-flex flex-wrap gap-4">
+        <div class="col-lg-8 w-100 d-flex flex-wrap gap-4 position-relative">
             @foreach ($ideas as $idea)
             @php
             $currentDate = now();
@@ -163,45 +163,154 @@
                                     data-type="like" id="like-btn-{{ $idea->idea_id }}"
                                     {{ $ideaDisabled || $idea->votes->where('vote_type', 'like')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
                                     <i class="fa-solid fa-thumbs-up"></i> Like
-                                    <span class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
+                                    <span
+                                        class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
                                 </button>
-
+                
                                 <button class="btn btn-outline-danger btn-sm me-2 vote-btn"
                                     data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
                                     data-type="dislike" id="dislike-btn-{{ $idea->idea_id }}"
                                     {{ $ideaDisabled || $idea->votes->where('vote_type', 'dislike')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
                                     <i class="fa-solid fa-thumbs-down"></i> Dislike
-                                    <span class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
+                                    <span
+                                        class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
+                                </button>
+                
+                            </div>
+                            @if ($idea->user_id !== Auth::id())
+                            <div class="mt-3 position-absolute top-0 end-0 me-3">
+                                <button class="btn btn-outline-danger btn-sm" type="button"
+                                    data-bs-toggle="modal" data-bs-target="#reportModal-{{ $idea->idea_id }}">
+                                    <i class="fa-solid fa-flag"></i> Report
                                 </button>
                             </div>
+                
+                
+                            <div class="modal fade" id="reportModal-{{ $idea->idea_id }}" tabindex="-1"
+                                aria-labelledby="reportModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="reportModalLabel">Report Idea</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ route('ideas.report', $idea->idea_id) }}"
+                                            method="POST">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <label for="reason" class="form-label">Reason:</label>
+                
+                
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="reason" value="Inappropriate Content"
+                                                        id="reason1" required>
+                                                    <label class="form-check-label"
+                                                        for="reason1">Inappropriate
+                                                        Content</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="reason" value="Spam" id="reason2"
+                                                        required>
+                                                    <label class="form-check-label"
+                                                        for="reason2">Spam</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="reason" value="Harassment" id="reason3"
+                                                        required>
+                                                    <label class="form-check-label"
+                                                        for="reason3">Harassment</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="reason" value="Copyright Violation"
+                                                        id="reason4" required>
+                                                    <label class="form-check-label" for="reason4">Copyright
+                                                        Violation</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="reason" value="False Information"
+                                                        id="reason5" required>
+                                                    <label class="form-check-label" for="reason5">False
+                                                        Information</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="reason" value="Offensive Language"
+                                                        id="reason6" required>
+                                                    <label class="form-check-label" for="reason6">Offensive
+                                                        Language</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="reason" value="Personal Attacks"
+                                                        id="reason7" required>
+                                                    <label class="form-check-label" for="reason7">Personal
+                                                        Attacks</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="reason" value="Discrimination" id="reason8"
+                                                        required>
+                                                    <label class="form-check-label"
+                                                        for="reason8">Discrimination</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="reason" value="Violence" id="reason9"
+                                                        required>
+                                                    <label class="form-check-label"
+                                                        for="reason9">Violence</label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-danger">Submit
+                                                    Report</button>
+                                            </div>
+                                        </form>
+                
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+                
                         </div>
-
+                
                         <div class="mt-3">
                             <button class="btn btn-outline-secondary btn-sm" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
                                 <i class="fa-solid fa-comment"></i> Comments ({{ $idea->comments->count() }})
                             </button>
-
+                
                             @can('comment-list')
                             <div class="collapse mt-2" id="comments-{{ $idea->idea_id }}">
+                
                                 @foreach ($idea->comments as $comment)
                                 @if ($comment->user)
                                 <div class="border rounded p-2 mb-2 bg-light d-flex align-items-start">
                                     @if (!$comment->is_anonymous)
                                     <img src="{{ $comment->user->profile_photo ? asset('storage/' . $comment->user->profile_photo) : asset('storage/profile_photos/default-profile.jpg') }}"
-                                        alt="User Profile" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                                        alt="User Profile" class="rounded-circle me-2"
+                                        style="width: 40px; height: 40px;">
                                     @else
                                     <img src="{{ asset('storage/profile_photos/default-profile.jpg') }}"
-                                        alt="Anonymous" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                                        alt="Anonymous" class="rounded-circle me-2"
+                                        style="width: 40px; height: 40px;">
                                     @endif
-
+                
                                     <div>
                                         <strong>
                                             {{ $comment->is_anonymous ? 'Anonymous' : $comment->user->name }}
                                         </strong>
                                         <p>{{ $comment->comment_text }}</p>
                                         <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-
+                
                                         @if ($comment->user_id === Auth::id())
                                         <div class="mt-2">
                                             <a href="{{ route('comments.edit', $comment->comment_id) }}" class="btn btn-sm btn-warning">Edit</a>
@@ -217,17 +326,20 @@
                                 </div>
                                 @endif
                                 @endforeach
-
+                
                                 @can('comment-submit')
                                 @auth
                                 @if ($canComment)
-                                <form action="{{ route('comments.store', $idea->idea_id) }}" method="POST" class="mt-2">
+                                <form action="{{ route('comments.store', $idea->idea_id) }}" method="POST"
+                                    class="mt-2">
                                     @csrf
                                     <textarea class="form-control mb-2" name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <input type="checkbox" name="is_anonymous" id="anonymous-{{ $idea->idea_id }}">
-                                            <label for="anonymous-{{ $idea->idea_id }}">Post as Anonymous</label>
+                                            <input type="checkbox" name="is_anonymous"
+                                                id="anonymous-{{ $idea->idea_id }}">
+                                            <label for="anonymous-{{ $idea->idea_id }}">Post as
+                                                Anonymous</label>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-sm">Comment</button>
                                     </div>
@@ -241,6 +353,7 @@
                             @endcan
                         </div>
                     </div>
+
                 </div>
             </div>
             @endif
@@ -260,211 +373,13 @@
     <!-- <p class="text-success">Comment Open Test</p> -->
     @endif
 
-    <div class="mt-auto">
-        <div class="d-flex justify-content-between align-items-center mt-3 m-auto">
-            <div class="d-flex align-items-center">
-                <button class="btn btn-outline-primary btn-sm me-2 vote-btn"
-                    data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
-                    data-type="like" id="like-btn-{{ $idea->idea_id }}"
-                    {{ $ideaDisabled || $idea->votes->where('vote_type', 'like')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
-                    <i class="fa-solid fa-thumbs-up"></i> Like
-                    <span
-                        class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
-                </button>
-
-                <button class="btn btn-outline-danger btn-sm me-2 vote-btn"
-                    data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
-                    data-type="dislike" id="dislike-btn-{{ $idea->idea_id }}"
-                    {{ $ideaDisabled || $idea->votes->where('vote_type', 'dislike')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
-                    <i class="fa-solid fa-thumbs-down"></i> Dislike
-                    <span
-                        class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
-                </button>
-
-            </div>
-            @if ($idea->user_id !== Auth::id())
-            <div class="mt-3 position-absolute top-0 end-0 me-3">
-                <button class="btn btn-outline-danger btn-sm" type="button"
-                    data-bs-toggle="modal" data-bs-target="#reportModal-{{ $idea->idea_id }}">
-                    <i class="fa-solid fa-flag"></i> Report
-                </button>
-            </div>
-
-
-            <div class="modal fade" id="reportModal-{{ $idea->idea_id }}" tabindex="-1"
-                aria-labelledby="reportModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="reportModalLabel">Report Idea</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('ideas.report', $idea->idea_id) }}"
-                            method="POST">
-                            @csrf
-                            <div class="modal-body">
-                                <label for="reason" class="form-label">Reason:</label>
-
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                        name="reason" value="Inappropriate Content"
-                                        id="reason1" required>
-                                    <label class="form-check-label"
-                                        for="reason1">Inappropriate
-                                        Content</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                        name="reason" value="Spam" id="reason2"
-                                        required>
-                                    <label class="form-check-label"
-                                        for="reason2">Spam</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                        name="reason" value="Harassment" id="reason3"
-                                        required>
-                                    <label class="form-check-label"
-                                        for="reason3">Harassment</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                        name="reason" value="Copyright Violation"
-                                        id="reason4" required>
-                                    <label class="form-check-label" for="reason4">Copyright
-                                        Violation</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                        name="reason" value="False Information"
-                                        id="reason5" required>
-                                    <label class="form-check-label" for="reason5">False
-                                        Information</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                        name="reason" value="Offensive Language"
-                                        id="reason6" required>
-                                    <label class="form-check-label" for="reason6">Offensive
-                                        Language</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                        name="reason" value="Personal Attacks"
-                                        id="reason7" required>
-                                    <label class="form-check-label" for="reason7">Personal
-                                        Attacks</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                        name="reason" value="Discrimination" id="reason8"
-                                        required>
-                                    <label class="form-check-label"
-                                        for="reason8">Discrimination</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio"
-                                        name="reason" value="Violence" id="reason9"
-                                        required>
-                                    <label class="form-check-label"
-                                        for="reason9">Violence</label>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-danger">Submit
-                                    Report</button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-            @endif
-
-        </div>
-
-        <div class="mt-3">
-            <button class="btn btn-outline-secondary btn-sm" type="button"
-                data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
-                <i class="fa-solid fa-comment"></i> Comments ({{ $idea->comments->count() }})
-            </button>
-
-            @can('comment-list')
-            <div class="collapse mt-2" id="comments-{{ $idea->idea_id }}">
-
-                @foreach ($idea->comments as $comment)
-                @if ($comment->user)
-                <div class="border rounded p-2 mb-2 bg-light d-flex align-items-start">
-                    @if (!$comment->is_anonymous)
-                    <img src="{{ $comment->user->profile_photo ? asset('storage/' . $comment->user->profile_photo) : asset('storage/profile_photos/default-profile.jpg') }}"
-                        alt="User Profile" class="rounded-circle me-2"
-                        style="width: 40px; height: 40px;">
-                    @else
-                    <img src="{{ asset('storage/profile_photos/default-profile.jpg') }}"
-                        alt="Anonymous" class="rounded-circle me-2"
-                        style="width: 40px; height: 40px;">
-                    @endif
-
-                    <div>
-                        <strong>
-                            {{ $comment->is_anonymous ? 'Anonymous' : $comment->user->name }}
-                        </strong>
-                        <p>{{ $comment->comment_text }}</p>
-                        <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-
-                        @if ($comment->user_id === Auth::id())
-                        <div class="mt-2">
-                            <a href="{{ route('comments.edit', $comment->comment_id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="{{ route('comments.destroy', $comment->comment_id) }}" method="POST" style="display: inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger"
-                                    onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
-                            </form>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                @endif
-                @endforeach
-
-                @can('comment-submit')
-                @auth
-                @if ($canComment)
-                <form action="{{ route('comments.store', $idea->idea_id) }}" method="POST"
-                    class="mt-2">
-                    @csrf
-                    <textarea class="form-control mb-2" name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <input type="checkbox" name="is_anonymous"
-                                id="anonymous-{{ $idea->idea_id }}">
-                            <label for="anonymous-{{ $idea->idea_id }}">Post as
-                                Anonymous</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-sm">Comment</button>
-                    </div>
-                </form>
-                @else
-                <p class="text-muted">Comments Closed</p>
-                @endif
-                @endauth
-                @endcan
-            </div>
-            @endcan
-        </div>
+    <div class="d-flex justify-content-center">
+        {{ $ideas->appends(request()->query())->links('pagination::bootstrap-5') }}
     </div>
-</div>
+    
 </div>
 
 
-<div class="d-flex justify-content-center">
-    {{ $ideas->appends(request()->query())->links('pagination::bootstrap-5') }}
-</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
