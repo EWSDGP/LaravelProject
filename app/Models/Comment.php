@@ -10,7 +10,7 @@ class Comment extends Model
     use HasFactory;
 
     protected $primaryKey = 'comment_id';
-    
+
     protected $fillable = ['idea_id', 'user_id', 'comment_text', 'is_anonymous'];
 
     public function idea()
@@ -23,4 +23,3 @@ class Comment extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 }
-
