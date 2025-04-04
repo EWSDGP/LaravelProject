@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+    <div style="margin: 0rem 9rem">
 
-        <div class="d-flex justify-content-end mb-3">
+        <h2 class="py-4">Closed Ideas</h2>
+        <div class="d-flex justify-content-end gap-2">
             @php
 
                 $latestClosureDate = \App\Models\ClosureDate::latest()->first()->Idea_ClosureDate;
@@ -56,7 +58,7 @@
         </form>
 
 
-        <h2 class="mb-4">Closed Ideas</h2>
+
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 @foreach ($ideas as $idea)
@@ -298,4 +300,6 @@
                 });
             });
         </script>
+
+    </div>
 @endsection

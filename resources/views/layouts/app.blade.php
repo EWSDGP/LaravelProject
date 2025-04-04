@@ -38,7 +38,7 @@
 
         <div class="navigation bg-nav text-white position-fixed overflow-auto" 
             style="width: 17%; height: 100vh; overflow-y: auto;">
-            <div class="bg-nav-title d-flex justify-content-center align-items-center" style="height: 90px">
+            <div class="bg-nav-title d-flex justify-content-center align-items-center" style="height: 7rem">
                 <h3 class="m-0">
                     Greenwich
                 </h3>
@@ -163,7 +163,7 @@
 
         <div class="full-content w-83">
 
-            <div class="d-flex justify-content-between align-items-center w-100" style="height: 90px">
+            <div class="d-flex justify-content-between align-items-center w-100" style="height: 7rem">
 
                 <div class="d-flex justify-content-start align-items-center px-4 w-50">
                     <i class="fa-solid fa-bars menu-bars fs-5"></i>
