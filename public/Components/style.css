@@ -101,12 +101,25 @@ table td {
 }
 
 .show-idea {
-    width: calc(50% - 0.8rem);
+    width: 100%;
+}
+
+.filter-ideas {
+    flex: 1;
+}
+.container_back {
+    margin: 0rem 9rem;
+}
+.setting-icon {
+    font-size: calc(2.5vw);
 }
 
 @media (max-width: 768px) {
     html {
         font-size: calc(2.2vw);
+    }
+    .info-display {
+        display: none;
     }
     .navigation {
         display: none;
@@ -126,10 +139,6 @@ table td {
         display: inline;
         font-size: 1.5rem;
     }
-
-    .search {
-        display: none;
-    }
     table th,
     table td {
         border: none;
@@ -140,10 +149,11 @@ table td {
         font-size: 15px;
         padding: 0;
     }
-
-    /* for idea */
-    .show-idea {
-        width: 100%;
+    .container_back {
+        margin: 0rem 2rem;
+    }
+    .last-login {
+        display: none;
     }
 }
 

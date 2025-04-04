@@ -4,8 +4,34 @@
     <!-- @component('components.navigation', ['title' => session('title')])
     @endcomponent -->
 
-    <div style="margin: 0rem 5rem">
+    <div class="container_back">
+
+        <div class="pt-5">
+            @can('download-ideas')
+                <!-- <a href="{{ route('ideas.export.combined') }}" class="btn btn-outline-primary btn-sm">
+                                                                                <i class="bi bi-file-earmark-zip"></i> Download CSV & Documents (ZIP)
+                                                                                </a> -->
+                <form action="{{ route('ideas.export.combined') }}" method="GET" class="mb-4 d-flex w-100 gap-4">
+                    <div class="download-ideas" style="flex: 1;">
+
+                        <select name="academic_year" id="academic_year" class="form-select w-100" required>
+                            <option value="">-- Choose Academic Year --</option>
+                            @foreach ($academicYears as $id => $year)
+                                <option value="{{ $id }}"> Academic Year - {{ $year }}</option>
+                            @endforeach
+                        </select>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary ms-auto" style="flex: 0 1 auto;">Download Ideas</button>
+
+                </form>
+            @endcan
+
+        </div>
+
         <div class="d-flex justify-content-between align-items-center">
+
             <h2 class="py-4">Submitted Ideas</h2>
 
             <div class="d-flex justify-content-end gap-2">
@@ -30,33 +56,12 @@
 
         </div>
 
-        @can('download-ideas')
-            <!-- <a href="{{ route('ideas.export.combined') }}" class="btn btn-outline-primary btn-sm">
-                                                                    <i class="bi bi-file-earmark-zip"></i> Download CSV & Documents (ZIP)
-                                                                    </a> -->
-            <form action="{{ route('ideas.export.combined') }}" method="GET"
-                class="d-flex flex-wrap justify-content-between gap-3 mb-4">
-                <div class="">
 
-                    <select name="academic_year" id="academic_year" class="form-select" required>
-                        <option value="">-- Choose Academic Year --</option>
-                        @foreach ($academicYears as $id => $year)
-                            <option value="{{ $id }}">{{ $year }}</option>
-                        @endforeach
-                    </select>
-
-                </div>
-
-                <button type="submit" class="btn btn-primary ms-auto">Download Ideas</button>
-
-
-            </form>
-        @endcan
         <form method="GET" action="{{ route('ideas.index') }}" class="mb-4">
-            <div class="row gap-2 flex-wrap">
-                <div class="col-md-4">
+            <div class="row flex-wrap">
+                <div class="filter-ideas col-md-4">
                     <select name="category_id" class="form-select">
-                        <option value="">Filtered by Category</option>
+                        <option value="">Filter by Category</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->category_id }}"
                                 {{ request('category_id') == $category->category_id ? 'selected' : '' }}>
@@ -67,9 +72,9 @@
                 </div>
 
 
-                <div class="col-md-4">
+                <div class="filter-ideas col-md-4">
                     <select name="department_id" class="form-select">
-                        <option value="">Filtered by Department</option>
+                        <option value="">Filter by Department</option>
                         @foreach ($departments as $department)
                             <option value="{{ $department->id }}"
                                 {{ request('department_id') == $department->id ? 'selected' : '' }}>
@@ -184,7 +189,7 @@
                                             data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
                                             data-type="like" id="like-btn-{{ $idea->idea_id }}"
                                             {{ $ideaDisabled || $idea->votes->where('vote_type', 'like')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
-                                            <i class="fa-solid fa-thumbs-up"></i>
+                                            <i class="fa-solid fa-thumbs-up"></i> Like
                                             <span
                                                 class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
                                         </button>
@@ -193,7 +198,7 @@
                                             data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
                                             data-type="dislike" id="dislike-btn-{{ $idea->idea_id }}"
                                             {{ $ideaDisabled || $idea->votes->where('vote_type', 'dislike')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
-                                            <i class="fa-solid fa-thumbs-down"></i>
+                                            <i class="fa-solid fa-thumbs-down"></i> Dislike
                                             <span
                                                 class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
                                         </button>
@@ -203,7 +208,7 @@
                                         <div class="mt-3 position-absolute top-0 end-0 me-3">
                                             <button class="btn btn-outline-danger btn-sm" type="button"
                                                 data-bs-toggle="modal" data-bs-target="#reportModal-{{ $idea->idea_id }}">
-                                                <i class="bi bi-flag"></i> Report
+                                                <i class="fa-solid fa-flag"></i> Report
                                             </button>
                                         </div>
 
@@ -307,7 +312,7 @@
                                 <div class="mt-3">
                                     <button class="btn btn-outline-secondary btn-sm" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
-                                        <i class="bi bi-chat-left-text"></i> Comments ({{ $idea->comments->count() }})
+                                        <i class="fa-solid fa-comment"></i> Comments ({{ $idea->comments->count() }})
                                     </button>
 
                                     @can('comment-list')

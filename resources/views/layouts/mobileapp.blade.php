@@ -2,7 +2,7 @@
     style="width: 100%; z-index: 1; overflow-y: auto; height: 100vh;">
     <div class="bg-nav-title d-flex justify-content-center align-items-center" style="height: 90px">
         <h3 class="m-0">
-            Greenwich
+            Bright Path
         </h3>
     </div>
     <div class="navbar d-flex flex-column justify-content-center align-items-center fs-5">
@@ -92,7 +92,7 @@
                     <i class="fa-solid fa-arrow-right-from-bracket pe-4"></i>
                     <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                        document.getElementById('logout-form').submit();">
                         {{ __('Logout') }}
                     </a>
 
