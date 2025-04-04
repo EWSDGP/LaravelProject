@@ -250,10 +250,10 @@
             return false;
         }
 
-        if (password.length < 6) {
-            errorMessage.textContent = "Password must be at least 6 characters long.";
-            return false;
-        }
+        // if (password.length < 6) {
+        //     errorMessage.textContent = "Password must be at least 6 characters long.";
+        //     return false;
+        // }
 
         errorMessage.textContent = "";
         return true;

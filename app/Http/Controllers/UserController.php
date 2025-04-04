@@ -40,7 +40,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        
+
         $request->validate([
             "name" => "required",
             "email" => "required|email|unique:users,email",
@@ -48,26 +48,26 @@ class UserController extends Controller
             "department_id" => "nullable|exists:departments,id",
             "photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"
         ]);
-    
+
         $profilePhotoPath = null;
-    
-      
+
+
         if ($request->hasFile('photo')) {
-           
+
             $profilePhotoPath = $request->file('photo')->store('profile_photos', 'public');
         }
-    
-       
+
+
         $user = User::create([
             "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password),
             "department_id" => $request->department_id ?? null,
-            "profile_photo" => $profilePhotoPath, 
+            "profile_photo" => $profilePhotoPath,
         ]);
-    
+
         $user->syncRoles($request->roles);
-    
+
         return redirect()->route("users.index")->with("success", "User created");
     }
 
@@ -95,45 +95,45 @@ class UserController extends Controller
 
 
     public function update(Request $request, string $id)
-{
-    $user = User::find($id);
+    {
+        $user = User::find($id);
 
-    if (!$user) {
-        return redirect()->route("users.index")->with("error", "User not found.");
-    }
-
-    $request->validate([
-        "name" => "required",
-        "email" => "required|email|unique:users,email," . $id,
-        "department_id" => "nullable|exists:departments,id",
-        "photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"
-    ]);
-
-    
-    if ($request->hasFile('photo')) {
-      
-        if ($user->profile_photo && file_exists(public_path('storage/' . $user->profile_photo))) {
-            unlink(public_path('storage/' . $user->profile_photo));  
+        if (!$user) {
+            return redirect()->route("users.index")->with("error", "User not found.");
         }
-    
-       
-        $user->profile_photo = $request->file('photo')->store('profile_photos', 'public');
+
+        $request->validate([
+            "name" => "required",
+            "email" => "required|email|unique:users,email," . $id,
+            "department_id" => "nullable|exists:departments,id",
+            "photo" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048"
+        ]);
+
+
+        if ($request->hasFile('photo')) {
+
+            if ($user->profile_photo && file_exists(public_path('storage/' . $user->profile_photo))) {
+                unlink(public_path('storage/' . $user->profile_photo));
+            }
+
+
+            $user->profile_photo = $request->file('photo')->store('profile_photos', 'public');
+        }
+
+
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->department_id = $request->department_id;
+        $user->save();
+
+
+        if ($request->has('roles')) {
+            $user->syncRoles($request->roles);
+        }
+
+        return redirect()->route("users.index")->with("success", "User updated successfully.");
     }
-    
-
-   
-    $user->name = $request->name;
-    $user->email = $request->email;
-    $user->department_id = $request->department_id;
-    $user->save();
-
-    
-    if ($request->has('roles')) {
-        $user->syncRoles($request->roles);
-    }
-
-    return redirect()->route("users.index")->with("success", "User updated successfully.");
-}
 
 
     public function destroy(string $id)
@@ -164,18 +164,39 @@ class UserController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->route('dashboard')->with('success', 'Password changed successfully');
+        return redirect()->route('statistics.index')->with('success', 'Password changed successfully');
+    }
+
+    public function changeProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('profile_picture')) {
+            if ($user->profile_photo && file_exists(public_path('storage/' . $user->profile_photo))) {
+                unlink(public_path('storage/' . $user->profile_photo));
+            }
+            $user->profile_photo = $request->file('profile_picture')->store('profile_photos', 'public');
+        }
+
+        $user->name = $request->name;   
+        $user->save();
+
+        return redirect()->route('statistics.index')->with('success', 'Profile updated successfully'); 
     }
 
 
-   
-public function showSettings($section = null)
-{
-    $loginHistory = [];
-    if ($section === 'login-history') {
-        $loginHistory = Auth::user()->logins()->orderBy('created_at', 'desc')->get();
-    }
+    public function showSettings($section = null)
+    {
+        $loginHistory = [];
+        if ($section === 'login-history') {
+            $loginHistory = Auth::user()->logins()->orderBy('created_at', 'desc')->get();
+        }
 
-    return view('settings.index', compact('section', 'loginHistory'));
-}
+        return view('settings.index', compact('section', 'loginHistory'));
+    }
 }

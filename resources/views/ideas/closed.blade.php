@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="container_back">
 
-        <div class="d-flex justify-content-end mb-3">
+        <h2 class="py-4">Closed Ideas</h2>
+        <div class="d-flex justify-content-end gap-2">
             @php
 
                 $latestClosureDate = \App\Models\ClosureDate::latest()->first()->Idea_ClosureDate;
@@ -11,8 +13,8 @@
 
         </div>
         <form method="GET" action="{{ route('ideas.closed') }}" class="mb-4">
-            <div class="row">
-                <div class="col-md-4">
+            <div class="row gap-1">
+                <div class="filter-ideas col-md-4">
                     <select name="category_id" class="form-select">
                         <option value="">Filter by Category</option>
                         @foreach ($categories as $category)
@@ -25,7 +27,7 @@
                 </div>
 
 
-                <div class="col-md-4">
+                <div class="filter-ideas col-md-4">
                     <select name="department_id" class="form-select">
                         <option value="">Filter by Department</option>
                         @foreach ($departments as $department)
@@ -38,7 +40,7 @@
                 </div>
 
 
-                <div class="col-md-4">
+                <div class="col-md-4 w-auto ms-auto">
                     <button type="submit" class="btn btn-primary">Apply Filters</button>
                     <a href="{{ route('ideas.closed') }}" class="btn btn-secondary">Reset</a>
                 </div>
@@ -46,19 +48,20 @@
         </form>
 
         <form method="GET" action="{{ route('ideas.closed') }}" class="mb-4">
-            <label for="sort">Sort by:</label>
-            <select name="sort" id="sort" onchange="this.form.submit()">
-                <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Latest</option>
-                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular</option>
-                <option value="latest_comment" {{ request('sort') == 'latest_comment' ? 'selected' : '' }}>Latest Comment
+            <select name="sort" id="sort" onchange="this.form.submit()" class="form-select w-100">
+                <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Sorted by Latest</option>
+                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Sorted by Most Popular
+                </option>
+                <option value="latest_comment" {{ request('sort') == 'latest_comment' ? 'selected' : '' }}>Sorted by Latest
+                    Comment
                 </option>
             </select>
         </form>
 
 
-        <h2 class="mb-4">Closed Ideas</h2>
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
+
+        <div class="row justify-content-start">
+            <div class="col-lg-8 w-100 d-flex flex-wrap gap-4">
                 @foreach ($ideas as $idea)
                     @php
                         $currentDate = now();
@@ -66,8 +69,8 @@
                         $ideaDisabled = $currentDate->greaterThanOrEqualTo($closureDate->Idea_ClosureDate);
                         $canComment = $currentDate->lessThanOrEqualTo($closureDate->Comment_ClosureDate);
                     @endphp
-                    <div class="card shadow-sm mb-4 rounded-3">
-                        <div class="card-body">
+                    <div class="show-idea card shadow-sm rounded-3">
+                        <div class="card-body d-flex flex-column gap-3 justify-content-start">
                             <div class="d-flex align-items-center mb-3">
                                 @php
                                     $defaultPhoto = asset('storage/profile_photos/default-profile.jpg');
@@ -97,29 +100,35 @@
                                 </div>
                             </div>
 
-                            <h5 class="fw-bold">{{ $idea->title }}</h5>
-                            <p class="card-text">{{ nl2br(e(\Str::limit($idea->description, 3000))) }}</p>
 
-                            @if ($idea->documents->isNotEmpty())
-                                <div class="mb-3">
-                                    @foreach ($idea->documents as $document)
-                                        @php
-                                            $filePath = asset('storage/' . $document->file_path);
-                                            $extension = pathinfo($document->file_path, PATHINFO_EXTENSION);
-                                        @endphp
-                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']))
-                                            <img src="{{ $filePath }}" alt="Document Image"
-                                                class="img-fluid rounded mb-2">
-                                        @else
-                                            <a href="{{ $filePath }}" class="btn btn-outline-primary btn-sm"
-                                                target="_blank">
-                                                <i class="bi bi-file-earmark-text"></i> View {{ strtoupper($extension) }}
-                                                File
-                                            </a>
-                                        @endif
-                                    @endforeach
-                                </div>
-                            @endif
+                            <div>
+
+                                <h5 class="fw-bold">{{ $idea->title }}</h5>
+                                <p class="card-text">{{ nl2br(e(\Str::limit($idea->description, 3000))) }}</p>
+
+                                @if ($idea->documents->isNotEmpty())
+                                    <div>
+                                        @foreach ($idea->documents as $document)
+                                            @php
+                                                $filePath = asset('storage/' . $document->file_path);
+                                                $extension = pathinfo($document->file_path, PATHINFO_EXTENSION);
+                                            @endphp
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']))
+                                                <img src="{{ $filePath }}" alt="Document Image"
+                                                    class="img-fluid rounded mb-2" style="width: 50%; aspect-ratio: 16/12;">
+                                            @else
+                                                <a href="{{ $filePath }}" class="btn btn-outline-primary btn-sm"
+                                                    target="_blank">
+                                                    <i class="bi bi-file-earmark-text"></i> View
+                                                    {{ strtoupper($extension) }}
+                                                    File
+                                                </a>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                            </div>
 
 
                             @if ($ideaDisabled)
@@ -134,69 +143,75 @@
                                 <!-- <p class="text-success">Comment Open Test</p> -->
                             @endif
 
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div class="d-flex align-items-center mt-2">
-                                    <button class="btn btn-outline-primary btn-sm me-2 vote-btn"
-                                        data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}" data-type="like"
-                                        id="like-btn-{{ $idea->idea_id }}"
-                                        {{ $ideaDisabled || $idea->votes->where('vote_type', 'like')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
-                                        <i class="bi bi-hand-thumbs-up-fill"></i> Like
-                                        <span
-                                            class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
-                                    </button>
 
-                                    <button class="btn btn-outline-danger btn-sm me-2 vote-btn"
-                                        data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
-                                        data-type="dislike" id="dislike-btn-{{ $idea->idea_id }}"
-                                        {{ $ideaDisabled || $idea->votes->where('vote_type', 'dislike')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
-                                        <i class="bi bi-hand-thumbs-down-fill"></i> Dislike
-                                        <span
-                                            class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
-                                    </button>
+                            <div class="mt-auto">
+
+                                <div class="d-flex justify-content-start">
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-outline-primary btn-sm me-2 vote-btn"
+                                            data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
+                                            data-type="like" id="like-btn-{{ $idea->idea_id }}"
+                                            {{ $ideaDisabled || $idea->votes->where('vote_type', 'like')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
+                                            <i class="fa-solid fa-thumbs-up"></i> Like
+                                            <span
+                                                class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
+                                        </button>
+
+                                        <button class="btn btn-outline-danger btn-sm me-2 vote-btn"
+                                            data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
+                                            data-type="dislike" id="dislike-btn-{{ $idea->idea_id }}"
+                                            {{ $ideaDisabled || $idea->votes->where('vote_type', 'dislike')->where('user_id', Auth::id())->isNotEmpty() ? 'disabled' : '' }}>
+                                            <i class="fa-solid fa-thumbs-down"></i> Dislike
+                                            <span
+                                                class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
+                                        </button>
+                                    </div>
+
                                 </div>
 
-                            </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-outline-secondary btn-sm" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
+                                        <i class="fa-solid fa-comment"></i> Comments ({{ $idea->comments->count() }})
+                                    </button>
 
-                            <div class="mt-3">
-                                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#comments-{{ $idea->idea_id }}">
-                                    <i class="bi bi-chat-left-text"></i> Comments ({{ $idea->comments->count() }})
-                                </button>
+                                    @can('comment-list')
+                                        <div class="collapse mt-2" id="comments-{{ $idea->idea_id }}">
+                                            @foreach ($idea->comments as $comment)
+                                                <div class="border rounded p-2 mb-2 bg-light">
+                                                    <strong>{{ $comment->is_anonymous ? 'Anonymous' : $comment->user->name }}</strong>
+                                                    <p class="mb-1">{{ $comment->comment_text }}</p>
+                                                    <small
+                                                        class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                                </div>
+                                            @endforeach
 
-                                @can('comment-list')
-                                    <div class="collapse mt-2" id="comments-{{ $idea->idea_id }}">
-                                        @foreach ($idea->comments as $comment)
-                                            <div class="border rounded p-2 mb-2 bg-light">
-                                                <strong>{{ $comment->is_anonymous ? 'Anonymous' : $comment->user->name }}</strong>
-                                                <p class="mb-1">{{ $comment->comment_text }}</p>
-                                                <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-                                            </div>
-                                        @endforeach
+                                            @can('comment-submit')
+                                                @auth
 
-                                        @can('comment-submit')
-                                            @auth
-
-                                                @if ($canComment)
-                                                    <form action="{{ route('comments.store', $idea->idea_id) }}" method="POST"
-                                                        class="mt-2">
-                                                        @csrf
-                                                        <textarea class="form-control mb-2" name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <div>
-                                                                <input type="checkbox" name="is_anonymous"
-                                                                    id="anonymous-{{ $idea->idea_id }}">
-                                                                <label for="anonymous-{{ $idea->idea_id }}">Post as Anonymous</label>
+                                                    @if ($canComment)
+                                                        <form action="{{ route('comments.store', $idea->idea_id) }}" method="POST"
+                                                            class="mt-2">
+                                                            @csrf
+                                                            <textarea class="form-control mb-2" name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div>
+                                                                    <input type="checkbox" name="is_anonymous"
+                                                                        id="anonymous-{{ $idea->idea_id }}">
+                                                                    <label for="anonymous-{{ $idea->idea_id }}">Post as
+                                                                        Anonymous</label>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary btn-sm">Comment</button>
                                                             </div>
-                                                            <button type="submit" class="btn btn-primary btn-sm">Comment</button>
-                                                        </div>
-                                                    </form>
-                                                @else
-                                                    <p class="text-muted">Comments Close</p>
-                                                @endif
-                                            @endauth
-                                        @endcan
-                                    </div>
-                                @endcan
+                                                        </form>
+                                                    @else
+                                                        <p class="text-muted">Comments Close</p>
+                                                    @endif
+                                                @endauth
+                                            @endcan
+                                        </div>
+                                    @endcan
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -298,4 +313,6 @@
                 });
             });
         </script>
+
+    </div>
 @endsection
