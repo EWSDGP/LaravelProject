@@ -4,11 +4,9 @@
     box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
-
 html {
-    font-size: calc(0.8vw); /* Adjusts for 125% scaling */
+    font-size: calc(0.8vw);
 }
-
 .bg-nav {
     background-color: #1e98d7;
 }
@@ -107,6 +105,9 @@ table td {
 }
 
 @media (max-width: 768px) {
+    html {
+        font-size: calc(2.2vw);
+    }
     .navigation {
         display: none;
         width: 0%;
