@@ -108,5 +108,8 @@ class StatisticsController extends Controller
                     'mostPopularIdeas',
                     'leastPopularIdeas'
                 ));
-     }
+
+        redirect()->route('home');
+                
+    }
 }
