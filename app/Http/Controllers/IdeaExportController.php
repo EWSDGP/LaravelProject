@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use ZipArchive;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+
 class IdeaExportController extends Controller
 {
     public function exportCombined(Request $request)
@@ -90,8 +91,9 @@ class IdeaExportController extends Controller
             }
     
             
-            $zip->addFile($documentsZipPath, $documentsZipFileName);
-    
+            if (file_exists($documentsZipPath)) {
+                $zip->addFile($documentsZipPath, $documentsZipFileName);
+            } 
             
             $zip->close();
     
