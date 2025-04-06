@@ -89,6 +89,13 @@
                             <a class="text-decoration-none" href="{{ route('departments.index') }}">Departments</a>
                         </li>
                     @endcanany
+                    @can(['coordinator-statistics'])
+                    <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('departments*') ? 'hover_active' : '' }}"
+                            style="height: 7rem">
+                            <i class="fa-solid fa-user-tie pe-4"></i>
+                            <a class="text-decoration-none" href="{{ route('reminder') }}">Reminder</a>
+                        </li>
+                    @endcan
                     @canany(['manage-reports'])
                         <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('manage-reports*') ? 'hover_active' : '' }}"
                             style="height: 7rem">
