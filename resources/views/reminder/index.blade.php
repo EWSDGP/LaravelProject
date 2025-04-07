@@ -19,12 +19,13 @@
 </div>
                 <div class="row">
                     <div class="col-12">
-                    @session('success')
-                <div class="alert alert-success alert-dismissible fade show m-3 border-0 shadow-sm" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>{{$value}}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endsession
+                    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show m-3 border-0 shadow-sm" role="alert">
+        <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 
                 @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show m-3 border-0 shadow-sm" role="alert">
@@ -57,9 +58,14 @@
                         </thead>
                         <tbody>
                         @foreach ($usersWithIdeaCount as $deptUser)
-                            @if ($deptUser->id !== $user->id)
-                                <tr>
-                                    <td class="py-3 px-4">{{ $deptUser->profile_photo }}</td>
+                        @php
+                            $profilePhotoPath = $deptUser->profile_photo;
+                            $profilePhoto = $profilePhotoPath ? asset('storage/' . $profilePhotoPath) : asset('storage/profile_photos/default-profile.jpg');
+                        @endphp
+
+                        <td>
+                            <img src="{{ $profilePhoto }}" width="50" height="50">
+                        </td>
                                     <td class="py-3 px-4">{{ $deptUser->name }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
@@ -79,7 +85,6 @@
                                         </div>
                                     </td>
                                 </tr>
-                            @endif
                         @endforeach
                         </tbody>
                     </table>
@@ -87,16 +92,7 @@
             </div>
     </div>
 </div>
-<div class="toast-container position-fixed top-15  p-3">
-    <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                Action completed successfully!
-            </div>
-            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-</div>
+
 
 
 <script>
@@ -128,9 +124,7 @@
         var reminderModal = document.getElementById('reminderModal');
         var modalInstance = bootstrap.Modal.getInstance(reminderModal);
         modalInstance.hide();
-        var toastElement = document.getElementById('successToast');
-        var toast = new bootstrap.Toast(toastElement);
-        toast.show();
+        location.reload();
     });
     }
 </script>

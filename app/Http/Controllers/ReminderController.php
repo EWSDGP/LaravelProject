@@ -26,8 +26,9 @@ public function index()
     $department = Department::withCount('ideas')->where('id', $user->department_id)->first();
 
     $usersWithIdeaCount = User::withCount('ideas')
-                              ->where('department_id', $user->department_id)
-                              ->get();
+                          ->where('department_id', $user->department_id)
+                          ->where('id', '!=', $user->id)
+                          ->get();
 
     return view('reminder.index', compact('user', 'department', 'usersWithIdeaCount'));
 }
@@ -37,8 +38,9 @@ public function sendReminderEmail($userId)
     $user = User::findOrFail($userId);
 
     Mail::to($user->email)->send(new ReminderEmail());
-    return redirect()->route('reminder.index')->with('success', 'Operation completed successfully!');
+    session()->flash('success', 'Reminder email sent successfully!');
 
+    return redirect()->route('reminder.index');
 }
 
 }
