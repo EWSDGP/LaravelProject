@@ -48,46 +48,47 @@
             <div class="card-body p-4">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Profile Photo</th>
-                                <th>Name</th>
-                                <th>Idea Count</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($usersWithIdeaCount as $deptUser)
-                        @php
-                            $profilePhotoPath = $deptUser->profile_photo;
-                            $profilePhoto = $profilePhotoPath ? asset('storage/' . $profilePhotoPath) : asset('storage/profile_photos/default-profile.jpg');
-                        @endphp
+    <thead class="table-light">
+        <tr>
+            <th><i style="margin-left: 20px;" class="fa-solid fa-user"></i></th>
+            <th style="padding: 10px;">Name</th>
+            <th>Idea Count</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($usersWithIdeaCount as $deptUser)
+        @php
+            $profilePhotoPath = $deptUser->profile_photo;
+            $profilePhoto = $profilePhotoPath ? asset('storage/' . $profilePhotoPath) : asset('storage/profile_photos/default-profile.jpg');
+        @endphp
+        <tr>
+            <td>
+                <img src="{{ $profilePhoto }}" width="50" height="50" style="border-radius: 50%;">
+            </td>
+            <td class="py-3 px-4">{{ $deptUser->name }}</td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-person-badge me-2"></i>
+                    {{ $deptUser->ideas_count }}
+                </div>
+            </td>
+            <td>
+                <div class="justify-content-center">
+                    @if ($deptUser->ideas_count == 0)
+                        <button type="button" class="btn btn-danger btn-sm delete-btn" 
+                                data-bs-toggle="modal" data-bs-target="#reminderModal"
+                                data-user-id="{{ $deptUser->id }}">
+                            <i class="bi bi-trash me-1"></i>Reminder
+                        </button>
+                    @endif
+                </div>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
-                        <td>
-                            <img src="{{ $profilePhoto }}" width="50" height="50">
-                        </td>
-                                    <td class="py-3 px-4">{{ $deptUser->name }}</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <i class="bi bi-person-badge me-2"></i>
-                                            {{ $deptUser->ideas_count }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="justify-content-center">
-                                            @if ($deptUser->ideas_count == 0)
-                                                <button type="button" class="btn btn-danger btn-sm delete-btn" 
-                                                        data-bs-toggle="modal" data-bs-target="#reminderModal"
-                                                        data-user-id="{{ $deptUser->id }}">
-                                                    <i class="bi bi-trash me-1"></i>Reminder
-                                                </button>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
                 </div>
             </div>
     </div>
