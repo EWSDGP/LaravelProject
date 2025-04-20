@@ -50,7 +50,7 @@
                     <table class="table table-hover align-middle mb-0">
     <thead class="table-light">
         <tr>
-            <th><i style="margin-left: 20px;" class="fa-solid fa-user"></i></th>
+            
             <th style="padding: 10px;">Name</th>
             <th>Idea Count</th>
             <th>Action</th>
@@ -63,9 +63,7 @@
             $profilePhoto = $profilePhotoPath ? asset('storage/' . $profilePhotoPath) : asset('storage/profile_photos/default-profile.jpg');
         @endphp
         <tr>
-            <td>
-                <img src="{{ $profilePhoto }}" width="50" height="50" style="border-radius: 50%;">
-            </td>
+            
             <td class="py-3 px-4">{{ $deptUser->name }}</td>
             <td>
                 <div class="d-flex align-items-center">
