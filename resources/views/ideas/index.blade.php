@@ -361,13 +361,19 @@
         </div>
     </div>
 
+    @php
+    $ideaDisabled = true;
+    $canComment = true;
+@endphp
+
+
     @if ($ideaDisabled)
     <!-- <p class="text-muted">Ideas Open Test</p> -->
     @else
     <!-- <p class="text-success">Ideas Close Test</p> -->
     @endif
 
-    @if (!$canComment)
+    @if ($canComment)
     <!-- <p class="text-muted">Comments Close Test</p> -->
     @else
     <!-- <p class="text-success">Comment Open Test</p> -->
