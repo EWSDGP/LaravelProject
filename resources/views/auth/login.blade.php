@@ -188,7 +188,7 @@
     </div>
     <div class="login-container">
         <div class="logo-container">
-            <h1>Bright Parth</h1>
+            <h1>Bright Path</h1>
             <h5>Aim High Think High</h5>
         </div>
         <div class="login-form">
