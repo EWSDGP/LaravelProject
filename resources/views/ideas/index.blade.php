@@ -166,7 +166,7 @@
                                     <span
                                         class="like-count">{{ $idea->votes->where('vote_type', 'like')->count() }}</span>
                                 </button>
-                
+
                                 <button class="btn btn-outline-danger btn-sm me-2 vote-btn"
                                     data-idea="{{ $idea->idea_id }}" data-user="{{ Auth::id() }}"
                                     data-type="dislike" id="dislike-btn-{{ $idea->idea_id }}"
@@ -175,7 +175,7 @@
                                     <span
                                         class="dislike-count">{{ $idea->votes->where('vote_type', 'dislike')->count() }}</span>
                                 </button>
-                
+
                             </div>
                             @if ($idea->user_id !== Auth::id())
                             <div class="mt-3 position-absolute top-0 end-0 me-3">
@@ -184,8 +184,8 @@
                                     <i class="fa-solid fa-flag"></i> Report
                                 </button>
                             </div>
-                
-                
+
+
                             <div class="modal fade" id="reportModal-{{ $idea->idea_id }}" tabindex="-1"
                                 aria-labelledby="reportModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -200,8 +200,8 @@
                                             @csrf
                                             <div class="modal-body">
                                                 <label for="reason" class="form-label">Reason:</label>
-                
-                
+
+
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio"
                                                         name="reason" value="Inappropriate Content"
@@ -274,59 +274,128 @@
                                                     Report</button>
                                             </div>
                                         </form>
-                
+
                                     </div>
                                 </div>
                             </div>
                             @endif
-                
+
                         </div>
-                
+
+
+
                         <div class="mt-3">
                             <button class="btn btn-outline-secondary btn-sm" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#comments-{{ $idea->idea_id }}">
                                 <i class="fa-solid fa-comment"></i> Comments ({{ $idea->comments->count() }})
                             </button>
-                
+
                             @can('comment-list')
                             <div class="collapse mt-2" id="comments-{{ $idea->idea_id }}">
-                
+
                                 @foreach ($idea->comments as $comment)
                                 @if ($comment->user)
                                 <div class="border rounded p-2 mb-2 bg-light d-flex align-items-start">
                                     @if (!$comment->is_anonymous)
                                     <img src="{{ $comment->user->profile_photo ? asset('storage/' . $comment->user->profile_photo) : asset('storage/profile_photos/default-profile.jpg') }}"
-                                        alt="User Profile" class="rounded-circle me-2"
-                                        style="width: 40px; height: 40px;">
+                                        alt="User Profile" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                     @else
-                                    <img src="{{ asset('storage/profile_photos/default-profile.jpg') }}"
-                                        alt="Anonymous" class="rounded-circle me-2"
+                                    <img src="{{ asset('storage/profile_photos/default-profile.jpg') }}" alt="Anonymous" class="rounded-circle me-2"
                                         style="width: 40px; height: 40px;">
                                     @endif
-                
-                                    <div>
+
+                                    <div class="flex-grow-1">
                                         <strong>
                                             {{ $comment->is_anonymous ? 'Anonymous' : $comment->user->name }}
                                         </strong>
                                         <p>{{ $comment->comment_text }}</p>
                                         <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-                
-                                        @if ($comment->user_id === Auth::id())
-                                        <div class="mt-2">
-                                            <a href="{{ route('comments.edit', $comment->comment_id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                            <form action="{{ route('comments.destroy', $comment->comment_id) }}" method="POST" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
-                                            </form>
-                                        </div>
-                                        @endif
                                     </div>
+
+                                    @if ($comment->user_id === Auth::id()) <!-- Only show options for the user's own comments -->
+                                    <div class="dropdown ms-auto">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton-{{ $comment->comment_id }}"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-{{ $comment->comment_id }}">
+                                            <li>
+                                                <!-- Trigger the Edit Modal -->
+                                                <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#editModal-{{ $comment->comment_id }}">
+                                                    Edit
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button type="button" class="dropdown-item text-danger delete-comment-btn"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteCommentModal"
+                                                    data-url="{{ route('comments.destroy', $comment->comment_id) }}">
+                                                    Delete
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Delete Comment Modal -->
+                                    <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="alert alert-danger">
+                                                    <h5 class="modal-title" id="deleteCommentModalLabel">Confirm Deletion</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this comment?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <form id="deleteCommentForm" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Edit Modal -->
+                                    <div class="modal fade" id="editModal-{{ $comment->comment_id }}" tabindex="-1" aria-labelledby="editModalLabel-{{ $comment->comment_id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editModalLabel-{{ $comment->comment_id }}">Edit Comment</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form method="POST" action="{{ route('comments.update', $comment->comment_id) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="comment_text-{{ $comment->comment_id }}" class="form-label">Comment Text</label>
+                                                            <textarea id="comment_text-{{ $comment->comment_id }}" name="comment_text" class="form-control @error('comment_text') is-invalid @enderror" rows="4" required>{{ old('comment_text', $comment->comment_text) }}</textarea>
+                                                            @error('comment_text')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="mb-3 form-check">
+                                                            <input type="checkbox" class="form-check-input" id="is_anonymous-{{ $comment->comment_id }}" name="is_anonymous" {{ $comment->is_anonymous ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="is_anonymous-{{ $comment->comment_id }}">Post as Anonymous</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-primary">Update Comment</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
                                 @endif
                                 @endforeach
-                
+
                                 @can('comment-submit')
                                 @auth
                                 @if ($canComment)
@@ -364,7 +433,7 @@
     @php
     $ideaDisabled = true;
     $canComment = true;
-@endphp
+    @endphp
 
 
     @if ($ideaDisabled)
@@ -382,7 +451,7 @@
     <div class="d-flex justify-content-center">
         {{ $ideas->appends(request()->query())->links('pagination::bootstrap-5') }}
     </div>
-    
+
 </div>
 
 
@@ -472,6 +541,27 @@
                         dislikeButton.disabled = true;
                     })
                     .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var dropdownElements = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+        dropdownElements.forEach(function(dropdownToggleEl) {
+            new bootstrap.Dropdown(dropdownToggleEl);
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.delete-comment-btn').forEach(button => {
+            button.addEventListener("click", function() {
+                let deleteUrl = this.getAttribute("data-url");
+                const deleteForm = document.getElementById("deleteCommentForm");
+                deleteForm.setAttribute("action", deleteUrl);
             });
         });
     });
