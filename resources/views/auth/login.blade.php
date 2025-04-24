@@ -6,6 +6,7 @@
   <title>University Staff/Admin Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css">
   <style>
     * {
       box-sizing: border-box;
@@ -181,7 +182,7 @@
 @endif
 <div class="container">
     <div class="left-panel">
-        <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Logo">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo">
         <h1>Bright Path</h1>
         <p>Welcome to the University Ideas Portal. This secure system is designed for all academic and support staff to submit, view, and engage with ideas for improvement across the University. Please log in using your staff credentials—your identity will be stored securely for accountability, but you may choose to post ideas and comments anonymously.</p>
         
