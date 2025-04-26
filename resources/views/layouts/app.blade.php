@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="{{ asset('components/style.css') }}">
     <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         .navigation {
@@ -237,23 +237,15 @@
                             <a class="text-decoration-none" href="{{ route('settings') }}">Setting</a>
                         </div>
                     </div>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                        class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
-                        style="height: 7rem">
-                        @csrf
-                        <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>
-                        <a class="dropdown-item" href="#" id="logoutButton">
-                            <i class="bi bi-box-arrow-right me-2"></i>{{ __('Logout') }}
-                        </a>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4" style="height: 7rem">
+                        <i class="fa-solid fa-right-from-bracket pe-3"></i>
+                        <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
+                            <button id="logoutButton" type="submit" class="btn btn-link nav-link text-white p-0" style="text-decoration: none;">
+                                Logout
+                            </button>
                         </form>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                    </form>
+                    </li>
                 </div>
 
                 @endguest
@@ -348,29 +340,31 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
     <script src="{{ asset('components/script.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+
     <script>
         document.getElementById('logoutButton').addEventListener('click', function(event) {
-            event.preventDefault();
-
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You will be logged out from your account!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#6c757d",
-                confirmButtonText: "Yes, logout",
-                cancelButtonText: "Cancel"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('logout-form').submit();
-                }
-            });
+        event.preventDefault();
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will be logged out from your account!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Yes, logout",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logoutForm').submit();
+            }
         });
+    });
+
+
     </script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
