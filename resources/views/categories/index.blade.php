@@ -6,15 +6,21 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-body text-center p-4">
-                <i class="fas fa-exclamation-circle text-danger" style="font-size: 3rem;"></i>
-                <h4 class="mt-3">Are you sure?</h4>
-                <p class="text-muted">Do you really want to delete this category? This process cannot be undone.</p>
-                <div class="mt-4">
-                    <button type="button" class="btn btn-outline-secondary px-4 me-2" data-bs-dismiss="modal">Cancel</button>
+                <div class="delete-icon mb-3">
+                    <i class="fas fa-exclamation-circle text-danger" style="font-size: 3.5rem;"></i>
+                </div>
+                <h4 class="mt-3 fw-bold">Are you sure?</h4>
+                <p class="text-muted mb-4">Do you really want to delete this category? This process cannot be undone.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
                     <form id="deleteForm" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger px-4">Delete</button>
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="fas fa-trash-alt me-2"></i>Delete
+                        </button>
                     </form>
                 </div>
             </div>
@@ -91,17 +97,17 @@
                                         <div class="btn-group">
                                             @can('category-edit')
                                                 <a href="{{ route('categories.edit', $category->category_id) }}" 
-                                                   class="btn btn-sm btn-outline-primary">
-                                                    <i class="fas fa-edit"></i>
+                                                   class="btn btn-sm btn-outline-primary action-btn">
+                                                    <i class="fas fa-edit me-1"></i>Edit
                                                 </a>
                                             @endcan
                                             @can('category-delete')
                                                 <button type="button" 
-                                                        class="btn btn-sm btn-outline-danger delete-btn"
+                                                        class="btn btn-sm btn-outline-danger action-btn delete-btn"
                                                         data-bs-toggle="modal" 
                                                         data-bs-target="#deleteModal"
                                                         data-url="{{ route('categories.destroy', $category->category_id) }}">
-                                                    <i class="fas fa-trash-alt"></i>
+                                                    <i class="fas fa-trash-alt me-1"></i>Delete
                                                 </button>
                                             @endcan
                                         </div>
@@ -336,6 +342,94 @@
     
     .modal-body {
         padding: 2rem;
+    }
+
+    /* Modern Button Styles */
+    .action-btn {
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border-width: 2px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn-outline-primary {
+        color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    /* Modal Styles */
+    .modal-content {
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .delete-icon {
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    /* Toast Notification Styles */
+    .toast {
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        background: linear-gradient(45deg, #4aa9e9, #87CEEB);
+    }
+
+    .toast.bg-success {
+        background: linear-gradient(45deg, #28a745, #5cc990);
+    }
+
+    .toast.bg-danger {
+        background: linear-gradient(45deg, #dc3545, #ff6b6b);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 576px) {
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.875rem;
+            min-width: 70px;
+        }
+
+        .modal-dialog {
+            margin: 1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
     }
 </style>
 
