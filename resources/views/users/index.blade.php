@@ -4,20 +4,26 @@
 
 <div class="container">
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="alert alert-danger">
+                <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this User?
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-exclamation-triangle text-danger me-3 fs-4"></i>
+                        <p class="mb-0">Are you sure you want to delete this user? This action cannot be undone.</p>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                     <form id="deleteForm" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt me-2"></i>Delete
+                        </button>
                     </form>
                 </div>
             </div>
@@ -69,24 +75,26 @@
                                 @csrf
                                 @method('DELETE')
                                 @can('user-list')
-                                <button type="button" class="btn btn-sm btn-info user-details-btn"
+                                <button type="button" class="btn btn-sm btn-outline-primary user-details-btn"
                                     data-user='@json($user)'
                                     data-roles="{{ $user->getRoleNames()->implode(', ') }}">
-                                    Details
+                                    <i class="fas fa-info-circle me-1"></i>Details
                                 </button>
                                 @endcan
                                 @can('user-edit')
                                 <a href="{{ route('users.edit', $user->id) }}"
-                                    class="btn btn-warning btn-sm">Edit</a>
+                                    class="btn btn-sm btn-outline-warning edit-btn"
+                                    data-user-name="{{ $user->name }}">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </a>
                                 @endcan
 
-                                <!-- Only show the delete button if the user doesn't have the "Admin" role -->
                                 @if (!in_array('Admin', $user->getRoleNames()->toArray()))
                                 @can('user-delete')
-                                <button type="button" class="btn btn-danger delete-btn"
+                                <button type="button" class="btn btn-sm btn-outline-danger delete-btn"
                                     data-bs-toggle="modal" data-bs-target="#deleteModal"
                                     data-url="{{ route('users.destroy', $user->id) }}">
-                                    Delete
+                                    <i class="fas fa-trash-alt me-1"></i>Delete
                                 </button>
                                 @endcan
                                 @endif
@@ -100,7 +108,104 @@
     </div>
 </div>
 
+<style>
+    .btn {
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .btn-outline-primary {
+        color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: white;
+    }
+    
+    .btn-outline-warning {
+        color: #ffc107;
+        border-color: #ffc107;
+    }
+    
+    .btn-outline-warning:hover {
+        background-color: #ffc107;
+        color: black;
+    }
+    
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+    
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    .modal-content {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .modal-header {
+        border-radius: 12px 12px 0 0;
+    }
+    
+    @media (max-width: 576px) {
+        .btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.875rem;
+        }
+        
+        .modal-dialog {
+            margin: 1rem auto;
+        }
+    }
+
+    .swal2-popup {
+        border-radius: 12px !important;
+    }
+
+    .swal2-title {
+        font-size: 1.5rem !important;
+    }
+
+    .swal2-html-container {
+        font-size: 1.1rem !important;
+    }
+
+    .swal2-confirm, .swal2-cancel {
+        padding: 0.5rem 1.5rem !important;
+        font-size: 1rem !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .swal2-confirm:hover, .swal2-cancel:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+    }
+</style>
+
 <script>
+    // Add Font Awesome if not already included
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+        document.head.appendChild(link);
+    }
+
     // Handle modal delete URL dynamically
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener("click", function() {
@@ -157,6 +262,39 @@
     `;
         showUserDetails.previoususerid = user.id;
     }
+
+    // Handle edit button click with confirmation
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const userName = this.getAttribute('data-user-name');
+            const editUrl = this.getAttribute('href');
+            
+            Swal.fire({
+                title: 'Edit User',
+                html: `Are you sure you want to edit <strong>${userName}</strong>?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#ffc107',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-edit me-2"></i>Yes, Edit',
+                cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+                customClass: {
+                    confirmButton: 'btn btn-warning',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = editUrl;
+                }
+            });
+        });
+    });
 </script>
+
+<!-- Add SweetAlert2 CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @endsection
