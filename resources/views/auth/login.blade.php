@@ -179,6 +179,7 @@
         {{ session('error') }}
     </div>
 @endif
+
 <div class="container">
     <div class="left-panel">
         <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Logo">
@@ -192,7 +193,7 @@
             <h5>Aim High Think High</h5>
         </div>
         <div class="login-form">
-            <form method="POST" action="{{ route('login') }}" onsubmit="return validateForm()">
+            <form method="POST" action="{{ route('login') }}" onsubmit="return validateForm()" id="login-form">
                 @csrf
                 <div class="input">
                     <label for="email">Email Address</label>
@@ -227,9 +228,12 @@
                 </div>
 
                 <div class="input">
-                    <button type="submit">
+                    <button type="submit" id="login-button">
                         {{ __('Login') }}
                     </button>
+                    <div id="loading-alert" style="display: none; text-align: center; color: #0c5460; background-color: #d1ecf1; padding: 12px; margin-top: 10px; border-radius: 30px;">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Logging in, please wait...
+                    </div>
                 </div>
 
                 <div class="input">
@@ -244,20 +248,29 @@
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const errorMessage = document.getElementById('error-message');
+        const loadingAlert = document.getElementById('loading-alert');
+        const loginButton = document.getElementById('login-button');
 
         if (email === "" || password === "") {
             errorMessage.textContent = "All fields are required.";
             return false;
         }
 
-        // if (password.length < 6) {
-        //     errorMessage.textContent = "Password must be at least 6 characters long.";
-        //     return false;
-        // }
-
+        // Show loading alert and hide login button
+        loadingAlert.style.display = 'block';
+        loginButton.style.display = 'none';
         errorMessage.textContent = "";
+
         return true;
     }
+
+    // Reset form state if submission fails
+    document.getElementById('login-form').addEventListener('submit', function() {
+        const loadingAlert = document.getElementById('loading-alert');
+        const loginButton = document.getElementById('login-button');
+        loadingAlert.style.display = 'block';
+        loginButton.style.display = 'none';
+    });
 </script>
 </body>
 </html>
