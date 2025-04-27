@@ -22,11 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Auth::viaRequest('custom', function ($request) {
-            if (Auth::check() && Auth::user()->is_banned) {
-                Auth::logout();
-                return redirect()->route('login')->with('error', 'Your account has been banned.');
-            }
-        });
+        // Auth::viaRequest('custom', function ($request) {
+        //     if (Auth::check() && Auth::user()->is_banned) {
+        //         Auth::logout();
+        //         session()->flash('banned', true); // Set the banned session variable
+        //         return redirect()->route('login'); // Redirect to the login page
+        //     }
+        // });
     }
 }

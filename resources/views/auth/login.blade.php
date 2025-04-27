@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>University Staff/Admin Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
     * {
       box-sizing: border-box;
@@ -174,106 +176,144 @@
     }
   </style>
 </head>
-<body>
-@if (session('error'))
-    <div class="alert alert-danger" style="text-align: center; color: red; padding: 10px; margin-bottom: 10px;">
-        {{ session('error') }}
-    </div>
-@endif
 
-<div class="container">
+<body>
+
+  @if (session('status'))
+  <div class="alert alert-success" style="text-align: center; color: green; padding: 10px; margin-bottom: 10px;">
+    {{ session('status') }}
+  </div>
+  @endif
+  @if (session('error'))
+  <div class="alert alert-danger" style="text-align: center; color: red; padding: 10px; margin-bottom: 10px;">
+    {{ session('error') }}
+  </div>
+  @endif
+  <div class="container">
     <div class="left-panel">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo">
-        <h1>Bright Path</h1>
-        <p>Welcome to the University Ideas Portal. This secure system is designed for all academic and support staff to submit, view, and engage with ideas for improvement across the University. Please log in using your staff credentials—your identity will be stored securely for accountability, but you may choose to post ideas and comments anonymously.</p>
-        
+      <img src="{{ asset('images/logo.png') }}" alt="Logo">
+      <h1>Bright Path</h1>
+      <p>Welcome to the University Ideas Portal. This secure system is designed for all academic and support staff to submit, view, and engage with ideas for improvement across the University. Please log in using your staff credentials—your identity will be stored securely for accountability, but you may choose to post ideas and comments anonymously.</p>
+
     </div>
     <div class="login-container">
-        <div class="logo-container">
-            <h1>Bright Path</h1>
-            <h5>Aim High Think High</h5>
-        </div>
-        <div class="login-form">
-            <form method="POST" action="{{ route('login') }}" onsubmit="return validateForm()" id="login-form">
-                @csrf
-                <div class="input">
-                    <label for="email">Email Address</label>
-                    <i class="fa-solid fa-user"></i>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                           name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                    @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
+      <div class="logo-container">
+        <h1>Bright Path</h1>
+        <h5>Aim High Think High</h5>
+      </div>
+      <div class="login-form">
+        <form method="POST" action="{{ route('login') }}" onsubmit="return validateForm()">
+          @csrf
+          <div class="input">
+            <label for="email">Email Address</label>
+            <i class="fa-solid fa-user"></i>
+            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+              name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+            @error('email')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+          </div>
 
-                <div class="input">
-                    <label for="password">Password</label>
-                    <i class="fa-solid fa-lock"></i>
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                           name="password" required autocomplete="current-password">
-                    @error('password')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
+          <div class="input">
+            <label for="password">Password</label>
+            <i class="fa-solid fa-lock"></i>
+            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
+              name="password" required autocomplete="current-password">
+            @error('password')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+          </div>
 
-                <div class="input">
-                    @if (Route::has('password.request'))
-                        <a class="btn-link" href="{{ route('password.request') }}">
-                            {{ __('Forgot Your Password?') }}
-                        </a>
-                    @endif
-                </div>
+          <div class="input">
+            @if (Route::has('password.request'))
+            <a class="btn-link" href="{{ route('password.request') }}">
+              {{ __('Forgot Your Password?') }}
+            </a>
+            @endif
+          </div>
 
-                <div class="input">
-                    <button type="submit" id="login-button">
-                        {{ __('Login') }}
-                    </button>
-                    <div id="loading-alert" style="display: none; text-align: center; color: #0c5460; background-color: #d1ecf1; padding: 12px; margin-top: 10px; border-radius: 30px;">
-                        <i class="fa-solid fa-spinner fa-spin"></i> Logging in, please wait...
-                    </div>
-                </div>
+          <div class="input">
+            <button type="submit">
+              {{ __('Login') }}
+            </button>
+          </div>
 
-                <div class="input">
-                    <p id="error-message" class="error-message"></p>
-                </div>
-            </form>
-        </div>
+          <div class="input">
+            <p id="error-message" class="error-message"></p>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
-<script>
-    function validateForm() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const errorMessage = document.getElementById('error-message');
-        const loadingAlert = document.getElementById('loading-alert');
-        const loginButton = document.getElementById('login-button');
+  </div>
 
-        if (email === "" || password === "") {
-            errorMessage.textContent = "All fields are required.";
-            return false;
-        }
+  @if (session('banned'))
+  <div class="modal fade" id="bannedModal" tabindex="-1" aria-labelledby="bannedModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="bannedModalLabel">
+            <i class="fas fa-ban me-2"></i>Your Account Has Been Banned
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Your account has been banned. Please contact the administrator for further assistance.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        // Show loading alert and hide login button
-        loadingAlert.style.display = 'block';
-        loginButton.style.display = 'none';
-        errorMessage.textContent = "";
+  <script>
+    localStorage.setItem('showBannedModal', 'true');
+  </script>
+  @endif
 
-        return true;
-    }
-
-    // Reset form state if submission fails
-    document.getElementById('login-form').addEventListener('submit', function() {
-        const loadingAlert = document.getElementById('loading-alert');
-        const loginButton = document.getElementById('login-button');
-        loadingAlert.style.display = 'block';
-        loginButton.style.display = 'none';
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (localStorage.getItem('showBannedModal') === 'true') {
+        var bannedModal = new bootstrap.Modal(document.getElementById('bannedModal'));
+        bannedModal.show();
+        document.getElementById('bannedModal').addEventListener('hidden.bs.modal', function() {
+          localStorage.removeItem('showBannedModal');
+        });
+      }
     });
-</script>
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <script>
+    function validateForm() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('error-message');
+
+      if (email === "" || password === "") {
+        errorMessage.textContent = "All fields are required.";
+        return false;
+      }
+
+      // if (password.length < 6) {
+      //     errorMessage.textContent = "Password must be at least 6 characters long.";
+      //     return false;
+      // }
+
+      errorMessage.textContent = "";
+      return true;
+    }
+  </script>
+
 </body>
+
 </html>
 
 
@@ -295,86 +335,87 @@
 @if (session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}
-    </div>
+</div>
 @endif
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Login') }}</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">{{ __('Login') }}</div>
 
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
-                            @csrf
+        <div class="card-body">
+          <form method="POST" action="{{ route('login') }}">
+            @csrf
 
-                            <div class="row mb-3">
-                                <label for="email"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+            <div class="row mb-3">
+              <label for="email"
+                class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
-                                <div class="col-md-6">
-                                    <input id="email" type="email"
-                                        class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email" autofocus>
+              <div class="col-md-6">
+                <input id="email" type="email"
+                  class="form-control @error('email') is-invalid @enderror" name="email"
+                  value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="password"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password"
-                                        class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="current-password"
-                                        >
-
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6 offset-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember"
-                                            {{ old('remember') ? 'checked' : '' }}>
-
-                                        <label class="form-check-label" for="remember">
-                                            {{ __('Remember Me') }}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Login') }}
-                                    </button>
-
-                                    @if (Route::has('password.request'))
-                                        <a class="btn btn-link" href="{{ route('password.request') }}">
-                                            {{ __('Forgot Your Password?') }}
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                @error('email')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+              </div>
             </div>
+
+            <div class="row mb-3">
+              <label for="password"
+                class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+
+              <div class="col-md-6">
+                <input id="password" type="password"
+                  class="form-control @error('password') is-invalid @enderror" name="password"
+                  required autocomplete="current-password">
+
+                @error('password')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6 offset-md-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="remember" id="remember"
+                    {{ old('remember') ? 'checked' : '' }}>
+
+                  <label class="form-check-label" for="remember">
+                    {{ __('Remember Me') }}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-0">
+              <div class="col-md-8 offset-md-4">
+                <button type="submit" class="btn btn-primary">
+                  {{ __('Login') }}
+                </button>
+
+                @if (Route::has('password.request'))
+                <a class="btn btn-link" href="{{ route('password.request') }}">
+                  {{ __('Forgot Your Password?') }}
+                </a>
+                @endif
+              </div>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
+</div>
+
+
 </body>
 
 </html> --}}

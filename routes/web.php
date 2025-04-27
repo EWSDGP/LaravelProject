@@ -17,8 +17,6 @@ use App\Http\Middleware\CheckIfBanned;
 use App\Http\Controllers\ReminderController;
 
 
-
-
 Route::get('/', function () {
     return redirect('/login');
 });
