@@ -236,11 +236,14 @@
             @endif
           </div>
 
-          <div class="input">
-            <button type="submit">
-              {{ __('Login') }}
-            </button>
-          </div>
+                <div class="input">
+                    <button type="submit" id="loginButton">
+                        <span id="buttonText">{{ __('Login') }}</span>
+                        <span id="loadingSpinner" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i> Logging in...
+                        </span>
+                    </button>
+                </div>
 
           <div class="input">
             <p id="error-message" class="error-message"></p>
@@ -293,19 +296,22 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
   <script>
     function validateForm() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const errorMessage = document.getElementById('error-message');
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errorMessage = document.getElementById('error-message');
+        const loginButton = document.getElementById('loginButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
 
       if (email === "" || password === "") {
         errorMessage.textContent = "All fields are required.";
         return false;
       }
 
-      // if (password.length < 6) {
-      //     errorMessage.textContent = "Password must be at least 6 characters long.";
-      //     return false;
-      // }
+        // Show loading state
+        loginButton.disabled = true;
+        buttonText.style.display = 'none';
+        loadingSpinner.style.display = 'inline';
 
       errorMessage.textContent = "";
       return true;
