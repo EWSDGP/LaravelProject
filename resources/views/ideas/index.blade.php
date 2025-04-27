@@ -105,6 +105,9 @@
 
     <div class="justify-content-start">
         <div class="col-lg-8 w-100 d-flex flex-wrap gap-4 position-relative">
+            @if( $ideas->isEmpty())
+            <p> No ideas found.</p>
+            @endif
             @foreach ($ideas as $idea)
             @php
             $currentDate = now();
