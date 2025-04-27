@@ -11,20 +11,21 @@
         <!-- <a href="{{ route('ideas.export.combined') }}" class="btn btn-outline-primary btn-sm">
                                                                                 <i class="bi bi-file-earmark-zip"></i> Download CSV & Documents (ZIP)
                                                                                 </a> -->
-        <form action="{{ route('ideas.export.combined') }}" method="GET" class="mb-4 d-flex w-100 gap-4">
+        <form action="{{ route('ideas.export.combined') }}" method="GET" class="mb-4 d-flex w-100 gap-4" id="downloadForm">
             <div class="download-ideas" style="flex: 1;">
-
                 <select name="academic_year" id="academic_year" class="form-select w-100" required>
                     <option value="">-- Choose Academic Year --</option>
                     @foreach ($academicYears as $id => $year)
                     <option value="{{ $id }}"> Academic Year - {{ $year }}</option>
                     @endforeach
                 </select>
-
             </div>
-
-            <button type="submit" class="btn btn-primary ms-auto" style="flex: 0 1 auto;">Download Ideas</button>
-
+            <button type="submit" class="btn btn-primary ms-auto" style="flex: 0 1 auto;" id="downloadBtn">
+                <span id="downloadButtonText">Download Ideas</span>
+                <span id="downloadLoadingSpinner" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Downloading...
+                </span>
+            </button>
         </form>
         @endcan
 
@@ -86,7 +87,12 @@
 
 
             <div class="col-md-4 w-auto ms-auto">
-                <button type="submit" class="btn btn-primary">Apply Filters</button>
+                <button type="submit" class="btn btn-primary" id="applyFiltersBtn">
+                    <span id="filterButtonText">Apply Filters</span>
+                    <span id="filterLoadingSpinner" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Applying...
+                    </span>
+                </button>
                 <a href="{{ route('ideas.index') }}" class="btn btn-secondary">Reset</a>
             </div>
         </div>
@@ -106,7 +112,10 @@
     <div class="justify-content-start">
         <div class="col-lg-8 w-100 d-flex flex-wrap gap-4 position-relative">
             @if( $ideas->isEmpty())
-            <p> No ideas found.</p>
+            <div class="alert alert-warning" role="alert">
+  ⚠️ No ideas found.
+</div>
+
             @endif
             @foreach ($ideas as $idea)
             @php
@@ -566,6 +575,59 @@
                 const deleteForm = document.getElementById("deleteCommentForm");
                 deleteForm.setAttribute("action", deleteUrl);
             });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Existing code...
+
+        // Add loading state for filter form
+        const filterForm = document.querySelector('form[action="{{ route('ideas.index') }}"]');
+        const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+        const filterButtonText = document.getElementById('filterButtonText');
+        const filterLoadingSpinner = document.getElementById('filterLoadingSpinner');
+
+        filterForm.addEventListener('submit', function() {
+            applyFiltersBtn.disabled = true;
+            filterButtonText.style.display = 'none';
+            filterLoadingSpinner.style.display = 'inline';
+        });
+
+        // Add download button loading state
+        const downloadForm = document.getElementById('downloadForm');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const downloadButtonText = document.getElementById('downloadButtonText');
+        const downloadLoadingSpinner = document.getElementById('downloadLoadingSpinner');
+
+        downloadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            downloadBtn.disabled = true;
+            downloadButtonText.style.display = 'none';
+            downloadLoadingSpinner.style.display = 'inline';
+
+            // Get form data
+            const formData = new FormData(this);
+            const academicYear = formData.get('academic_year');
+
+            // Create a temporary iframe for download
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+
+            // Set iframe source to trigger download
+            iframe.src = this.action + '?academic_year=' + academicYear;
+
+            // Reset button state after download starts
+            setTimeout(() => {
+                downloadBtn.disabled = false;
+                downloadButtonText.style.display = 'inline';
+                downloadLoadingSpinner.style.display = 'none';
+                document.body.removeChild(iframe);
+            }, 1000);
         });
     });
 </script>
