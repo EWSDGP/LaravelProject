@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="{{ asset('components/style.css') }}">
     <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         .navigation {
@@ -31,6 +31,97 @@
 
         .ps-4 {
             padding-left: 2.5rem !important;
+        }
+            .header-container {
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+        width: 50%;
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        transition: all 0.3s ease-in-out;
+        }
+
+
+        .menu-bars {
+            font-size: 1.5rem;
+            color: #007bff;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .menu-bars:hover {
+            transform: scale(1.1);
+        }
+
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0 auto;
+        }
+
+        .logo-title img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .logo-title img:hover {
+            transform: rotate(3deg) scale(1.05);
+        }
+
+        .logo-title h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .profile-pic:hover {
+             transform: scale(1.05);
+        }
+
+        .badge-login {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .badge-login i {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .last-login-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .hover-div i {
+            width: 30px;
         }
     </style>
 </head>
@@ -72,68 +163,68 @@
                 @canany(['statistics'])
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('statistics*') ? 'hover_active' : '' }}"
                     style="height: 7rem">
-                    <i class="fa-solid fa-home pe-4"></i>
+                    <i class="fa-solid fa-chart-line pe-3"></i>
                     <a class="text-decoration-none" href="{{ route('statistics.index') }}">Dashboard</a>
                 </li>
                 @endcanany
                 @canany(['category-create', 'category-list', 'category-edit', 'category-delete'])
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('categories*') ? 'hover_active' : '' }}"
                     style="height: 7rem">
-                    <i class="fa-solid fa-calendar-days pe-4"></i>
+                    <i class="fa-solid fa-tags pe-3"></i>
                     <a class="text-decoration-none" href="{{ route('categories.index') }}">Categories</a>
                 </li>
                 @endcanany
                 @canany(['department-create', 'department-list', 'department-edit', 'department-delete'])
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('departments*') ? 'hover_active' : '' }}"
                     style="height: 7rem">
-                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <i class="fa-solid fa-building pe-3"></i>
                     <a class="text-decoration-none" href="{{ route('departments.index') }}">Departments</a>
                 </li>
                 @endcanany
                 @can(['coordinator-statistics'])
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('departments*') ? 'hover_active' : '' }}"
                     style="height: 7rem">
-                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <i class="fa-solid fa-bell pe-3"></i>
                     <a class="text-decoration-none" href="{{ route('reminder') }}">Reminder</a>
                 </li>
                 @endcan
                 @canany(['manage-reports'])
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('manage-reports*') ? 'hover_active' : '' }}"
                     style="height: 7rem">
-                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <i class="fa-solid fa-file-lines pe-3"></i>
                     <a class="text-decoration-none" href="{{ route('manage.reports.index') }}">Manage Report</a>
                 </li>
                 @endcanany
                 @canany(['idea-list'])
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('ideas') ? 'hover_active' : '' }}"
                     style="height: 7rem">
-                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <i class="fa-solid fa-lightbulb pe-3"></i>
                     <a class="text-decoration-none" href="{{ route('ideas.index') }}">View Ideas</a>
                 </li>
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('ideas/closed') ? 'hover_active' : '' }}"
                     style="height: 7rem">
-                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <i class="fa-solid fa-lock pe-3"></i>
                     <a class="text-decoration-none" href="{{ route('ideas.closed') }}">View Closed Ideas</a>
                 </li>
                 @endcanany
                 @canany(['closure_date-create', 'closure_date-list', 'closure_date-edit', 'closure_date-delete'])
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('closure-date') ? 'hover_active' : '' }}"
                     style="height: 7rem">
-                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <i class="fa-solid fa-clock pe-3"></i>
                     <a class="text-decoration-none" href="{{ route('closure_dates.index') }}">Manage Closure_Dates</a>
                 </li>
                 @endcanany
                 @role('Admin')
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('roles') ? 'hover_active' : '' }}"
                     style="height: 7rem">
-                    <i class="fa-solid fa-calendar-days pe-4"></i>
+                    <i class="fa-solid fa-user-shield pe-3"></i>
                     <a class="text-decoration-none" href="{{ route('roles.index') }}">Role Management</a>
                 </li>
                 @endrole
                 @canany(['user-list', 'user-create', 'user-edit', 'user-delete'])
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('users') ? 'hover_active' : '' }}"
                     style="height: 7rem">
-                    <i class="fa-solid fa-user-tie pe-4"></i>
+                    <i class="fa-solid fa-users-gear pe-3"></i>
                     <a class="text-decoration-none" href="{{ route('users.index') }}">Account Management</a>
                 </li>
                 @endcanany
@@ -142,27 +233,19 @@
                     <div class="d-flex flex-column mt-auto w-100">
                         <div class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('settings') ? 'hover_active' : '' }}"
                             style="height: 7rem">
-                            <i class="fa-solid fa-gear pe-2"></i>
+                            <i class="fa-solid fa-gear pe-3"></i>
                             <a class="text-decoration-none" href="{{ route('settings') }}">Setting</a>
                         </div>
                     </div>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                        class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4"
-                        style="height: 7rem">
-                        @csrf
-                        <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>
-                        <a class="dropdown-item" href="#" id="logoutButton">
-                            <i class="bi bi-box-arrow-right me-2"></i>{{ __('Logout') }}
-                        </a>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4" style="height: 7rem">
+                        <i class="fa-solid fa-right-from-bracket pe-3"></i>
+                        <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
+                            <button id="logoutButton" type="submit" class="btn btn-link nav-link text-white p-0" style="text-decoration: none;">
+                                Logout
+                            </button>
                         </form>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                    </form>
+                    </li>
                 </div>
 
                 @endguest
@@ -176,16 +259,15 @@
 
             <div class="d-flex justify-content-between align-items-center w-100" style="height: 7rem">
 
-                <div class="d-flex justify-content-start align-items-center px-4 w-50">
-                    <i class="fa-solid fa-bars menu-bars fs-5"></i>
-
-                    <div class="d-flex justify-content-start align-items-center gap-4 m-auto">
-                        <img src=" {{ asset('images/logo.png') }}" alt="Logo" class="img-fluid rounded-circle"
-                            style="width: 80px; height: 80px;">
-                        <h3> {{ session('title') }} </h3>
-                    </div>
-
+            <div class="header-container">
+                <i class="fa-solid fa-bars menu-bars"></i>
+                
+                <div class="logo-title">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo">
+                    <h3>{{ session('title') }}</h3>
                 </div>
+            </div>
+
 
                 <div class="search d-flex justify-content-end align-items-center w-50 pe-4">
 
@@ -204,7 +286,7 @@
                         }
                         @endphp
 
-                        <img src="{{ $profilePhoto }}" alt="Profile Photo" class="img-fluid rounded-circle"
+                        <img src="{{ $profilePhoto }}" alt="Profile Photo"  class="profile-pic"
                             width="50" height="50">
                         @endif
 
@@ -232,10 +314,13 @@
                     @endphp
 
                     @if ($previousLogin)
-                    <div class="last-login ps-4 d-flex flex-column justify-content-center">
-                        <p>Last Login: </p>
-                        <p> {{ $previousLogin->login_time }} / {{ $previousLogin->login_date }} </p>
+                <div class="badge badge-login">
+                    <i class="fas fa-clock"></i>
+                    <div class="last-login-text">
+                        <span>Last Login:</span>
+                        <span>{{ $previousLogin->login_time }} / {{ $previousLogin->login_date }}</span>
                     </div>
+                </div>
                     @endif
 
                 </div>
@@ -255,29 +340,31 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
     <script src="{{ asset('components/script.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+
     <script>
         document.getElementById('logoutButton').addEventListener('click', function(event) {
-            event.preventDefault();
-
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You will be logged out from your account!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#6c757d",
-                confirmButtonText: "Yes, logout",
-                cancelButtonText: "Cancel"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('logout-form').submit();
-                }
-            });
+        event.preventDefault();
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will be logged out from your account!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Yes, logout",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logoutForm').submit();
+            }
         });
+    });
+
+
     </script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

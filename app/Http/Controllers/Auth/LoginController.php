@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    //protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -42,6 +42,10 @@ class LoginController extends Controller
 
     public function authenticated(Request $request, $user)
     {
+
+        if ($user->is_banned) {
+            return redirect()->route('login')->with('banned', true); // Set banned session
+        }
 
         UserLogin::create([
             'user_id' => $user->id,
