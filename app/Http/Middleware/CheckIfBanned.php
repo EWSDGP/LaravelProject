@@ -12,7 +12,7 @@ class CheckIfBanned
     {
         if (Auth::check() && Auth::user()->is_banned) {
             Auth::logout(); 
-            return redirect()->route('login')->with('error', 'Your account has been banned.');
+            return redirect()->route('login')->with('banned', true); // Set the 'banned' session variable
         }
 
         return $next($request);
