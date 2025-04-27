@@ -12,7 +12,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmSendReminder">Send Reminder</button>
+                <button type="button" class="btn btn-danger" id="confirmSendReminder">
+                    <span id="reminderButtonText">Send Reminder</span>
+                    <span id="reminderLoadingSpinner" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Sending...
+                    </span>
+                </button>
             </div>
         </div>
     </div>
@@ -78,6 +83,7 @@
                                 data-bs-toggle="modal" data-bs-target="#reminderModal"
                                 data-user-id="{{ $deptUser->id }}">
                             <i class="bi bi-trash me-1"></i>Reminder
+
                         </button>
                     @endif
                 </div>
@@ -107,6 +113,15 @@
         }
     });
     function sendReminderEmail(userId) {
+        // Show loading state
+        const reminderButton = document.getElementById('confirmSendReminder');
+        const buttonText = document.getElementById('reminderButtonText');
+        const loadingSpinner = document.getElementById('reminderLoadingSpinner');
+        
+        reminderButton.disabled = true;
+        buttonText.style.display = 'none';
+        loadingSpinner.style.display = 'inline';
+
         fetch(`/send-reminder-email/${userId}`, {
             method: 'POST',
             headers: {
@@ -120,11 +135,16 @@
         })
         .catch(error => console.error('Error:', error))
         .finally(() => {
-        var reminderModal = document.getElementById('reminderModal');
-        var modalInstance = bootstrap.Modal.getInstance(reminderModal);
-        modalInstance.hide();
-        location.reload();
-    });
+            // Reset button state
+            reminderButton.disabled = false;
+            buttonText.style.display = 'inline';
+            loadingSpinner.style.display = 'none';
+            
+            var reminderModal = document.getElementById('reminderModal');
+            var modalInstance = bootstrap.Modal.getInstance(reminderModal);
+            modalInstance.hide();
+            location.reload();
+        });
     }
 </script>
 
