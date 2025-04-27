@@ -21,9 +21,7 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-});
+
 
 Route::get('/about', function () {
     return view('about');
@@ -31,7 +29,7 @@ Route::get('/about', function () {
 
 Auth::routes();
 Route::middleware([CheckIfBanned::class])->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('categories', CategoryController::class);
     Route::resource('roles', RoleController::class);
     Route::resource("users", UserController::class);
