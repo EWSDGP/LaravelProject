@@ -22,11 +22,6 @@ Route::get('/', function () {
 });
 
 
-
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
 Auth::routes();
 Route::middleware([CheckIfBanned::class])->group(function () {
     //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
