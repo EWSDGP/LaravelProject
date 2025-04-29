@@ -5,6 +5,12 @@
     @endcomponent -->
 
 <div class="container_back">
+    @if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show m-3 border-0 shadow-sm" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
 
     <div class="pt-5">
         @can('download-ideas')
@@ -473,6 +479,17 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // Auto-close alert after 5 seconds
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            setTimeout(() => {
+                const closeButton = alert.querySelector('.btn-close');
+                if (closeButton) {
+                    closeButton.click();
+                }
+            }, 5000);
+        }
+
         const submitButton = document.getElementById('submit-button');
         const ideaClosureDate = submitButton.dataset.closureDate;
 
@@ -604,33 +621,11 @@
         const downloadButtonText = document.getElementById('downloadButtonText');
         const downloadLoadingSpinner = document.getElementById('downloadLoadingSpinner');
 
-        downloadForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
+        downloadForm.addEventListener('submit', function() {
             // Show loading state
             downloadBtn.disabled = true;
             downloadButtonText.style.display = 'none';
             downloadLoadingSpinner.style.display = 'inline';
-
-            // Get form data
-            const formData = new FormData(this);
-            const academicYear = formData.get('academic_year');
-
-            // Create a temporary iframe for download
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-
-            // Set iframe source to trigger download
-            iframe.src = this.action + '?academic_year=' + academicYear;
-
-            // Reset button state after download starts
-            setTimeout(() => {
-                downloadBtn.disabled = false;
-                downloadButtonText.style.display = 'inline';
-                downloadLoadingSpinner.style.display = 'none';
-                document.body.removeChild(iframe);
-            }, 1000);
         });
     });
 </script>
