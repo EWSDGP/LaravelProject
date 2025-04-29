@@ -13,14 +13,27 @@ class IdeaExportController extends Controller
 {
     public function exportCombined(Request $request)
     {
-       
         $request->validate([
             'academic_year' => 'required|exists:closure_dates,ClosureDate_id'
         ]);
     
         $academicYearId = $request->input('academic_year');
     
-        
+        // Check if there are any ideas for this academic year
+        $ideas = Idea::whereHas('closureDate', function ($query) use ($academicYearId) {
+            $query->where('ClosureDate_id', $academicYearId);
+        })->count();
+
+        // If check_only parameter is present, return JSON response
+        if ($request->has('check_only')) {
+            return response()->json(['hasIdeas' => $ideas > 0]);
+        }
+
+        // If no ideas found, redirect back with error message
+        if ($ideas === 0) {
+            return redirect()->back()->with('error', 'There are no ideas for the selected academic year.');
+        }
+    
         $masterZipFileName = 'combined_export.zip';
         $zip = new ZipArchive();
         $zipPath = storage_path("app/public/$masterZipFileName");
