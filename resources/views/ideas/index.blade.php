@@ -43,9 +43,12 @@
             @endphp
 
             @can('idea-submit')
-            <a href="{{ route('ideas.create') }}" class="btn btn-outline-success m-auto" id="submit-button"
-                data-closure-date="{{ $latestClosureDate }}" @if ($currentDate->greaterThanOrEqualTo($latestClosureDate)) disabled @endif>
-                Submit Idea
+            <a href="{{ $currentDate->lessThan($latestClosureDate) ? route('ideas.create') : '#' }}"
+            class="btn m-auto {{ $currentDate->lessThan($latestClosureDate) ? 'btn-outline-success' : 'btn-outline-secondary' }}"
+            id="submit-button"
+            data-closure-date="{{ $latestClosureDate }}"
+            style="{{ $currentDate->greaterThanOrEqualTo($latestClosureDate) ? 'pointer-events: none; opacity: 0.6; cursor: not-allowed;' : '' }}">
+            {{ $currentDate->lessThan($latestClosureDate) ? 'Submit Idea' : 'Submission Closed' }}
             </a>
             @endcan
 
