@@ -5,12 +5,7 @@
     @endcomponent -->
 
 <div class="container_back">
-    @if (session('error'))
-    <div class="alert alert-danger alert-dismissible fade show m-3 border-0 shadow-sm" role="alert">
-        <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
+    
 
     <div class="pt-5">
         @can('download-ideas')
@@ -34,6 +29,12 @@
             </button>
         </form>
         @endcan
+        @if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show m-3 border-0 shadow-sm" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
 
     </div>
 
@@ -97,9 +98,11 @@
 
             <div class="col-md-4 w-auto ms-auto">
                 <button type="submit" class="btn btn-primary" id="applyFiltersBtn">
-                    <span id="filterButtonText">Apply Filters</span>
+                    <span id="filterButtonText">
+                        <i class="fas fa-filter me-2"></i>Apply Filters
+                    </span>
                     <span id="filterLoadingSpinner" style="display: none;">
-                        <i class="fas fa-spinner fa-spin"></i> Applying...
+                        <i class="fas fa-spinner fa-spin me-2"></i>Applying...
                     </span>
                 </button>
                 <a href="{{ route('ideas.index') }}" class="btn btn-secondary">Reset</a>
@@ -121,10 +124,9 @@
     <div class="justify-content-start">
         <div class="col-lg-8 w-100 d-flex flex-wrap gap-4 position-relative">
             @if( $ideas->isEmpty())
-            <div class="alert alert-warning" role="alert">
-  ⚠️ No ideas found.
-</div>
-
+            <div class="alert alert-info w-100">
+                <i class="fas fa-info-circle me-2"></i> No ideas found.
+            </div>
             @endif
             @foreach ($ideas as $idea)
             @php
@@ -601,8 +603,6 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Existing code...
-
         // Add loading state for filter form
         const filterForm = document.querySelector('form[action="{{ route('ideas.index') }}"]');
         const applyFiltersBtn = document.getElementById('applyFiltersBtn');
@@ -613,6 +613,7 @@
             applyFiltersBtn.disabled = true;
             filterButtonText.style.display = 'none';
             filterLoadingSpinner.style.display = 'inline';
+            applyFiltersBtn.classList.add('disabled');
         });
 
         // Add download button loading state
@@ -626,6 +627,15 @@
             downloadBtn.disabled = true;
             downloadButtonText.style.display = 'none';
             downloadLoadingSpinner.style.display = 'inline';
+            downloadBtn.classList.add('disabled');
+
+            // Reset loading state after 3 seconds
+            setTimeout(function() {
+                downloadBtn.disabled = false;
+                downloadButtonText.style.display = 'inline';
+                downloadLoadingSpinner.style.display = 'none';
+                downloadBtn.classList.remove('disabled');
+            }, 3000);
         });
     });
 </script>
