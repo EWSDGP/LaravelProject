@@ -234,11 +234,11 @@
             return;
         }
 
-        let profilePhoto = user.profile_photo ?
-            (user.profile_photo.startsWith('http') ?
-                user.profile_photo :
-                `{{ asset('storage/') }}/${user.profile_photo}`) :
-            'https://cdn1.hammers.news/uploads/25/2023/08/GettyImages-1342442688-1024x693.jpg';
+        let Defaultphoto = `{{ asset('storage/profile_photos/default-profile.jpg') }}`;
+
+    let profilePhoto = user.profile_photo && user.profile_photo !== "0"
+        ? `{{ asset('storage') }}/${user.profile_photo}`
+        : Defaultphoto;
 
         userDetailsDiv.innerHTML = `
         <div class="edit-show d-flex align-items-start p-5 bg-white border-bottom gap-5" style="height: 220px;">
