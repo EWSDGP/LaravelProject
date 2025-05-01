@@ -140,10 +140,44 @@
                 </h3>
             </div>
             <!-- Right Side Of Navbar -->
-            <div class="navbar d-flex justify-content-start align-items-center fs-5 nav-height">
+            <div class="navbar d-flex flex-column justify-content-between align-items-center fs-5 nav-height" style="height: calc(100vh - 7rem);">
+                @php
+                    $navItems = [];
+                    if (Auth::check()) {
+                        if (Auth::user()->can('statistics')) {
+                            $navItems[] = 'statistics';
+                        }
+                        if (Auth::user()->canAny(['category-create', 'category-list', 'category-edit', 'category-delete'])) {
+                            $navItems[] = 'categories';
+                        }
+                        if (Auth::user()->canAny(['department-create', 'department-list', 'department-edit', 'department-delete'])) {
+                            $navItems[] = 'departments';
+                        }
+                        if (Auth::user()->can('coordinator-statistics')) {
+                            $navItems[] = 'reminder';
+                        }
+                        if (Auth::user()->canAny(['manage-reports'])) {
+                            $navItems[] = 'manage-reports';
+                        }
+                        if (Auth::user()->canAny(['idea-list'])) {
+                            $navItems[] = 'ideas';
+                            $navItems[] = 'closed-ideas';
+                        }
+                        if (Auth::user()->canAny(['closure_date-create', 'closure_date-list', 'closure_date-edit', 'closure_date-delete'])) {
+                            $navItems[] = 'closure-date';
+                        }
+                        if (Auth::user()->hasRole('Admin')) {
+                            $navItems[] = 'roles';
+                        }
+                        if (Auth::user()->canAny(['user-list', 'user-create', 'user-edit', 'user-delete'])) {
+                            $navItems[] = 'users';
+                        }
+                    }
+                    $showSettingsAtBottom = count($navItems) <= 5;
+                @endphp
+                <div class="w-100">
                 <!-- Authentication Links -->
                 @guest
-
                 @if (Route::has('login'))
                 <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-4"
                     style="height: 7rem">
@@ -229,13 +263,31 @@
                 </li>
                 @endcanany
 
-                <div class="d-flex flex-column mt-auto w-100">
-                    <div class="d-flex flex-column mt-auto w-100">
+                    @if(!$showSettingsAtBottom)
                         <div class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('settings') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-gear pe-3"></i>
                             <a class="text-decoration-none" href="{{ route('settings') }}">Setting</a>
                         </div>
+                    <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4" style="height: 7rem">
+                        <i class="fa-solid fa-right-from-bracket pe-3"></i>
+                        <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button id="logoutButton" type="submit" class="btn btn-link nav-link text-white p-0" style="text-decoration: none;">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                    @endif
+                    @endguest
+                </div>
+
+                @if($showSettingsAtBottom)
+                <div class="w-100 mt-auto">
+                    <div class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('settings') ? 'hover_active' : '' }}"
+                        style="height: 7rem">
+                        <i class="fa-solid fa-gear pe-3"></i>
+                        <a class="text-decoration-none" href="{{ route('settings') }}">Setting</a>
                     </div>
                     <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4" style="height: 7rem">
                         <i class="fa-solid fa-right-from-bracket pe-3"></i>
@@ -247,8 +299,7 @@
                         </form>
                     </li>
                 </div>
-
-                @endguest
+                @endif
             </div>
         </div>
         <div class="navi-back" style="width: 17%; height: 100vh">
