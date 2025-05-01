@@ -186,13 +186,13 @@
                 </li>
                 @endif
 
-                @if (Route::has('register'))
-                <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('register*') ? 'hover_active' : '' }}"
+                <!-- @if (Route::has('register')) -->
+                <!-- <li class="nav-items hover-div nav-item d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('register*') ? 'hover_active' : '' }}"
                     style="height: 7rem">
                     <i class="fa-solid fa-arrow-right-to-bracket pe-4"></i>
                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                 </li>
-                @endif
+                @endif -->
                 @else
                 @canany(['statistics'])
                 <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('statistics*') ? 'hover_active' : '' }}"
@@ -264,11 +264,13 @@
                 @endcanany
 
                     @if(!$showSettingsAtBottom)
+                    
                         <div class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4 {{ request()->is('settings') ? 'hover_active' : '' }}"
                             style="height: 7rem">
                             <i class="fa-solid fa-gear pe-3"></i>
                             <a class="text-decoration-none" href="{{ route('settings') }}">Setting</a>
                         </div>
+                   
                     <li class="nav-items hover-div d-flex justify-content-start align-items-center w-100 ps-4" style="height: 7rem">
                         <i class="fa-solid fa-right-from-bracket pe-3"></i>
                         <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="d-inline">
