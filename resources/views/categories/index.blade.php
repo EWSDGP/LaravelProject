@@ -97,13 +97,13 @@
                                         <div class="btn-group">
                                             @can('category-edit')
                                                 <a href="{{ route('categories.edit', $category->category_id) }}" 
-                                                   class="btn btn-sm btn-outline-primary action-btn">
+                                                   class="btn btn-sm btn-outline-primary action-btn m-1">
                                                     <i class="fas fa-edit me-1"></i>Edit
                                                 </a>
                                             @endcan
                                             @can('category-delete')
                                                 <button type="button" 
-                                                        class="btn btn-sm btn-outline-danger action-btn delete-btn"
+                                                        class="btn btn-sm btn-outline-danger action-btn delete-btn m-1"
                                                         data-bs-toggle="modal" 
                                                         data-bs-target="#deleteModal"
                                                         data-url="{{ route('categories.destroy', $category->category_id) }}">
