@@ -103,14 +103,14 @@
                                             <div class="btn-group" role="group">
                                                 @can ('closure_date-edit')
                                                 <a href="{{ route('closure_dates.edit', $closureDate->ClosureDate_id) }}"
-                                                   class="btn btn-warning btn-sm">
+                                                   class="btn btn-warning btn-sm m-1">
                                                     <i class="fas fa-edit me-1"></i>Edit
                                                 </a>
                                                 @endcan
                                                
                                                 @can ('closure_date-delete')
                                                 <button type="button"
-                                                        class="btn btn-danger btn-sm delete-btn"
+                                                        class="btn btn-danger btn-sm delete-btn m-1"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#deleteModal"
                                                         data-url="{{ route('closure_dates.destroy', $closureDate->ClosureDate_id) }}">
