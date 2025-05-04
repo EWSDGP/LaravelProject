@@ -30,7 +30,7 @@
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="bg-light">
                                     <tr>
-                                        <th class="px-4">ID</th>
+                                       
                                         <th>Reporter</th>
                                         <th>Idea Title</th>
                                         <th>Idea Author</th>
@@ -42,8 +42,7 @@
                                 <tbody>
                                     @forelse ($reports as $report)
                                         <tr>
-                                            <td class="px-4"><span class="badge bg-primary rounded-pill">{{ $report->id }}</span>
-                                            </td>
+                                            
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <i class="fas fa-user-circle fs-5 text-primary me-2"></i>
